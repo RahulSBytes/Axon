@@ -1,0 +1,44 @@
+const userSchema = {
+  name: String,
+  email: String,
+  password: String,
+  avatar: String,
+  preferences: {
+    theme: { type: String, default: "dark" },
+    defaultVoice: { type: String, default: "nova" },
+    defaultModel: { type: String, default: "llama3-8b-8192" },
+  },
+  createdAt: Date,
+};
+
+
+
+
+const conversationSchema = {
+  user_id: ObjectId,
+  title: { type: String, default: "New Chat" },
+  lastMessageAt: Date,
+  isPinned: { type: Boolean, default: false },
+  createdAt: Date,
+};
+
+
+
+
+const messageSchema = {
+  conversation_id: ObjectId,
+  role: { type: String, enum: ["user", "assistant", "system"] },
+  content: String,
+  model: String,       // For assistant messages
+  createdAt: Date,
+};
+
+
+
+const favoriteSchema = {
+  user_id: ObjectId,
+  message_id: ObjectId,
+  conversation_id: ObjectId,
+  note: String,
+  createdAt: Date,
+};
