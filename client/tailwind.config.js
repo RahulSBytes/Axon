@@ -1,20 +1,21 @@
 /** @type {import('tailwindcss').Config} */
+import scrollbar from "tailwind-scrollbar";
+
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors : {
-        
-        'accent':'#D96E6E',
-        'primary':'#EDEEEF',
-        'secondary' : '#F7FCFE',
-        'muted' : '#3F3F3F',
-        'textcolor': '#E5E5E5'
-      }
+      fontFamily: {
+        sans: ['"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
+      },
+      colors: {
+        accent: "#D96E6E",
+        primary: "#EDEEEF",
+        secondary: "#F7FCFE",
+        muted: "#3F3F3F",
+        textcolor: "#161616",
+      },
     },
   },
-  plugins: [],
-}
+  plugins: [scrollbar],
+};

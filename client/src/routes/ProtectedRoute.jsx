@@ -1,24 +1,13 @@
-// src/routes/ProtectedRoute.jsx
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Navigate } from "react-router-dom"
+// import { useAuthStore } from "../../store/authStore.js"
 
-export const ProtectedRoute = ({ children, redirectTo = '/login' }) => {
-  const { isAuthenticated, loading } = useAuth();
-  const location = useLocation();
-
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner"></div>
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    // Save the attempted URL for redirecting after login
-    return <Navigate to={redirectTo} state={{ from: location }} replace />;
-  }
-
-  return children ? children : <Outlet />;
-};
+export default function ProtectedRoute({ children }) {
+  const user = true
+    // const user = useAuthStore((state) => state.user);
+    // const loader = useAuthStore((state) => state.loader);
+    // if (loader) return <div className="h-screen w-screen flex justify-center items-center">
+    //     <span className="text-2xl font-handwriting font-bold text-secondary dark:text-secondary-dark mr-3">Sit tight</span>
+    //     <span className="loading loading-dots loading-xl text-secondary dark:text-secondary-dark"></span>
+    // </div>
+    return user ? children : <Navigate to={'/login'} replace />
+}

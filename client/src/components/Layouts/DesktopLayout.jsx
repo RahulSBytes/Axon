@@ -1,15 +1,19 @@
-import React from 'react'
-import Sidebar from "./Sidebar"
-import Chat from './Chat'
-
+import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import TopicPopUp from "../minicomponents/TopicPopUp";
 
 function DesktopLayout() {
   return (
-    <div className='bg-primary h-screen flex p-6'>
-      <Sidebar/> 
-      <Chat/>
+    <div className="bg-primary h-screen flex p-4">
+      
+      <Sidebar />
+
+      <div className='bg-secondary rounded-md flex flex-1 relative  flex-col items-center'>
+        <Outlet />
       </div>
-  )
+    </div>
+  );
 }
 
-export default DesktopLayout
+export default DesktopLayout;
