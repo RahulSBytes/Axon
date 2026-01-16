@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 body {
-  @apply font-sans;
+  font-family: 'Inter', sans-serif;
 }
-
 
 .noScrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */

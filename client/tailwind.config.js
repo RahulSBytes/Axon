@@ -6,7 +6,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
+        inter: ['"Inter"', "sans-serif"],
+        adlam: ['"ADLaM Display"', "cursive"],
       },
       colors: {
         accent: "#D96E6E",
