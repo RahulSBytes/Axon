@@ -35,6 +35,9 @@ function Home() {
   const [isWebSearchEnabled,setIsWebSearchEnabled] = useState(false);
 
 
+console.log(conversation)
+
+
   return (
     <>
       <div className='flex self-end m-4 mb-0 absolute'>

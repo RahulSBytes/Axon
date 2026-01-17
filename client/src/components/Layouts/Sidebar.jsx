@@ -32,9 +32,9 @@ function Sidebar() {
             {
                 isNewTopicOpen && <TopicPopUp setIsNewTopicOpen={setIsNewTopicOpen} />
             }
-            <div className='text-4xl font-semibold'>Axon</div>
+            <div className='text-3xl font-adlam'>Axon</div>
             <div className=' mt-16'>
-                <button onClick={() => setIsNewTopicOpen(true)} class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
+                <button onClick={() => setIsNewTopicOpen(true)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-full inline-flex items-center">
                     <Plus/>
                     <span>New Chat</span>
                 </button>
