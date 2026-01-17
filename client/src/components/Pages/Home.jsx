@@ -1,14 +1,10 @@
-import { ChevronDown, ChevronUp, Globe, Send, Sparkles } from 'lucide-react'
+import { ChevronDown, ChevronUp, Download, DownloadIcon, Globe, Send, Sparkles } from 'lucide-react'
 import React, { useState } from 'react'
-import ReactMarkdown from 'react-markdown';
-import moment from 'moment';
 
 import Cards from '../shared/Cards'
 import { conversation } from '../../constants/constant.js'
-import Chat from './Chat.jsx'
 import Message from '../minicomponents/Message.jsx';
-// import AgentMessage from '../minicomponents/AgentMessage.jsx';
-// import UserMessage from '../minicomponents/UserMessage.jsx';
+import { exportPDF } from '../../utils/exportPDF.js';
 
 function Home() {
   const chats = useState(null)
@@ -32,10 +28,10 @@ function Home() {
   ]
 
 
-  const [isWebSearchEnabled,setIsWebSearchEnabled] = useState(false);
+  const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false);
 
 
-console.log(conversation)
+  console.log(conversation)
 
 
   return (
@@ -61,12 +57,12 @@ console.log(conversation)
       </div>
 
       <div className='w-3/4 flex flex-col mb-3 max-h-full'>
-        <div className='flex flex-1 overflow-y-scroll scrollbar-thin noScrollbar'>
+        <div id="pdf-printable" className='flex flex-1 overflow-y-scroll scrollbar-thin noScrollbar'>
           {
             conversation.messages.length > 0 ?
               <div className='w-full flex flex-col py-2'>
                 {
-                  conversation.messages.map((message) => <Message message={message} /> )
+                  conversation.messages.map((message) => <Message message={message} />)
                 }
               </div>
               : <>
@@ -87,7 +83,7 @@ console.log(conversation)
               <textarea rows={3} className='w-full bg-transparent m-3 mb-2 outline-none text-muted font-medium' />
             </div>
             <div className='flex gap-2 flex-1 m-2'>
-              <div onClick={()=>setIsWebSearchEnabled((prev)=>!prev)} className={`flex rounded-full px-2 text-sm items-center gap-1 border border-zinc-400 cursor-pointer text-muted ${isWebSearchEnabled? "bg-blue-200 border-blue-500":""}`}>
+              <div onClick={() => setIsWebSearchEnabled((prev) => !prev)} className={`flex rounded-full px-2 text-sm items-center gap-1 border border-zinc-400 cursor-pointer text-muted ${isWebSearchEnabled ? "bg-blue-200 border-blue-500" : ""}`}>
                 <Globe size={17} />
                 Web Search
               </div>
@@ -96,6 +92,9 @@ console.log(conversation)
                   llms.map((model) => <option value={model}>{model}</option>)
                 }
               </select>
+              <div>
+                <button onClick={exportPDF} type="button" className='flex border border-zinc-600 rounded-full py-1 px-2' ><DownloadIcon size={16} /> <span>Pdf</span></button>
+              </div>
             </div>
           </div>
           <button onClick={handleclick} className='pr-6 pl-1 w-18 flex justify-center items-center'><Send size={32} className='text-muted' /></button>
