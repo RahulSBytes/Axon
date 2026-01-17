@@ -28,6 +28,15 @@ function Home() {
   ]
 
 
+  const handleExport = () => {
+  exportPDF({
+    title: conversation.title || 'Chat Conversation',
+    userName: 'Rahul Sharma',
+    userEmail: 'rraj@gmail.com',
+  });
+};
+
+
   const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false);
 
 
@@ -93,7 +102,7 @@ function Home() {
                 }
               </select>
               <div>
-                <button onClick={exportPDF} type="button" className='flex border border-zinc-600 rounded-full py-1 px-2' ><DownloadIcon size={16} /> <span>Pdf</span></button>
+                <button onClick={handleExport} type="button" className='flex border border-zinc-600 rounded-full py-1 px-2' ><DownloadIcon size={16} /> <span>Pdf</span></button>
               </div>
             </div>
           </div>
