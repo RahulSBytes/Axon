@@ -11,6 +11,7 @@ import MongoStore from "connect-mongo";
 import session from "express-session";
 import { errorHandlerMiddleware } from "./src/utils/error.js";
 import savedMessageRoutes from './src/routes/savedMessageRoutes.js'
+import cors from 'cors'
 
 const app = express();
 const PORT = 8080;

@@ -5,13 +5,19 @@ import Cards from '../shared/Cards'
 import { conversation } from '../../constants/constant.js'
 import Message from '../minicomponents/Message.jsx';
 import { exportPDF } from '../../utils/exportPDF.js';
+import { useAuth } from '../../hooks/useAuth.js';
 
 function Home() {
   const chats = useState(null)
   const [isCapsuleHovered, setIsCapsuleHovered] = useState(false)
-  const handleclick = () => {
+
+  const handleSend = () => {
     return
   }
+
+
+  const { user, logout } = useAuth()
+
 
   const llms = [
     "GPT-4",
@@ -29,18 +35,16 @@ function Home() {
 
 
   const handleExport = () => {
-  exportPDF({
-    title: conversation.title || 'Chat Conversation',
-    userName: 'Rahul Sharma',
-    userEmail: 'rraj@gmail.com',
-  });
-};
+    exportPDF({
+      title: conversation.title || 'Chat Conversation',
+      userName: 'Rahul Sharma',
+      userEmail: 'rraj@gmail.com',
+    });
+  };
 
 
   const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false);
 
-
-  console.log(conversation)
 
 
   return (
@@ -52,12 +56,19 @@ function Home() {
             isCapsuleHovered ? <div className='flex flex-col items-center px-6 py-2  justify-center' onClick={() => setIsCapsuleHovered(false)}>
 
               <ChevronUp onClick={() => setIsCapsuleHovered(true)} className='text-muted self-end cursor-pointer' size={26} />
-              <img src="https://stylishattitudedp.com/wp-content/uploads/2025/11/Blur-DP-for-Instagram-Boy-3-768x767.jpg" className='w-20 h-20 object-cover rounded-full border-secondary border-2' />
-              <p className='font-medium text-muted'>Rahul Sharma</p>
-              <p className='text-zinc-500 text-sm'>rraj@gmail.com</p>
-                        <button type="button" className="mt-3 px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">Logout</button>
+              {user.avatar ?
+                <img src={user.avatar} className='w-20 h-20 object-cover rounded-full border-secondary border-2' /> :
+                <div className='w-20 h-20 rounded-full border-zinc-500 border-2 bg-yellow-400 flex justify-center items-center text-3xl font-medium'>{user.fullName[0].toUpperCase()}</div>
+              }
+              <p className='font-medium text-muted'>{user.fullName}</p>
+              <p className='text-zinc-500 text-sm'>{user.email}</p>
+              <button type="button" onClick={logout} className="mt-3 px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">Logout</button>
             </div> : <>
-              <img src="https://stylishattitudedp.com/wp-content/uploads/2025/11/Blur-DP-for-Instagram-Boy-3-768x767.jpg" className='h-8 w-8 rounded-full border-secondary border-2' />
+            {user.avatar ?
+                <img src={user.avatar} className='h-8 w-8 rounded-full border-secondary border-2' /> :
+                <div className='h-8 w-8 object-cover rounded-full border-zinc-500 border-2 bg-yellow-400 flex justify-center items-center  font-medium'>{user.fullName[0].toUpperCase()}</div>
+              }
+              
               <ChevronDown onClick={() => setIsCapsuleHovered(true)} className='text-muted cursor-pointer' size={26} />
             </>
           }
@@ -107,7 +118,7 @@ function Home() {
               </div>
             </div>
           </div>
-          <button onClick={handleclick} className='pr-6 pl-1 w-18 flex justify-center items-center'><Send size={32} className='text-muted' /></button>
+          <button onClick={handleSend} className='pr-6 pl-1 w-18 flex justify-center items-center'><Send size={32} className='text-muted' /></button>
         </form>
 
 

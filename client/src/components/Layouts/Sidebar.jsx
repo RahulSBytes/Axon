@@ -1,6 +1,7 @@
 import { ClockFading, Ghost, House, Plus, Star } from 'lucide-react'
 import { useState } from 'react'
 import TopicPopUp from '../minicomponents/TopicPopUp'
+import { useNavigate } from 'react-router-dom'
 
 function Sidebar() {
 
@@ -22,6 +23,8 @@ function Sidebar() {
         },
 
     ]
+
+    const navigate = useNavigate()
 
     const [isNewTopicOpen, setIsNewTopicOpen] = useState(false)
 
@@ -45,10 +48,10 @@ function Sidebar() {
                 </ul>
             </div>
             <div className="flex gap-2 flex-col absolute bottom-0 w-full px-3">
-                <button className="px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">
+                <button onClick={()=>navigate('/login')} className="px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">
                     Log in
                 </button>
-                <button className="px-4 py-1.5 w-full text-sm font-medium text-zinc-200 bg-zinc-800 hover:bg-zinc-700  rounded-md transition-colors">
+                <button onClick={()=>navigate('/signup')} className="px-4 py-1.5 w-full text-sm font-medium text-zinc-200 bg-zinc-800 hover:bg-zinc-700  rounded-md transition-colors">
                     Sign up
                 </button>
             </div>

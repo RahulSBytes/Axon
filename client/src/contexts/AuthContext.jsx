@@ -9,7 +9,7 @@ export const AuthContext = createContext(null);
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 // Configure axios defaults
-axios.defaults.withCredentials = true; // Important for cookies/sessions
+axios.defaults.withCredentials = true; 
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -40,11 +40,14 @@ export function AuthProvider({ children }) {
     }
   };
 
+
   // Login function
   const login = async (email, password) => {
     try {
       setLoading(true);
       setError(null);
+
+      console.log("print", email, password)
 
       const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
@@ -65,6 +68,16 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   };
+
+
+
+    // ✅ NEW: Login with Google
+  const loginWithGoogle = () => {
+    // Redirect to backend Google OAuth route
+    window.location.href = `${API_URL}/api/auth/google`;
+  };
+
+
 
   // Register function
   const register = async (fullName, email, password) => {
@@ -120,6 +133,7 @@ export function AuthProvider({ children }) {
     error,
     login,
     register,
+    loginWithGoogle,
     logout,
     checkAuth,
     updateUser,
