@@ -1,13 +1,17 @@
-import { Navigate } from "react-router-dom"
-// import { useAuthStore } from "../../store/authStore.js"
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth.js';
 
 export default function ProtectedRoute({ children }) {
-  const user = true
-    // const user = useAuthStore((state) => state.user);
-    // const loader = useAuthStore((state) => state.loader);
-    // if (loader) return <div className="h-screen w-screen flex justify-center items-center">
-    //     <span className="text-2xl font-handwriting font-bold text-secondary dark:text-secondary-dark mr-3">Sit tight</span>
-    //     <span className="loading loading-dots loading-xl text-secondary dark:text-secondary-dark"></span>
-    // </div>
-    return user ? children : <Navigate to={'/login'} replace />
+  const { user, loading } = useAuth();
+
+  // Show loading spinner while checking auth
+  if (loading) {
+    return (
+      <div className="h-screen w-screen flex flex-col justify-center items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+        <span className="text-lg text-gray-600">Loading...</span>
+      </div>
+    );
+  }
+     return user ? children : <Navigate to={'/login'} replace />
 }

@@ -49,12 +49,13 @@ function Home() {
         <div className={`flex bg-primary ${isCapsuleHovered ? "rounded-sm" : "rounded-full"} px-1 justify-between items-center border border-zinc-300 gap-1`}>
 
           {
-            isCapsuleHovered ? <div className='flex flex-col items-center p-4 pt-2 pr-2' onClick={() => setIsCapsuleHovered(false)}>
+            isCapsuleHovered ? <div className='flex flex-col items-center px-6 py-2  justify-center' onClick={() => setIsCapsuleHovered(false)}>
 
               <ChevronUp onClick={() => setIsCapsuleHovered(true)} className='text-muted self-end cursor-pointer' size={26} />
               <img src="https://stylishattitudedp.com/wp-content/uploads/2025/11/Blur-DP-for-Instagram-Boy-3-768x767.jpg" className='w-20 h-20 object-cover rounded-full border-secondary border-2' />
               <p className='font-medium text-muted'>Rahul Sharma</p>
               <p className='text-zinc-500 text-sm'>rraj@gmail.com</p>
+                        <button type="button" className="mt-3 px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">Logout</button>
             </div> : <>
               <img src="https://stylishattitudedp.com/wp-content/uploads/2025/11/Blur-DP-for-Instagram-Boy-3-768x767.jpg" className='h-8 w-8 rounded-full border-secondary border-2' />
               <ChevronDown onClick={() => setIsCapsuleHovered(true)} className='text-muted cursor-pointer' size={26} />

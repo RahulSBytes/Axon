@@ -13,8 +13,8 @@ function TopicPopUp({ setIsNewTopicOpen }) {
                 <form action="" method='post' className='flex flex-col  w-full items-center gap-4'>
                     <input type="text" className='w-3/4 py-2 px-3 outline-none bg-primary text-center' />
                     <div className='flex gap-4'>
-                        <button onClick={() => setIsNewTopicOpen(false)} type="button" className='border border-zinc-600 px-3 rounded-sm hover:bg-zinc-100'>Cancel</button>
-                        <button type="submit" className='bg-muted text-white px-3 rounded-sm hover:bg-zinc-600'>Create</button>
+                        <button onClick={() => setIsNewTopicOpen(false)} type="button" className="px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">Cancel</button>
+                        <button type="submit" className="px-4 py-1.5 w-full text-sm font-medium text-zinc-200 bg-zinc-800 hover:bg-zinc-700  rounded-md transition-colors">Create</button>
                     </div>
                 </form>
             </div>

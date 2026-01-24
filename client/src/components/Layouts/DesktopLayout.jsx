@@ -5,7 +5,7 @@ import TopicPopUp from "../minicomponents/TopicPopUp";
 
 function DesktopLayout() {
   return (
-    <div className="bg-primary h-screen flex p-4">
+    <div className="bg-primary h-screen flex p-4 pl-0">
       
       <Sidebar />
 

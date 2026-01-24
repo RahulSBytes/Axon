@@ -1,14 +1,25 @@
-import express from 'express'
-import { createChat, deleteChat, getAllChats, getChatById } from '../controllers/conversationControllers.js';
+import express from "express";
+import {
+  createChat,
+  deleteChat,
+  getAllChats,
+  getChatById,
+  togglePinConversation,
+} from "../controllers/conversationControllers.js";
+import { isAuthenticated } from "../middlewares.js";
 
 const router = express.Router();
 
-router.route('/')
-    .get(getAllChats)       // GET    /api/chats → Get all chats for user
-    .post(createChat)       // POST   /api/chats → Create new chat thread
+router.patch('/:id/toggle-pin', isAuthenticated, togglePinConversation);
 
-router.route('/:chatId')
-    .get(getChatById)       // GET    /api/chats/:chatId → Get single chat
-    .delete(deleteChat);    // DELETE /api/chats/:chatId → Delete specific chat
+router
+  .route("/")
+  .get(getAllChats)   // checked
+  .post(createChat); // POST   /api/chats → Create new chat thread
+
+router
+  .route("/:chatId")
+  .get(getChatById)   // checked
+  .delete(deleteChat);    // checked
 
 export default router;
