@@ -108,7 +108,7 @@ export async function LLM(prompt, model, next) {
     }
   } catch (error) {
     console.log("Error:", error.response?.data || error.message);
-    return new customError("error on llm side", 503);
+    return next(new customError("error on llm side", 503));
   }
   return message;
 }
