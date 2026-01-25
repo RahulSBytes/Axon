@@ -51,27 +51,28 @@ async function search_web(query) {
 }
 
 // Main chat function
-export async function LLM(prompt, model, next) {
+export async function LLM(prompt, model, conversationHistory = [], next) {
   let message;
 
+  const messages = [
+            {
+                role: "system",
+                content: "Use search_web tool for recent events, weather, or unknown information.",
+            },
+            ...conversationHistory,
+            { role: "user", content: prompt },
+        ];
+
   try {
-    // First call
     let response = await axios.post(
       GROQ_URL,
       {
         model: model,
-        messages: [
-          {
-            role: "system",
-            content:
-              "Use search_web tool for recent events, weather, or unknown information.",
-          },
-          { role: "user", content: prompt },
-        ],
+        messages: messages,
         tools: tools,
         tool_choice: {
           type: "function",
-          function: { name: "search_web" }, // Force this specific tool
+          function: { name: "search_web" },
         },
       },
       { headers },
@@ -84,7 +85,6 @@ export async function LLM(prompt, model, next) {
       const toolCall = message.tool_calls[0];
       const args = JSON.parse(toolCall.function.arguments);
 
-      // Execute Tavily search
       const searchResults = await search_web(args.query);
 
       // Second call: Send results back to LLM
