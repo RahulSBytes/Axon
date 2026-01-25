@@ -4,62 +4,7 @@ import SavedMessage from "../models/SavedMessage.js";
 import { customError } from "../utils/error.js";
 
 
-export async function sendMessage(req, res, next) {
-  try {
-    const { chatId } = req.params;
-    const { prompt, model = "llama-3.1-8b-instant" } = req.body;
 
-    if (!chatId) return next(new customError("please provide chatid", 404));
-
-    if (!prompt || !prompt.trim())
-      return next(new customError("please enter some prompt", 400));
-
-    const conversation = await Conversation.findById(chatId);
-
-    if (!conversation)
-      return next(new customError("conversation not found", 404));
-
-    const llmResponse = await LLM(prompt, model, next);
-    const userMessageForDatabase = {
-      role: "user",
-      text: prompt,
-      metadata: null,
-    };
-
-    conversation.messages.push(userMessageForDatabase);
-
-    const assistantMessageForDatabase = {
-      role: "assistant",
-      text: llmResponse.choices[0].message.content,
-      metadata: {
-        model: llmResponse.model,
-        latency_ms: llmResponse.usage.total_time,
-      },
-    };
-
-    conversation.messages.push(assistantMessageForDatabase);
-
-    const u = conversation.totalUsage;
-    const r = llmResponse.usage;
-
-    conversation.totalUsage = {
-      total_tokens: u.total_tokens + r.total_tokens,
-      completion_tokens: u.completion_tokens + r.completion_tokens,
-      prompt_tokens: u.prompt_tokens + r.prompt_tokens,
-    };
-
-    await conversation.save();
-
-    // response with the llm result
-    res.status(201).json({
-      success: true,
-      conversation,
-    });
-  } catch (error) {
-    console.log("error marking star ::", error);
-    next(error);
-  }
-}
 
 
 

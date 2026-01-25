@@ -21,13 +21,18 @@ import Signup from '../components/Pages/Signup'
 import Favorite from '../components/Pages/Favorite'
 import History from '../components/Pages/History'
 import NotFound from '../components/Pages/NotFound'
+import Tagline from '../components/minicomponents/Tagline';
+import Chat from '../components/Pages/Chat';
 
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<ProtectedRoute><ResponsiveLayout /></ProtectedRoute>}>
-        <Route index element={<Home />} />
+        <Route path='/' element={<Home />} >
+          <Route index element={<Tagline />} />
+          <Route path='/chat/:chatid' element={<Chat />} />
+        </Route>
         <Route path='/saved' element={<Favorite />} />
         <Route path='/history' element={<History />} />
       </Route>

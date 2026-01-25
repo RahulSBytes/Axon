@@ -1,7 +1,6 @@
-// components/minicomponents/Message.jsx
+
 import {
   Clipboard,
-  FileText,
   Volume2,
   Square,
   Star,
@@ -15,7 +14,8 @@ import moment from 'moment';
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer';
 
 function Message({ message }) {
-  const { message_id, role, content, created_at } = message;
+  const { _id, role, text,
+    createdAt, metadata = {} } = message;
 
   // States
   const [copied, setCopied] = useState(false);
@@ -48,13 +48,11 @@ function Message({ message }) {
     loadVoices();
     window.speechSynthesis.onvoiceschanged = loadVoices;
 
-    // Cleanup on unmount
     return () => {
       window.speechSynthesis.cancel();
     };
   }, []);
 
-  // Close voice menu when clicking outside
   useEffect(() => {
     const handleClickOutside = () => setShowVoiceMenu(false);
     if (showVoiceMenu) {
@@ -87,18 +85,15 @@ function Message({ message }) {
 
   // Copy handler
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(content);
+    await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Favorite handler
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
-    // TODO: Call API to save favorite
   };
 
-  // Read aloud handler
   const handleReadAloud = () => {
     if (isSpeaking) {
       window.speechSynthesis.cancel();
@@ -113,7 +108,7 @@ function Message({ message }) {
 
     window.speechSynthesis.cancel();
 
-    const cleanText = stripMarkdown(content);
+    const cleanText = stripMarkdown(text);
     const utterance = new SpeechSynthesisUtterance(cleanText);
 
     utterance.rate = speechRate;
@@ -138,9 +133,10 @@ function Message({ message }) {
         <div className="flex text-xs items-center font-medium text-zinc-500">
           <span className="text-zinc-800 font-semibold">You</span>
           <Dot />
-          {moment(created_at).fromNow()}
+          {moment(
+            createdAt).fromNow()}
         </div>
-        <div className="text-zinc-800 mt-1 whitespace-pre-wrap">{content}</div>
+        <div className="text-zinc-800 mt-1 whitespace-pre-wrap">{text}</div>
       </div>
     );
   }
@@ -155,12 +151,13 @@ function Message({ message }) {
           Axon
         </span>
         <Dot />
-        {moment(created_at).fromNow()}
+        {moment(
+          createdAt).fromNow()}
       </div>
 
-      {/* Content */}
+      {/* text */}
       <div className="text-zinc-800 mt-1">
-        <MarkdownRenderer content={content} />
+        <MarkdownRenderer text={text} />
       </div>
 
       {/* Action Buttons */}
@@ -178,17 +175,16 @@ function Message({ message }) {
           )}
         </button>
 
-        
+
 
         {/* Read Aloud with Voice Selection */}
         <div className="relative flex items-center">
           <button
             onClick={handleReadAloud}
-            className={`transition-colors ${
-              isSpeaking
-                ? 'text-blue-500 hover:text-blue-600'
-                : 'text-zinc-400 hover:text-zinc-600'
-            }`}
+            className={`transition-colors ${isSpeaking
+              ? 'text-blue-500 hover:text-blue-600'
+              : 'text-zinc-400 hover:text-zinc-600'
+              }`}
             title={isSpeaking ? 'Stop reading' : 'Read aloud'}
           >
             {isSpeaking ? (
@@ -224,11 +220,10 @@ function Message({ message }) {
                     <button
                       key={rate}
                       onClick={() => setSpeechRate(rate)}
-                      className={`px-2 py-1 text-xs rounded transition-colors ${
-                        speechRate === rate
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
-                      }`}
+                      className={`px-2 py-1 text-xs rounded transition-colors ${speechRate === rate
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                        }`}
                     >
                       {rate}x
                     </button>
@@ -248,11 +243,10 @@ function Message({ message }) {
                           setSelectedVoice(voice);
                           setShowVoiceMenu(false);
                         }}
-                        className={`w-full text-left px-2 py-1.5 text-xs rounded transition-colors ${
-                          selectedVoice?.name === voice.name
-                            ? 'bg-blue-50 text-blue-600 font-medium'
-                            : 'text-zinc-600 hover:bg-zinc-100'
-                        }`}
+                        className={`w-full text-left px-2 py-1.5 text-xs rounded transition-colors ${selectedVoice?.name === voice.name
+                          ? 'bg-blue-50 text-blue-600 font-medium'
+                          : 'text-zinc-600 hover:bg-zinc-100'
+                          }`}
                       >
                         {voice.name
                           .replace('Microsoft ', '')
@@ -273,9 +267,8 @@ function Message({ message }) {
         {/* Favorite */}
         <button
           onClick={handleFavorite}
-          className={`transition-colors ${
-            isFavorite ? 'text-amber-500' : 'text-zinc-400 hover:text-amber-500'
-          }`}
+          className={`transition-colors ${isFavorite ? 'text-amber-500' : 'text-zinc-400 hover:text-amber-500'
+            }`}
           title="Favorite"
         >
           <Star size={16} fill={isFavorite ? 'currentColor' : 'none'} />

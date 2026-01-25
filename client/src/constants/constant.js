@@ -375,4 +375,19 @@ const Favorite = [
 
 
 
-export { conversation, history, Favorite };
+  const prompts = [
+    "Write a LinkedIn post about my new job.",
+    "What's wrong with this code?",
+    "What are the latest trends in AI?"
+  ]
+
+  const llms = [
+    "GPT-4",
+    "Claude 3",
+    "Gemini 1.5",
+    "LLaMA 3",
+    "Mistral Large"
+  ]
+
+
+export { conversation, history, Favorite, prompts, llms  };

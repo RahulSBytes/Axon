@@ -6,7 +6,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Copy, Check } from 'lucide-react';
 
-export default function MarkdownRenderer({ content }) {
+export default function MarkdownRenderer({ text }) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
@@ -121,7 +121,7 @@ export default function MarkdownRenderer({ content }) {
         hr: () => <hr className="my-6 border-zinc-300" />,
       }}
     >
-      {content}
+      {text}
     </ReactMarkdown>
   );
 }

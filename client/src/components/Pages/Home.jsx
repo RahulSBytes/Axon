@@ -1,38 +1,25 @@
 import { ChevronDown, ChevronUp, Download, DownloadIcon, Globe, Send, Sparkles } from 'lucide-react'
 import React, { useState } from 'react'
+import axios from 'axios'
 
 import Cards from '../shared/Cards'
-import { conversation } from '../../constants/constant.js'
+import { conversation, llms, prompts } from '../../constants/constant.js'
 import Message from '../minicomponents/Message.jsx';
 import { exportPDF } from '../../utils/exportPDF.js';
 import { useAuth } from '../../hooks/useAuth.js';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 function Home() {
-  const chats = useState(null)
+  const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false);
   const [isCapsuleHovered, setIsCapsuleHovered] = useState(false)
+  const [chats, setChats] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [prompt, setPrompt] = useState('')
 
-  const handleSend = () => {
-    return
-  }
-
-
+  const { pathname } = useLocation()
+  const { chatid } = useParams()
+  const navigate = useNavigate()
   const { user, logout } = useAuth()
-
-
-  const llms = [
-    "GPT-4",
-    "Claude 3",
-    "Gemini 1.5",
-    "LLaMA 3",
-    "Mistral Large"
-  ]
-
-  const prompts = [
-    "Write a LinkedIn post about my new job.",
-    "What's wrong with this code?",
-    "What are the latest trends in AI?"
-  ]
-
 
   const handleExport = () => {
     exportPDF({
@@ -42,9 +29,65 @@ function Home() {
     });
   };
 
+  const sendMessage = async (id, message) => {
+    setIsLoading(true)
+    const tempId = crypto.randomUUID()
 
-  const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false);
+    setChats(prev => [...(prev || []), {
+      _id: tempId,
+      role: 'user',
+      text: message,
+      createdAt: new Date().toISOString()
+    }])
 
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/chats/${id}/message`,
+        { prompt: message }
+      )
+
+      console.log("datatata :: ", data)
+
+      if (data.success) {
+        setChats(prev => {
+          const updatedChats = prev.map(msg =>
+            msg._id === tempId ? data.userMessage : msg
+          )
+          return [...updatedChats, data.assistantMessage]
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      setChats(prev => prev.filter(msg => msg._id !== tempId))
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+
+
+  const handleSend = async (e) => {
+    e.preventDefault()
+    if (!prompt.trim() || isLoading) return
+
+    const messageToSend = prompt;
+    setPrompt('')
+
+    if (!pathname.startsWith('/chat/')) {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/chats`,
+        { title: messageToSend.slice(0, 50) }
+      )
+
+      if (data.success) {
+        navigate(`/chat/${data.conversation._id}`, {
+          state: { initialMessage: messageToSend }
+        })
+      }
+    } else {
+      await sendMessage(chatid, messageToSend)
+    }
+  }
 
 
   return (
@@ -64,11 +107,11 @@ function Home() {
               <p className='text-zinc-500 text-sm'>{user.email}</p>
               <button type="button" onClick={logout} className="mt-3 px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">Logout</button>
             </div> : <>
-            {user.avatar ?
+              {user.avatar ?
                 <img src={user.avatar} className='h-8 w-8 rounded-full border-secondary border-2' /> :
                 <div className='h-8 w-8 object-cover rounded-full border-zinc-500 border-2 bg-yellow-400 flex justify-center items-center  font-medium'>{user.fullName[0].toUpperCase()}</div>
               }
-              
+
               <ChevronDown onClick={() => setIsCapsuleHovered(true)} className='text-muted cursor-pointer' size={26} />
             </>
           }
@@ -78,30 +121,21 @@ function Home() {
       </div>
 
       <div className='w-3/4 flex flex-col mb-3 max-h-full'>
-        <div id="pdf-printable" className='flex flex-1 overflow-y-scroll scrollbar-thin noScrollbar'>
-          {
-            conversation.messages.length > 0 ?
-              <div className='w-full flex flex-col py-2'>
-                {
-                  conversation.messages.map((message) => <Message message={message} />)
-                }
-              </div>
-              : <>
-                <div className='text-xl font-medium flex  flex-1 justify-center text-center flex-col mx-[9%] gap-1'>
-                  <div className='text-3xl'>Think Faster.<span className='text-accent'>Create Smarter.</span></div>
-                  <span className='text-muted text-base'>Your AI-powered assistant for instant answers, creative ideas, and intelligent conversations.</span>
-                </div>
-                <div className='flex gap-6 mb-4'>
-                  <Cards prompts={prompts} />
-                </div>
-              </>
-          }
-        </div>
-        <form action="#" method="get" className='bg-primary flex rounded-sm bottom-2 mb-2'>
+        <Outlet context={{
+          chats,
+          setChats,
+          isLoading,
+          setIsLoading,
+          sendMessage
+        }} />
+        <form onSubmit={handleSend} className='bg-primary flex rounded-sm bottom-2 mb-2'>
           <div className='w-full'>
 
             <div className='flex'>
-              <textarea rows={3} className='w-full bg-transparent m-3 mb-2 outline-none text-muted font-medium' />
+              <textarea value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Ask anything..."
+                disabled={isLoading} rows={3} className='w-full bg-transparent m-3 mb-2 outline-none text-muted font-medium' />
             </div>
             <div className='flex gap-2 flex-1 m-2'>
               <div onClick={() => setIsWebSearchEnabled((prev) => !prev)} className={`flex rounded-full px-2 text-sm items-center gap-1 border border-zinc-400 cursor-pointer text-muted ${isWebSearchEnabled ? "bg-blue-200 border-blue-500" : ""}`}>
@@ -110,15 +144,15 @@ function Home() {
               </div>
               <select name="" id="" className='border border-zinc-400 rounded-full px-1 text-muted bg-primary'>
                 {
-                  llms.map((model) => <option value={model}>{model}</option>)
+                  llms.map((model, index) => <option key={index} value={model}>{model}</option>)
                 }
               </select>
-              <div>
+              {pathname.startsWith('/chat/') && <div>
                 <button onClick={handleExport} type="button" className='flex border border-zinc-600 rounded-full py-1 px-2' ><DownloadIcon size={16} /> <span>Pdf</span></button>
-              </div>
+              </div>}
             </div>
           </div>
-          <button onClick={handleSend} className='pr-6 pl-1 w-18 flex justify-center items-center'><Send size={32} className='text-muted' /></button>
+          <button type="submit" disabled={isLoading || !prompt.trim()} className='pr-6 pl-1 w-18 flex justify-center items-center'><Send size={32} className='text-muted' /></button>
         </form>
 
 
