@@ -143,7 +143,7 @@ function Message({ message }) {
 
   // ASSISTANT MESSAGE
   return (
-    <div className="max-w-[70%] rounded-lg p-3 self-start mt-2">
+    <div className="max-w-[85%] rounded-lg p-3 self-start mt-2">
       {/* Header */}
       <div className="flex text-xs items-center font-medium text-zinc-500">
         <span className="text-zinc-800 flex text-base items-center gap-1 font-semibold">
@@ -156,7 +156,7 @@ function Message({ message }) {
       </div>
 
       {/* text */}
-      <div className="text-zinc-800 mt-1">
+      <div className="text-zinc-800 mt-1 ">
         <MarkdownRenderer text={text} />
       </div>
 

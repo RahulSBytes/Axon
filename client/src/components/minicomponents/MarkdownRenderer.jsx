@@ -38,7 +38,7 @@ export default function MarkdownRenderer({ text }) {
 
           // Code block without language
           return (
-            <code className="block bg-zinc-800 text-zinc-100 p-4 rounded-lg my-4 font-mono text-sm overflow-x-auto">
+            <code className= "block bg-zinc-800 text-zinc-100 p-4 rounded-lg my-4 font-mono text-sm overflow-x-auto max-w-full">
               {children}
             </code>
           );

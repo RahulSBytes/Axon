@@ -1,7 +1,36 @@
+import axios from 'axios'
 import { Cross, X } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function TopicPopUp({ setIsNewTopicOpen }) {
+    const [title, setTitle] = useState('')
+    const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+
+
+    const handlesubmit = async (e) => {
+        setLoading(true)
+        e.preventDefault()
+        try {
+            const { data } = await axios.post(
+                `${import.meta.env.VITE_API_URL}/api/chats`,
+                { title }
+            )
+            if (data.success) {
+                navigate(`/chat/${data.conversation._id}`)
+            }
+            setIsNewTopicOpen(false)
+        } catch (error) {
+            console.log("error creating chat ::", error)
+        } finally {
+            setLoading(false)
+
+        }
+
+
+    }
+
     return (
         <div
             className="fixed inset-0 flex justify-center items-center bg-white/30 backdrop-blur-sm rounded-sm"
@@ -10,8 +39,8 @@ function TopicPopUp({ setIsNewTopicOpen }) {
             <div className="h-fit py-5  w-2/3 bg-white shadow-lg rounded-md  items-center justify-center flex flex-col gap-3">
                 <X onClick={() => setIsNewTopicOpen(false)} size={19} className='self-end mr-5 rounded-full hover:bg-zinc-200' />
                 <h3 className='text-xl text-zinc-800'>What's the topic on your mind?</h3>
-                <form action="" method='post' className='flex flex-col  w-full items-center gap-4'>
-                    <input type="text" className='w-3/4 py-2 px-3 outline-none bg-primary text-center' />
+                <form onSubmit={handlesubmit} className='flex flex-col  w-full items-center gap-4'>
+                    <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" className='w-3/4 py-2 px-3 outline-none bg-primary text-center' />
                     <div className='flex gap-4'>
                         <button onClick={() => setIsNewTopicOpen(false)} type="button" className="px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">Cancel</button>
                         <button type="submit" className="px-4 py-1.5 w-full text-sm font-medium text-zinc-200 bg-zinc-800 hover:bg-zinc-700  rounded-md transition-colors">Create</button>

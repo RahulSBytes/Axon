@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+@media print {
+    body > :not(#hidden) {
+  display: none;
+}
+
+}
+
+
+    </style>
+</head>
+
+<body>
+    <div onclick="printPage()" class="border-blue-600 border-2">
+        <li>hi 01</li>
+        <li>hi 02</li>
+        <li>hi 03</li>
+        <li>hi 04</li>
+    </div>
+    <div id="hidden">
+        this shouldn't be shown there
+    </div>
+    <script>
+        function printPage() {
+            window.print()
+        }
+    </script>
+</body>
+
+</html>

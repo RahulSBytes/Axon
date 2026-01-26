@@ -1,26 +1,43 @@
-Here is a simple Python program that sums two numbers:
-
-```python
-def sum_two_numbers(num1, num2):
-    """
-    This function takes two numbers as input and returns their sum.
-    
-    Parameters:
-    num1 (float): The first number
-    num2 (float): The second number
-    
-    Returns:
-    float: The sum of num1 and num2
-    """
-    return num1 + num2
+const messages = [
+    { role: "system", content: "..." },   // 1. System instructions
+    ...conversationHistory,                // 2. Past messages
+    { role: "user", content: prompt },     // 3. Current message
+];
 
 
-# Get two numbers from the user
-num1 = float(input("Enter the first number: "))
-num2 = float(input("Enter the second number: "))
+[
+    // system prompt
+    { role: "system", content: "Use search_web tool..." },
 
-# Call the function to sum the two numbers
-sum_result = sum_two_numbers(num1, num2)
+    //history context
+    { role: "user", content: "What is React?" },
+    { role: "assistant", content: "React is a JavaScript library..." },
+    { role: "user", content: "How do hooks work?" },
+    { role: "assistant", content: "Hooks are functions that..." },
 
-# Print the result
-print("The sum is:", sum_result)
+    // Current prompt
+    { role: "user", content: "Give me an example" },  
+]
+
+
+
+let response = await axios.post(
+      GROQ_URL,
+      {
+        model: model,
+        messages: [
+          {
+            role: "system",
+            content:
+              "Use search_web tool for recent events, weather, or unknown information.",
+          },
+          { role: "user", content: prompt },
+        ],
+        tools: tools,
+        tool_choice: {
+          type: "function",
+          function: { name: "search_web" }, // Force this specific tool
+        },
+      },
+      { headers },
+    );
