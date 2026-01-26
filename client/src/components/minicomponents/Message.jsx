@@ -11,11 +11,12 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import moment from 'moment';
+import { useTypingEffect } from '../../hooks/useTypingEffect.js';
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer';
 
-function Message({ message }) {
+function Message({ message, onTyping }) {
   const { _id, role, text,
-    createdAt, metadata = {} } = message;
+    createdAt, metadata = {}, isNew = null } = message;
 
   // States
   const [copied, setCopied] = useState(false);
@@ -25,6 +26,23 @@ function Message({ message }) {
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [showVoiceMenu, setShowVoiceMenu] = useState(false);
   const [speechRate, setSpeechRate] = useState(1);
+
+// ===========
+
+    const shouldAnimate = role === 'assistant' && isNew === true;
+    const displayedText = useTypingEffect(shouldAnimate ? text : null);
+    const textToShow = shouldAnimate ? displayedText : text;
+
+    
+    // Call onTyping whenever displayedText changes during animation
+    useEffect(() => {
+        if (shouldAnimate && displayedText && onTyping) {
+            onTyping();
+        }
+    }, [displayedText, shouldAnimate, onTyping]);
+
+// ===============
+
 
   // Load voices on mount
   useEffect(() => {
@@ -127,25 +145,6 @@ function Message({ message }) {
   };
 
 
-  // text animation part
-
-    // Only animate the latest assistant message
-    // const shouldAnimate = role === 'assistant' && isLatest;
-
-    // const { displayedText, isTyping, skipAnimation } = useTypingEffect(
-    //     shouldAnimate ? text : null,
-    //     {
-    //         speed: 20,       // 20ms between chunks
-    //         chunkSize: 3,    // 3 words at a time
-    //         enabled: shouldAnimate
-    //     }
-    // );
-
-    // // Use animated text for latest assistant, normal text for others
-    // const textToShow = shouldAnimate ? displayedText : text;
-
-// =================
-
   // USER MESSAGE
   if (role === 'user') {
     return (
@@ -161,6 +160,20 @@ function Message({ message }) {
     );
   }
 
+
+  // text animation part
+
+    // const shouldAnimate = isNew === true;
+
+    // const displayedText = useTypingEffect(
+    //     shouldAnimate ? text : null,
+    //     20,
+    //     3
+    // );
+
+    // const textToShow = shouldAnimate ? displayedText : text;
+
+// =================
 
 
   // ASSISTANT MESSAGE
@@ -179,7 +192,7 @@ function Message({ message }) {
 
       {/* text */}
       <div className="text-zinc-800 mt-1 ">
-        <MarkdownRenderer text={text} />
+        <MarkdownRenderer text={textToShow} />
       </div>
 
       {/* Action Buttons */}

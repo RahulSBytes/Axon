@@ -81,7 +81,7 @@ MIT — See [LICENSE](../LICENSE).
 
 ## 🙌 Acknowledgments
 
-Part of my GenAI deep dive. Connect: [LinkedIn](https://linkedin.com/in/yourprofile) | [GitHub](https://github.com/yourusername/axon)
+Part of my GenAI deep dive. Connect: [LinkedIn](https://https://www.linkedin.com/in/thedevrahul/) | [GitHub](https://github.com/RahulSBytes/Axon)
 
 *Version 0.1.0 | Jan 2026*
 

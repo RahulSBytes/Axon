@@ -127,7 +127,7 @@ MIT License — Free to use, modify, and distribute. See [LICENSE](LICENSE) for 
 
 - Built while accelerating my GenAI skills: Prompt engineering, tool calling, voice APIs.
 - Shoutout to React, Express, and the open-source community for making this possible.
-- **Connect**: Let's chat about AI projects! [LinkedIn](https://linkedin.com/in/yourprofile) | [GitHub](https://github.com/yourusername/axon)
+- **Connect**: Let's chat about AI projects! [LinkedIn](https://https://www.linkedin.com/in/thedevrahul/) | [GitHub](https://github.com/RahulSBytes/Axon)
 
 *Think Faster. Create Smarter. — Axon*  
 *Version 0.1.0 | Last Updated: Jan 2026*

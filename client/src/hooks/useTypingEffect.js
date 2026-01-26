@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-export function useTypingEffect(text, speed = 20, chunkSize = 3) {
+export function useTypingEffect(text, speed = 50, chunkSize = 1) {
     const [displayedText, setDisplayedText] = useState('');
     const typedTextsRef = useRef(new Set());
 

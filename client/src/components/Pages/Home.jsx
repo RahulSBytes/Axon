@@ -51,7 +51,7 @@ function Home() {
           const updatedChats = prev.map(msg =>
             msg._id === tempId ? data.userMessage : msg
           )
-          return [...updatedChats, data.assistantMessage]
+          return [...updatedChats, {...data.assistantMessage,  isNew: true}] // isNew is just for animation purpose
         })
       }
     } catch (error) {
