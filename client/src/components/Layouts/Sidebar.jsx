@@ -2,8 +2,10 @@ import { ClockFading, Ghost, House, Plus, Star } from 'lucide-react'
 import { useState } from 'react'
 import TopicPopUp from '../minicomponents/TopicPopUp'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth.js'
 
 function Sidebar() {
+    const { user, logout } = useAuth()
 
     const navs = [
         {
@@ -36,7 +38,7 @@ function Sidebar() {
             }
             <div className='text-3xl font-adlam mt-2 ml-5 flex'>Axon</div>
             <div className=' mt-16 ml-5'>
-                <button onClick={() => setIsNewTopicOpen(true)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-full inline-flex items-center">
+                <button onClick={() => setIsNewTopicOpen(true)} className="bg-gray-300 hover:bg-zinc-400 text-gray-800 font-semibold py-2 px-4 rounded-full inline-flex items-center">
                     <Plus />
                     <span>New Chat</span>
                 </button>
@@ -48,12 +50,17 @@ function Sidebar() {
                 </ul>
             </div>
             <div className="flex gap-2 flex-col absolute bottom-0 w-full px-3">
-                <button onClick={()=>navigate('/login')} className="px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">
-                    Log in
-                </button>
-                <button onClick={()=>navigate('/signup')} className="px-4 py-1.5 w-full text-sm font-medium text-zinc-200 bg-zinc-800 hover:bg-zinc-700  rounded-md transition-colors">
-                    Sign up
-                </button>
+                {user ? <button onClick={logout} className="px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">
+                    Log out
+                </button> : <>
+                    <button onClick={() => navigate('/login')} className="px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">
+                        Log in
+                    </button>
+                    <button onClick={() => navigate('/signup')} className="px-4 py-1.5 w-full text-sm font-medium text-zinc-200 bg-zinc-800 hover:bg-zinc-700  rounded-md transition-colors">
+                        Sign up
+                    </button>
+                </>
+                }
             </div>
         </nav>
     )

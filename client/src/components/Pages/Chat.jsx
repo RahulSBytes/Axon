@@ -60,7 +60,7 @@ function Chat() {
                     <div ref={bottomRef} />
                 </div>
             ) : (
-                <div className='text-muted p-4'>
+                <div className='text-zinc-400 p-4 flex justify-center items-center w-full'>
                     {isLoading ? 'Loading...' : 'No conversation yet'}
                 </div>
             )}

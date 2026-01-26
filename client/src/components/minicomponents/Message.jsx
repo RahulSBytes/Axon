@@ -126,6 +126,26 @@ function Message({ message }) {
     window.speechSynthesis.speak(utterance);
   };
 
+
+  // text animation part
+
+    // Only animate the latest assistant message
+    // const shouldAnimate = role === 'assistant' && isLatest;
+
+    // const { displayedText, isTyping, skipAnimation } = useTypingEffect(
+    //     shouldAnimate ? text : null,
+    //     {
+    //         speed: 20,       // 20ms between chunks
+    //         chunkSize: 3,    // 3 words at a time
+    //         enabled: shouldAnimate
+    //     }
+    // );
+
+    // // Use animated text for latest assistant, normal text for others
+    // const textToShow = shouldAnimate ? displayedText : text;
+
+// =================
+
   // USER MESSAGE
   if (role === 'user') {
     return (
@@ -140,6 +160,8 @@ function Message({ message }) {
       </div>
     );
   }
+
+
 
   // ASSISTANT MESSAGE
   return (

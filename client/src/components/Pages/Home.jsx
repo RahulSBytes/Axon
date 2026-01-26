@@ -46,8 +46,6 @@ function Home() {
         { prompt: message }
       )
 
-      console.log("datatata :: ", data)
-
       if (data.success) {
         setChats(prev => {
           const updatedChats = prev.map(msg =>
@@ -120,7 +118,7 @@ function Home() {
 
       </div>
 
-      <div className='w-3/4 flex flex-col mb-3 max-h-full'>
+      <div className='w-3/4 flex flex-col mb-3 max-h-full  h-full'>
         <Outlet context={{
           chats,
           setChats,
@@ -128,7 +126,7 @@ function Home() {
           setIsLoading,
           sendMessage
         }} />
-        <form onSubmit={handleSend} className='bg-primary flex rounded-sm bottom-2 mb-2'>
+        <form onSubmit={handleSend} className='bg-primary flex  rounded-sm bottom-2 mb-2'>
           <div className='w-full'>
 
             <div className='flex'>

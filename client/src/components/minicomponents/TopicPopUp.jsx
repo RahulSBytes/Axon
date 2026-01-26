@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 function TopicPopUp({ setIsNewTopicOpen }) {
     const [title, setTitle] = useState('')
     const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+    const navigate = useNavigate()
 
 
     const handlesubmit = async (e) => {
@@ -25,7 +25,6 @@ function TopicPopUp({ setIsNewTopicOpen }) {
             console.log("error creating chat ::", error)
         } finally {
             setLoading(false)
-
         }
 
 
@@ -43,7 +42,7 @@ function TopicPopUp({ setIsNewTopicOpen }) {
                     <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" className='w-3/4 py-2 px-3 outline-none bg-primary text-center' />
                     <div className='flex gap-4'>
                         <button onClick={() => setIsNewTopicOpen(false)} type="button" className="px-4 py-1.5 w-full text-sm font-medium text-muted border border-zinc-600 bg-secondary rounded-md hover:bg-zinc-200 transition-opacity">Cancel</button>
-                        <button type="submit" className="px-4 py-1.5 w-full text-sm font-medium text-zinc-200 bg-zinc-800 hover:bg-zinc-700  rounded-md transition-colors">Create</button>
+                        <button type="submit" className="px-4 py-1.5 w-full text-sm font-medium text-zinc-200 bg-zinc-800 hover:bg-zinc-700  rounded-md transition-colors">{loading ? "Loading..." : "Create"}</button>
                     </div>
                 </form>
             </div>

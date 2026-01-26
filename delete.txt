@@ -1,0 +1,19 @@
+🚀 In just 8 days of building while diving deep into GenAI — I created Axon:
+"Think Faster. Create Smarter."
+Your AI assistant for instant answers, creative ideas & intelligent conversations.
+Key highlights already live:
+
+Multiple LLM models + real-time web search tool calling (RAG-style)
+Persistent chat history, pinned chats, saved messages
+Full auth (local + Google OAuth)
+Syntax-highlighted code blocks + one-click copy & export as snippet
+Read-aloud with speed control + multiple voices
+Dark/light theme, responsive (mobile + desktop), modular React 19 + Express stack
+
+Built with modern tools: React 19, Tailwind, Passport, Mongoose, streaming responses, prompt engineering, voice synthesis & more.
+This isn't a basic clone — it's my accelerated hands-on lab for production-grade LLM apps. Constantly improving (next: voice input + more tools).
+Deployment dropping very soon! 🔥
+Building Axon taught me more about GenAI integration than months of courses. Grateful for every late-night "it works!" moment.
+If you're hiring full-stack devs with real LLM/tool-calling experience — I'd love to share a demo or repo walkthrough. Open to feedback too!
+What's one feature you're most excited about in personal AI tools right now? 👇
+#GenAI #AI #FullStack #React #NodeJS #BuildInPublic #OpenToWork
