@@ -78,7 +78,7 @@ function Home() {
       )
 
       if (data.success) {
-        navigate(`/chat/${data.conversation._id}`, {
+       navigate(`/chat/${data.conversation._id}`, {
           state: { initialMessage: messageToSend }
         })
       }
@@ -87,6 +87,8 @@ function Home() {
     }
   }
 
+
+  console.log("printing ::",user)
 
   return (
     <>
@@ -146,7 +148,7 @@ function Home() {
                 }
               </select>
               {pathname.startsWith('/chat/') && <div>
-                <button onClick={handleExport} type="button" className='flex border border-zinc-600 rounded-full py-1 px-2' ><DownloadIcon size={16} /> <span>Pdf</span></button>
+                <button onClick={handleExport} type="button" className='border border-zinc-400 rounded-full items-center text-zinc-700 bg-primary flex px-2 gap-1 justify-center'><DownloadIcon size={14} /> <span>Pdf</span></button>
               </div>}
             </div>
           </div>

@@ -12,7 +12,7 @@ import { isAuthenticated } from "../middlewares.js";
 const router = express.Router();
 
 router.post("/:chatId/message", isAuthenticated, sendMessage);
-router.patch("/:id/toggle-pin", isAuthenticated, togglePinConversation);
+router.patch("/:id/toggle-pin", togglePinConversation);
 
 router
   .route("/")

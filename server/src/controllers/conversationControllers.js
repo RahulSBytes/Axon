@@ -61,8 +61,7 @@ export async function sendMessage(req, res, next) {
 
     const history = formatHistoryForLLM(conversation.messages, 10);
 
-
-    const llmResponse = await LLM(prompt, model,history, next);
+    const llmResponse = await LLM(prompt, model, history, next);
 
     const userMessage = conversation.messages.create({
       role: "user",
@@ -140,63 +139,48 @@ export async function deleteChat(req, res, next) {
 
     if (!chatId) return next(new customError("chatId missing", 501));
 
-    const response = await Conversation.findByIdAndDelete(chatId);
+    const chat = await Conversation.findByIdAndDelete(chatId);
 
-    if (!response)
+    if (!chat)
       return next(
         new customError("something went wrong deleting conversation", 501),
       );
 
     res.status(201).json({
       success: true,
-      response,
-      message: "chat deleted successfully",
+      chatId : chat._id
     });
   } catch (error) {
     console.log("error getting all chats ::", error);
-    next(error);
+    next(new customError("something went wrong deleting conversation", 501));
   }
 }
 
 // controllers/conversationController.js
 
-export const togglePinConversation = async (req, res) => {
+export const togglePinConversation = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const userId = req.user._id;
+    const { isPinned } = req.body;
+    const user = req.user._id;
 
-    const conversation = await Conversation.findOne({ _id: id, userId });
+    const conversation = await Conversation.findOne({ _id: id, user });
 
-    if (!conversation) {
-      return res.status(404).json({
-        success: false,
-        message: "Conversation not found",
-      });
-    }
+    if (!conversation) return next(new customError("conversation not found", 404));
 
-    // Toggle the star
-    conversation.isStarred = !conversation.isStarred;
-    conversation.starredAt = conversation.isStarred ? new Date() : null;
+    conversation.isPinned = isPinned;
 
     await conversation.save();
 
     res.status(200).json({
       success: true,
-      message: conversation.isStarred
-        ? "Conversation starred"
-        : "Conversation unstarred",
-      data: {
+      updatedData: {
         _id: conversation._id,
-        isStarred: conversation.isStarred,
-        starredAt: conversation.starredAt,
+        isPinned: conversation.isPinned,
       },
     });
   } catch (error) {
-    console.error("Toggle star error:", error);
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(new customError("error pinning the conversation", 404))
   }
 };
 
