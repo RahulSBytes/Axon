@@ -18,7 +18,7 @@ import PublicRoute from './PublicRoute';
 import Home from '../components/Pages/Home'
 import Login from '../components/Pages/Login'
 import Signup from '../components/Pages/Signup'
-import Favorite from '../components/Pages/Favorite'
+import Saved from '../components/Pages/Saved'
 import History from '../components/Pages/History'
 import NotFound from '../components/Pages/NotFound'
 import Tagline from '../components/minicomponents/Tagline';
@@ -33,7 +33,7 @@ export const router = createBrowserRouter(
           <Route index element={<Tagline />} />
           <Route path='/chat/:chatid' element={<Chat />} />
         </Route>
-        <Route path='/saved' element={<Favorite />} />
+        <Route path='/saved' element={<Saved />} />
         <Route path='/history' element={<History />} />
       </Route>
 

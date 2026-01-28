@@ -67,22 +67,21 @@ export const saveMessage = async (req, res, next) => {
 };
 
 // Get all saved messages
-export const getSavedMessages = async (req, res) => {
+export const getSavedMessages = async (req, res, next) => {
   try {
     const savedMessages = await SavedMessage.find({ user: req.user._id }).sort({
       createdAt: -1,
     });
 
+    if (!savedMessages) next(new customError("messages not found", 400));
+
     res.status(200).json({
       success: true,
-      data: savedMessages,
+     savedMessages,
     });
   } catch (error) {
     console.error("Get saved messages error:", error);
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(new customError("error getting saved messages", 400));
   }
 };
 

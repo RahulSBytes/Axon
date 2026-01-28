@@ -172,10 +172,6 @@ function Message({ message, setChats, chatId, onTyping }) {
   };
 
 
-
-  console.log("issaved :: ", isSaved)
-
-
   // USER MESSAGE
   if (role === 'user') {
     return (
