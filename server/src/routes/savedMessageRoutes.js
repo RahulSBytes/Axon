@@ -6,9 +6,9 @@ import { isAuthenticated } from '../middlewares.js';
 
 const router = express.Router();
 
-router.post('/', isAuthenticated, saveMessage);
+router.patch('/', saveMessage);
 router.get('/', isAuthenticated, getSavedMessages);
-router.delete('/:messageId', isAuthenticated, unsaveMessage);
+router.delete('/:messageId', unsaveMessage);
 // router.patch('/:messageId', isAuthenticated, updateSavedMessage);
 
 export default router;

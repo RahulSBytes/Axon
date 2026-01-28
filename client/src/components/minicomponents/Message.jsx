@@ -13,35 +13,34 @@ import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { useTypingEffect } from '../../hooks/useTypingEffect.js';
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer';
+import axios from 'axios';
 
-function Message({ message, onTyping }) {
-  const { _id, role, text,
-    createdAt, metadata = {}, isNew = null } = message;
+function Message({ message, setChats, chatId, onTyping }) {
+  const { _id, role, text, createdAt, isSaved, metadata = {}, isNew = null } = message;
 
   // States
   const [copied, setCopied] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(message.is_favorite || false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [showVoiceMenu, setShowVoiceMenu] = useState(false);
   const [speechRate, setSpeechRate] = useState(1);
 
-// ===========
+  // ===========
 
-    const shouldAnimate = role === 'assistant' && isNew === true;
-    const displayedText = useTypingEffect(shouldAnimate ? text : null);
-    const textToShow = shouldAnimate ? displayedText : text;
+  const shouldAnimate = role === 'assistant' && isNew === true;
+  const displayedText = useTypingEffect(shouldAnimate ? text : null);
+  const textToShow = shouldAnimate ? displayedText : text;
 
-    
-    // Call onTyping whenever displayedText changes during animation
-    useEffect(() => {
-        if (shouldAnimate && displayedText && onTyping) {
-            onTyping();
-        }
-    }, [displayedText, shouldAnimate, onTyping]);
 
-// ===============
+  // Call onTyping whenever displayedText changes during animation
+  useEffect(() => {
+    if (shouldAnimate && displayedText && onTyping) {
+      onTyping();
+    }
+  }, [displayedText, shouldAnimate, onTyping]);
+
+  // ===============
 
 
   // Load voices on mount
@@ -108,9 +107,37 @@ function Message({ message, onTyping }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleFavorite = () => {
-    setIsFavorite(!isFavorite);
+  async function handleSave(conversationId, messageId, isSaved) {
+    try {
+      const { data } =
+        isSaved
+          ? await axios.delete(`${import.meta.env.VITE_API_URL}/api/saved/${messageId}`)
+          : await axios.patch(`${import.meta.env.VITE_API_URL}/api/saved`, { conversationId, messageId })
+      if (data.success && data.info) {
+        setChats(prev => prev.map((message) =>
+          message._id === data.info.messageId
+            ? { ...message, isSaved: data.info.isSaved }
+            : message
+        ));
+      }
+    } catch (error) {
+      console.log("error saving message", error);
+    }
   };
+
+  // async function handleUnsave(messageId) {
+  //   console.log("hahaha handleUnsave:: called")
+  //   try {
+  //     const { data } = await axios.delete(`${import.meta.env.VITE_API_URL}/api/saved/${messageId}`)
+  //     console.log("dutaaa handleUnsave::", data)
+  //     if (data.success) {
+  //       setChats(prev => prev.map((message) => messageId == data.messageId ? { ...message, isSaved: false } : message))
+  //     }
+  //   } catch (error) {
+  //     console.log("error unsaving message", error);
+  //   }
+  // };
+
 
   const handleReadAloud = () => {
     if (isSpeaking) {
@@ -145,6 +172,10 @@ function Message({ message, onTyping }) {
   };
 
 
+
+  console.log("issaved :: ", isSaved)
+
+
   // USER MESSAGE
   if (role === 'user') {
     return (
@@ -159,22 +190,6 @@ function Message({ message, onTyping }) {
       </div>
     );
   }
-
-
-  // text animation part
-
-    // const shouldAnimate = isNew === true;
-
-    // const displayedText = useTypingEffect(
-    //     shouldAnimate ? text : null,
-    //     20,
-    //     3
-    // );
-
-    // const textToShow = shouldAnimate ? displayedText : text;
-
-// =================
-
 
   // ASSISTANT MESSAGE
   return (
@@ -195,7 +210,6 @@ function Message({ message, onTyping }) {
         <MarkdownRenderer text={textToShow} />
       </div>
 
-      {/* Action Buttons */}
       <div className="flex items-center gap-3 mt-3">
         {/* Copy */}
         <button
@@ -210,9 +224,6 @@ function Message({ message, onTyping }) {
           )}
         </button>
 
-
-
-        {/* Read Aloud with Voice Selection */}
         <div className="relative flex items-center">
           <button
             onClick={handleReadAloud}
@@ -299,14 +310,13 @@ function Message({ message, onTyping }) {
           )}
         </div>
 
-        {/* Favorite */}
-        <button
-          onClick={handleFavorite}
-          className={`transition-colors ${isFavorite ? 'text-amber-500' : 'text-zinc-400 hover:text-amber-500'
+
+        <button onClick={() => handleSave(chatId, _id, isSaved)}
+          className={`transition-colors ${isSaved ? 'text-amber-500' : 'text-zinc-400 hover:text-amber-500'
             }`}
-          title="Favorite"
+          title="Save"
         >
-          <Star size={16} fill={isFavorite ? 'currentColor' : 'none'} />
+          <Star size={16} fill={isSaved ? 'currentColor' : 'none'} />
         </button>
       </div>
     </div>

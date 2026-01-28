@@ -87,9 +87,6 @@ function Home() {
     }
   }
 
-
-  console.log("printing ::",user)
-
   return (
     <>
       <div className='flex self-end m-4 mb-0 absolute'>

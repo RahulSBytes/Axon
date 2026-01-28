@@ -52,12 +52,14 @@ function Chat() {
     }, [chatid])
 
 
+
+
     return (
         <div id="pdf-printable" className='flex flex-1 overflow-y-scroll scrollbar-thin noScrollbar max-w-full'>
             {chats.length > 0 ? (
                 <div className='w-full flex flex-col py-2'>
                     {chats.map((message, index) => (
-                        <Message key={index} message={message}  onTyping={scrollToBottom}  />
+                        <Message key={index} message={message} chatId={chatid} setChats={setChats} onTyping={scrollToBottom}  />
                     ))}
                     {isLoading && (
                         <div className='p-4 text-muted animate-pulse'>
