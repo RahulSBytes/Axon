@@ -11,14 +11,28 @@ export default function MarkdownRenderer({ text }) {
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
-        // Code blocks & inline code
+        // ✅ Handle <pre> for code blocks
+        pre({ children }) {
+          return <>{children}</>;
+        },
+
+        // ✅ Fixed code detection
         code({ node, inline, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || '');
           const language = match ? match[1] : '';
           const codeString = String(children).replace(/\n$/, '');
 
+          // ✅ Better inline detection
+          // Check: inline prop, no language class, no newlines, short content
+          const hasLanguage = Boolean(match);
+          const hasNewlines = codeString.includes('\n');
+          const isShortCode = codeString.length < 100;
+          
+          const isInlineCode = inline === true || 
+            (!hasLanguage && !hasNewlines && isShortCode);
+
           // Inline code
-          if (inline) {
+          if (isInlineCode) {
             return (
               <code
                 className="bg-zinc-200 text-zinc-800 px-1.5 py-0.5 rounded text-sm font-mono"
@@ -30,17 +44,15 @@ export default function MarkdownRenderer({ text }) {
           }
 
           // Code block with syntax highlighting
-          if (match) {
+          if (hasLanguage) {
             return (
               <CodeBlock language={language} code={codeString} {...props} />
             );
           }
 
-          // Code block without language
+          // Code block without language (multi-line or long code)
           return (
-            <code className= "block bg-zinc-800 text-zinc-100 p-4 rounded-lg my-4 font-mono text-sm overflow-x-auto max-w-full">
-              {children}
-            </code>
+            <CodeBlock language="text" code={codeString} {...props} />
           );
         },
 
@@ -136,7 +148,6 @@ function CodeBlock({ language, code, ...props }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Language display names
   const displayNames = {
     js: 'JavaScript',
     javascript: 'JavaScript',
@@ -170,12 +181,13 @@ function CodeBlock({ language, code, ...props }) {
     shell: 'Shell',
     md: 'Markdown',
     markdown: 'Markdown',
+    text: 'Plain Text',
   };
 
-  const displayName = displayNames[language.toLowerCase()] || language.toUpperCase();
+  const displayName = displayNames[language?.toLowerCase()] || language?.toUpperCase() || 'Code';
 
   return (
-    <div className="relative my-4 rounded-lg overflow-hidden border border-zinc-700">
+    <div className="relative my-4 rounded-lg overflow-hidden border border-zinc-700 max-w-full">
       {/* Header */}
       <div className="flex items-center justify-between bg-zinc-800 px-4 py-2">
         <span className="text-xs text-zinc-400 font-mono">
@@ -202,14 +214,16 @@ function CodeBlock({ language, code, ...props }) {
       {/* Code */}
       <SyntaxHighlighter
         style={oneDark}
-        language={language}
+        language={language || 'text'}
         PreTag="div"
         showLineNumbers={code.split('\n').length > 3}
+        wrapLongLines={true}
         customStyle={{
           margin: 0,
           borderRadius: 0,
           fontSize: '0.875rem',
           padding: '1rem',
+          maxWidth: '100%',
         }}
         {...props}
       >

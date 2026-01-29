@@ -191,7 +191,7 @@ function Message({ message, setChats, chatId, onTyping }) {
       <div className="flex items-center gap-3 mt-3">
         {/* Copy */}
         <button
-          onClick={()=>handleCopy(text)}
+          onClick={() => handleCopy(text, setCopied)}
           className="text-zinc-400 hover:text-zinc-600 transition-colors"
           title="Copy message"
         >

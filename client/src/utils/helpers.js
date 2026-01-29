@@ -6,7 +6,7 @@ export function formatDateOrTime(date) {
   }
 
 
-  export async function handleCopy(text){
+  export async function handleCopy(text, setCopied){
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

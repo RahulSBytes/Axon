@@ -23,8 +23,6 @@ function History() {
         }
     }
 
-    console.log("history conversation :: ", conversation)
-
     useEffect(() => {
         fetchConveration();
     }, [])

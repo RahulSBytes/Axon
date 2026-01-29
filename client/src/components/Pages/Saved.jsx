@@ -36,7 +36,8 @@ function Saved() {
 
 
 
-  async function handleUnsave(messageId) {
+  async function handleUnsave(e, messageId) {
+    e.stopPropagation(e)
     try {
       const { data } = await axios.delete(`${import.meta.env.VITE_API_URL}/api/saved/${messageId}`)
       if (data.success && data.info) {
@@ -66,9 +67,9 @@ function Saved() {
           const isExpanded = expandedId === messageId;
 
           return (
-            <div key={messageId} className="border-b border-zinc-300">
+            <div className="border-b border-zinc-300">
               {/* Header Strip */}
-              <div className="flex justify-between items-center cursor-pointer p-3 pr-3 hover:bg-zinc-100">
+              <div onClick={() => toggleExpand(messageId)} className="flex justify-between items-center cursor-pointer p-3 pr-3 hover:bg-zinc-100">
                 <span className="text-zinc-500 text-xs font-semibold">
                   {formatDateOrTime(createdAt)}
                 </span>
@@ -86,7 +87,10 @@ function Saved() {
                 {/* Action Buttons */}
                 <div className="flex gap-3 text-zinc-800">
                   <button
-                    onClick={() => navigate(`/chat/${conversationId}`)}
+                    onClick={(e) => {
+                      e.stopPropagation(e)
+                      navigate(`/chat/${conversationId}`)
+                    }}
                     type="button"
                     className="hover:bg-zinc-200 p-2 rounded-full transition-colors"
                     title="Open in chat"
@@ -95,7 +99,7 @@ function Saved() {
                   </button>
 
                   <button
-                    onClick={() => handleUnsave(messageId)}
+                    onClick={(e) => handleUnsave(e, messageId)}
                     type="button"
                     className="hover:bg-zinc-200 hover:text-red-500 p-2 rounded-full transition-colors"
                     title="Remove from saved"
@@ -103,12 +107,7 @@ function Saved() {
                     <Trash2 size={21} />
                   </button>
 
-                  <button
-                    onClick={() => toggleExpand(messageId)}
-                    type="button"
-                    className="hover:bg-zinc-200 p-2 rounded-full transition-all"
-                    title={isExpanded ? 'Collapse' : 'Expand'}
-                  >
+                  <button className="hover:bg-zinc-200 p-2 rounded-full transition-all">
                     {isExpanded ? (
                       <ChevronUp size={24} />
                     ) : (
@@ -119,7 +118,7 @@ function Saved() {
               </div>
 
               {/* Expandable Content */}
-              <div className={`transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-full opacity-100' : 'max-h-0 opacity-0'}`}>
+              {isExpanded && <div className={`transition-all duration-300 ease-in-out max-h-full opacity-100`}>
                 <div className="bg-zinc-50 p-4 border-t border-zinc-200">
                   {/* Question */}
                   <div className="max-w-[70%] bg-zinc-100 rounded-lg p-3 self-end mt-2">
@@ -151,7 +150,7 @@ function Saved() {
                     <div className="flex items-center gap-3 mt-3">
                       {/* Copy */}
                       <button
-                        onClick={() => handleCopy(text)}
+                        onClick={() => handleCopy(text, setCopied)}
                         className="text-zinc-400 hover:text-zinc-600 transition-colors"
                         title="Copy message"
                       >
@@ -165,7 +164,7 @@ function Saved() {
                   </div>
 
                 </div>
-              </div>
+              </div>}
             </div>
           );
         })}
