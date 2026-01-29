@@ -3,17 +3,18 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { formatDateOrTime, handleCopy } from '../../utils/helpers.js'
+import { formatDateOrTime } from '../../utils/helpers.js'
 import moment from 'moment'
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer.jsx'
+import { useCopy } from '../../hooks/useCopy.js'
 
 
 
 function Saved() {
   const [savedMessages, setSavedMessages] = useState([])
   const [expandedId, setExpandedId] = useState(null);
-  const [copied, setCopied] = useState(false);
   const navigate = useNavigate()
+  const { copied, copyToClipboard } = useCopy()
 
   const toggleExpand = (messageId) => {
     setExpandedId(expandedId === messageId ? null : messageId);
@@ -33,8 +34,6 @@ function Saved() {
   useEffect(() => {
     fetchmessages();
   }, [])
-
-
 
   async function handleUnsave(e, messageId) {
     e.stopPropagation(e)
@@ -67,7 +66,7 @@ function Saved() {
           const isExpanded = expandedId === messageId;
 
           return (
-            <div className="border-b border-zinc-300">
+            <div key={messageId} className="border-b border-zinc-300">
               {/* Header Strip */}
               <div onClick={() => toggleExpand(messageId)} className="flex justify-between items-center cursor-pointer p-3 pr-3 hover:bg-zinc-100">
                 <span className="text-zinc-500 text-xs font-semibold">
@@ -150,7 +149,7 @@ function Saved() {
                     <div className="flex items-center gap-3 mt-3">
                       {/* Copy */}
                       <button
-                        onClick={() => handleCopy(text, setCopied)}
+                        onClick={() => copyToClipboard(messageText)}
                         className="text-zinc-400 hover:text-zinc-600 transition-colors"
                         title="Copy message"
                       >

@@ -130,9 +130,10 @@ function Home() {
 
             <div className='flex'>
               <textarea value={prompt}
+              
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="Ask anything..."
-                disabled={isLoading} rows={3} className='w-full bg-transparent m-3 mb-2 outline-none text-muted font-medium' />
+                disabled={isLoading} rows={3} className='w-full bg-transparent m-3 mb-2 outline-none text-muted font-medium noScrollbar' />
             </div>
             <div className='flex gap-2 flex-1 m-2'>
               <div onClick={() => setIsWebSearchEnabled((prev) => !prev)} className={`flex rounded-full px-2 text-sm items-center gap-1 border border-zinc-400 cursor-pointer text-muted ${isWebSearchEnabled ? "bg-blue-200 border-blue-500" : ""}`}>
@@ -145,7 +146,9 @@ function Home() {
                 }
               </select>
               {pathname.startsWith('/chat/') && <div>
-                <button onClick={handleExport} type="button" className='border border-zinc-400 rounded-full items-center text-zinc-700 bg-primary flex px-2 gap-1 justify-center'><DownloadIcon size={14} /> <span>Pdf</span></button>
+                <button onClick={handleExport} type="button" className='border border-zinc-400 rounded-full items-center text-zinc-700 bg-primary flex px-3 gap-1 justify-center'>
+                  <DownloadIcon size={14} /> Pdf
+                  </button>
               </div>}
             </div>
           </div>

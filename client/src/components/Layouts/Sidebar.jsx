@@ -8,22 +8,9 @@ function Sidebar() {
     const { user, logout } = useAuth()
 
     const navs = [
-        {
-            icon: House,
-            link: '/',
-            label: 'Home'
-        },
-        {
-            icon: ClockFading,
-            link: '/history',
-            label: 'History'
-        },
-        {
-            icon: Star,
-            link: '/saved',
-            label: 'Saved'
-        },
-
+        { icon: House, link: '/', label: 'Home' },
+        { icon: ClockFading, link: '/history', label: 'History' },
+        { icon: Star, link: '/saved', label: 'Saved' },
     ]
 
     const navigate = useNavigate()

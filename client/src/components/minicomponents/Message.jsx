@@ -14,18 +14,19 @@ import moment from 'moment';
 import { useTypingEffect } from '../../hooks/useTypingEffect.js';
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer';
 import axios from 'axios';
-import { handleCopy } from '../../utils/helpers.js';
+import { useCopy } from '../../hooks/useCopy.js';
 
 function Message({ message, setChats, chatId, onTyping }) {
   const { _id, role, text, createdAt, isSaved, metadata = {}, isNew = null } = message;
 
   // States
-  const [copied, setCopied] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [showVoiceMenu, setShowVoiceMenu] = useState(false);
   const [speechRate, setSpeechRate] = useState(1);
+    const {copied, copyToClipboard} = useCopy()
+  
 
   // ===========
 
@@ -191,7 +192,7 @@ function Message({ message, setChats, chatId, onTyping }) {
       <div className="flex items-center gap-3 mt-3">
         {/* Copy */}
         <button
-          onClick={() => handleCopy(text, setCopied)}
+          onClick={() => copyToClipboard(text)}
           className="text-zinc-400 hover:text-zinc-600 transition-colors"
           title="Copy message"
         >

@@ -6,12 +6,15 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { formatDateOrTime } from '../../utils/helpers.js'
+import { useLoadingState } from '../../hooks/useLoadingState.js'
 
 
 
 function History() {
     const [conversation, setConversation] = useState([])
     const navigate = useNavigate()
+
+    const { isLoading, withLoading } = useLoadingState()
 
 
     async function fetchConveration() {
@@ -35,6 +38,9 @@ function History() {
 
 
     async function handleDelete(e, chatId) {
+        setTimeout(() => {
+            console.log("waited")
+        }, 1000000)
         e.stopPropagation()
         try {
             const { data } = await axios.delete(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`)
@@ -67,7 +73,10 @@ function History() {
         <div className='flex h-full w-full flex-col px-14 scrollbar-thin'>
             <div className='pb-4 pt-6 pl-0 pr-8 flex justify-between items-center'>
                 <h3 className='text-2xl font-medium'>History</h3>
+                <div className='flex gap-2 items-center'>
+                    <input type="text" className=' border-2 border-zinc-400 rounded-full px-4 py-1 text-zinc-600 font-medium outline-none'/>
                 <Search className='text-zinc-700 cursor-pointer' />
+                </div>
             </div>
             <section className=' overflow-y-scroll flex-1'>
                 {
@@ -79,8 +88,8 @@ function History() {
                                 <p className='line-clamp-1 font-medium text-zinc-600'>{messages[1]?.text || "no converation available"}</p>
                             </div>
                             <div className='flex gap-2'>
-                                <button onClick={(e) => handleDelete(e, _id)} type="button" className='hover:bg-zinc-200 hover:text-red-500 p-2  rounded-full'><Trash2 size={21} /></button>v
-                                <button onClick={(e) => handlePin(e, _id, !isPinned)} type="button" className='hover:bg-zinc-200 p-2 rounded-full'><Pin fill={isPinned ? "#61616a" : "#f1f1f1"} color='#212121' size={21} /></button>
+                                <button onClick={withLoading('delete', (e) => handleDelete(e, _id))} type="button" className={`hover:bg-zinc-200 hover:text-red-500 p-2  rounded-full`}  ><Trash2 className={`${isLoading('delete') ? 'animate-bounce' : ''}`} size={21} /></button>
+                                <button onClick={withLoading('pin', (e) => handlePin(e, _id, !isPinned))} type="button" className='hover:bg-zinc-200 p-2 rounded-full'><Pin className={`${isLoading('pin')?"animate-bounce" : ''}`} fill={isPinned ? "#61616a" : "#f1f1f1"} color='#212121' size={21} /></button>
                             </div>
                         </div>))
                 }

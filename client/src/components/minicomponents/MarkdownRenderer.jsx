@@ -5,8 +5,10 @@ import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Copy, Check } from 'lucide-react';
+import { useCopy } from '../../hooks/useCopy.js';
 
 export default function MarkdownRenderer({ text }) {
+
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
@@ -140,13 +142,16 @@ export default function MarkdownRenderer({ text }) {
 
 // Separate CodeBlock component with copy functionality
 function CodeBlock({ language, code, ...props }) {
-  const [copied, setCopied] = useState(false);
+    const {copied, copyToClipboard} = useCopy()
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  // const handleCopy = async () => {
+  //   await navigator.clipboard.writeText(code);
+  //   setCopied(true);
+  //   setTimeout(() => setCopied(false), 2000);
+  // };
+
+
+
 
   const displayNames = {
     js: 'JavaScript',
@@ -194,7 +199,7 @@ function CodeBlock({ language, code, ...props }) {
           {displayName}
         </span>
         <button
-          onClick={handleCopy}
+          onClick={()=>copyToClipboard(code)}
           className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors"
         >
           {copied ? (
@@ -218,6 +223,7 @@ function CodeBlock({ language, code, ...props }) {
         PreTag="div"
         showLineNumbers={code.split('\n').length > 3}
         wrapLongLines={true}
+        className="scrollbar-thin"
         customStyle={{
           margin: 0,
           borderRadius: 0,
