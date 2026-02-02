@@ -1,17 +1,24 @@
-import Cards from '../shared/Cards'
-import { prompts } from '../../constants/constant.js'
+import { getRandomPrompts } from '../../utils/helpers.js'
+import { SendHorizonal } from 'lucide-react'
+import { useOutletContext } from 'react-router-dom'
 
 
 function Tagline() {
+
+    const { handleSend } = useOutletContext()
+
     return (
         <>
             <div className='text-xl font-medium flex  flex-1 justify-center text-center flex-col mx-[9%] gap-1'>
                 <div className='text-3xl'>Think Faster.<span className='text-accent'>Create Smarter.</span></div>
                 <span className='text-muted text-base'>Your AI-powered assistant for instant answers, creative ideas, and intelligent conversations.</span>
             </div>
-            <div  className='flex flex-1 overflow-y-scroll scrollbar-thin noScrollbar flex-col'>
+            <div className='max-h-fit flex flex-1 overflow-y-scroll scrollbar-thin noScrollbar flex-col justify-end'>
                 <div className='flex gap-6 mb-4'>
-                    <Cards prompts={prompts} />
+                    {getRandomPrompts(3).map((prompt) => <div key={Math.random()} className=' p-2 flex bg-primary rounded-md w-1/3'>
+                        <span className='text-sm line-clamp-2'>{prompt}</span>
+                        <button onClick={(e) => handleSend(e,prompt)} className=' flex items-end px-1' ><SendHorizonal size={16} /></button>
+                    </div>)}
                 </div>
             </div>
         </>

@@ -24,7 +24,6 @@ export async function getAllChats(req, res) {
 
 export async function createChat(req, res, next) {
   try {
-    console.log("here we reach");
     const { title } = req.body;
     if (!title) return next(new customError("title required", 404));
 
@@ -49,7 +48,15 @@ export async function createChat(req, res, next) {
 export async function sendMessage(req, res, next) {
   try {
     const { chatId } = req.params;
-    const { prompt, model = "llama-3.1-8b-instant" } = req.body;
+    const {
+      prompt,
+      model = "llama-3.1-8b-instant",
+      toolCalling = false,
+    } = req.body;
+
+
+    console.log("MODEL ::", model, toolCalling);
+
 
     if (!chatId) return next(new customError("please provide chatid", 404));
     if (!prompt || !prompt.trim())
@@ -61,7 +68,7 @@ export async function sendMessage(req, res, next) {
 
     const history = formatHistoryForLLM(conversation.messages, 10);
 
-    const llmResponse = await LLM(prompt, model, history, next);
+    const llmResponse = await LLM(prompt, model, history, next, toolCalling);
 
     const userMessage = conversation.messages.create({
       role: "user",
@@ -108,8 +115,7 @@ export async function sendMessage(req, res, next) {
       },
     });
   } catch (error) {
-    console.log("error sending message ::", error);
-    next(error);
+   return next(new customError("error sending message"));
   }
 }
 
@@ -128,7 +134,6 @@ export async function getChatById(req, res, next) {
       chat,
     });
   } catch (error) {
-    console.log("error getting chat ::", error);
     next(error);
   }
 }
@@ -148,15 +153,13 @@ export async function deleteChat(req, res, next) {
 
     res.status(201).json({
       success: true,
-      chatId : chat._id
+      chatId: chat._id,
     });
   } catch (error) {
-    console.log("error getting all chats ::", error);
     next(new customError("something went wrong deleting conversation", 501));
   }
 }
 
-// controllers/conversationController.js
 
 export const togglePinConversation = async (req, res, next) => {
   try {
@@ -166,7 +169,8 @@ export const togglePinConversation = async (req, res, next) => {
 
     const conversation = await Conversation.findOne({ _id: id, user });
 
-    if (!conversation) return next(new customError("conversation not found", 404));
+    if (!conversation)
+      return next(new customError("conversation not found", 404));
 
     conversation.isPinned = isPinned;
 
@@ -180,7 +184,7 @@ export const togglePinConversation = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(new customError("error pinning the conversation", 404))
+    next(new customError("error pinning the conversation", 404));
   }
 };
 

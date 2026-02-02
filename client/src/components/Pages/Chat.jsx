@@ -1,4 +1,4 @@
-import { useOutletContext, useParams, useLocation } from 'react-router-dom'
+import { useOutletContext, useParams, useLocation, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useRef } from 'react'
 import axios from 'axios'
 import Message from '../minicomponents/Message.jsx';
@@ -9,18 +9,14 @@ function Chat() {
     const location = useLocation()
     const { initialMessage } = location.state || {}
     const bottomRef = useRef(null)
-        const lastScrollTime = useRef(0);
+    const lastScrollTime = useRef(0);
+    const navigate = useNavigate()
 
-    const scrollToBottom = useCallback(() => {
-        const now = Date.now();
-        if (now - lastScrollTime.current > 100) {
-            bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-            lastScrollTime.current = now;
-        }
-    }, []);
+
 
 
     const { chats = [], setChats, isLoading, setIsLoading, sendMessage } = useOutletContext()
+
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [chats])
@@ -43,15 +39,23 @@ function Chat() {
     }
 
     useEffect(() => {
+        setChats([]);
+
         if (initialMessage) {
-            sendMessage(chatid, initialMessage)
-            window.history.replaceState({}, document.title)
+            sendMessage(chatid, initialMessage);
+            navigate(location.pathname, { replace: true, state: {} });
         } else {
-            fetchChat()
+            fetchChat();
         }
-    }, [chatid])
+    }, [chatid]);
 
-
+    const scrollToBottom = useCallback(() => {
+        const now = Date.now();
+        if (now - lastScrollTime.current > 100) {
+            bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+            lastScrollTime.current = now;
+        }
+    }, []);
 
 
     return (
@@ -59,7 +63,7 @@ function Chat() {
             {chats.length > 0 ? (
                 <div className='w-full flex flex-col py-2'>
                     {chats.map((message, index) => (
-                        <Message key={index} message={message} chatId={chatid} setChats={setChats} onTyping={scrollToBottom}  />
+                        <Message key={index} message={message} chatId={chatid} setChats={setChats} onTyping={scrollToBottom} />
                     ))}
                     {isLoading && (
                         <div className='p-4 text-muted animate-pulse'>

@@ -7,7 +7,7 @@ body {
 }
 
 .noScrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
 }
 
 .noScrollbar {

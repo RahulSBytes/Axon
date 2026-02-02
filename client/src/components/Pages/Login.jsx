@@ -3,13 +3,12 @@ import google from '../../assets/google.png'
 import { useAuth } from "../../hooks/useAuth";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {toast} from "react-hot-toast"
 
 export default function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const { login, loginWithGoogle, user } = useAuth(); 
   const navigate = useNavigate();
@@ -18,20 +17,16 @@ export default function Login() {
     return <Navigate to="/" replace />;
   }
 
+
   const handleSubmit = async (e) => {
-    console.log("triggered handle submit" , email, password)
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
-
     const result = await login(email, password);
-
     if (result.success) {
+      toast.success("Welcome back");
       navigate('/');
     } else {
-      setError(result.message);
+      toast.error("failed to login")
     }
-    setIsLoading(false);
   };
 
   const handleGoogleLogin = () => {
@@ -54,8 +49,8 @@ export default function Login() {
           <input onChange={(e)=>setEmail(e.target.value)} value={email} required type="email" name="email" id="email" className="bg-[#D9D9D9] p-1 outline-none" />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="password" onChange={(e)=>setPassword(e.target.value)} value={password} required  className="text-xl font-medium">Password</label>
-          <input type="password" className="bg-[#D9D9D9] p-1 outline-none" name="password" id="password" />
+          <label htmlFor="password"  required  className="text-xl font-medium">Password</label>
+          <input type="password" onChange={(e)=>setPassword(e.target.value)} value={password} className="bg-[#D9D9D9] p-1 outline-none" name="password" id="password" />
         </div>
         <button onClick={handleSubmit} className="w-2/3 self-center rounded-full py-[5px] bg-zinc-800 text-zinc-100 mb-2" type="submit">Submit</button>
         <p className="self-center">Don't have an account? <a href="/signup" className="text-blue-700">Sign up</a></p>

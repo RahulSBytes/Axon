@@ -10,7 +10,7 @@ function CodeSnippet() {
 
   useEffect(() => {
     const loadLanguage = async () => {
-      // Load language dynamically to avoid dependency issues
+      
       const langMap = {
         'javascript': 'javascript',
         'python': 'python',
@@ -110,12 +110,10 @@ function CodeSnippet() {
       const y = headerHeight + padding + (i * lineHeight);
       ctx.fillStyle = theme === 'dark' ? '#D4D4D4' : '#000000';
       
-      // Simple rendering - draw each line
       const tokenizedLine = line.match(/\b\w+\b|[^\w\s]|\s+/g) || [line];
       let x = padding;
       
       tokenizedLine.forEach(token => {
-        // Check token type
         let color = theme === 'dark' ? '#D4D4D4' : '#000000';
         
         if (/^(export|async|function|let|const|await|new|return)$/.test(token)) {

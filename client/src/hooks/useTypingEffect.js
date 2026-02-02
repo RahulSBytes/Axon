@@ -1,5 +1,3 @@
-// hooks/useTypingEffect.js
-
 import { useState, useEffect, useRef } from 'react';
 
 export function useTypingEffect(text, speed = 50, chunkSize = 1) {

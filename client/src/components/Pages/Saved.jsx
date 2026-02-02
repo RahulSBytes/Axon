@@ -48,13 +48,18 @@ function Saved() {
   };
 
 
+  function searchHandler() {
+    alert("this feature is being developed !!")
+  }
+
+
   return (
     <div className='flex h-full w-full flex-col px-14 scrollbar-thin'>
       <div className='pb-4 pt-6 pl-0 pr-8 flex justify-between items-center'>
         <h3 className='text-2xl font-medium'>Saved Messages</h3>
-        <Search className='text-zinc-700 cursor-pointer' />
+        <Search onClick={searchHandler} className='text-zinc-700 cursor-pointer' />
       </div>
-      <section className="overflow-y-scroll flex-1">
+      {savedMessages.length > 0 ? <section className="overflow-y-scroll flex-1">
         {savedMessages.map(({
           conversationId,
           createdAt,
@@ -167,7 +172,8 @@ function Saved() {
             </div>
           );
         })}
-      </section>
+      </section> : <div className='h-full flex justify-center items-center text-zinc-400 font-semibold'>No Message Saved</div>
+      }
     </div>
   )
 }

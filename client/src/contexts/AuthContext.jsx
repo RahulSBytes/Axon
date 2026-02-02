@@ -1,14 +1,10 @@
-// src/contexts/AuthContext.jsx
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Create the context
 export const AuthContext = createContext(null);
 
-// API configuration
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
-// Configure axios defaults
 axios.defaults.withCredentials = true; 
 
 export function AuthProvider({ children }) {
@@ -16,12 +12,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Check authentication status on mount
   useEffect(() => {
     checkAuth();
   }, []);
 
-  // Check if user is authenticated
+  
   const checkAuth = async () => {
     try {
       setLoading(true);
@@ -47,8 +42,6 @@ export function AuthProvider({ children }) {
       setLoading(true);
       setError(null);
 
-      console.log("print", email, password)
-
       const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password,
@@ -71,7 +64,7 @@ export function AuthProvider({ children }) {
 
 
 
-    // ✅ NEW: Login with Google
+    // Login with Google
   const loginWithGoogle = () => {
     // Redirect to backend Google OAuth route
     window.location.href = `${API_URL}/api/auth/google`;
@@ -121,12 +114,10 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Update user data (after profile edit, etc.)
   const updateUser = (updatedData) => {
     setUser((prev) => ({ ...prev, ...updatedData }));
   };
 
-  // Context value
   const value = {
     user,
     loading,

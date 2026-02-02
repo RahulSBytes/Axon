@@ -1,21 +1,23 @@
-import axios from "axios";
-import dotenv from "dotenv";
+// config/llm.js
+import "dotenv/config";
+import { Groq } from "groq-sdk";
 import { customError } from "../utils/error.js";
-dotenv.config();
 
-// const GROQ_URL = process.env.GROQ_URL
-// const TAVILY_URL = process.env.TAVILY_URL
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const TAVILY_URL = "https://api.tavily.com/search";
-const MODEL_NAME = "llama-3.1-8b-instant";
 
-const headers = {
-  Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-  "Content-Type": "application/json",
-};
+const TOOL_CALLING_MODELS = [
+  "llama-3.3-70b-versatile",
+  "llama-3.1-8b-instant",
+  "meta-llama/llama-4-maverick-17b-128e-instruct",
+  "meta-llama/llama-4-scout-17b-16e-instruct",
+  "qwen/qwen3-32b",
+  "openai/gpt-oss-safeguard-20b",
+];
 
-// Define the search tool
 const tools = [
   {
     type: "function",
@@ -38,77 +40,125 @@ const tools = [
 
 // Tavily search function
 async function search_web(query) {
-  const response = await axios.post(TAVILY_URL, {
-    api_key: process.env.TAVILY_API_KEY,
-    query: query,
-    max_results: 3,
-  });
+  try {
+    const response = await fetch(TAVILY_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        api_key: process.env.TAVILY_API_KEY,
+        query: query,
+        max_results: 3,
+      }),
+    });
 
-  return response.data.results.map((r) => ({
-    title: r.title,
-    content: r.content,
-  }));
+    const data = await response.json();
+
+    return data.results.map((r) => ({
+      title: r.title,
+      content: r.content,
+    }));
+  } catch (error) {
+    console.error("Search error:", error);
+    return [];
+  }
 }
 
-// Main chat function
-export async function LLM(prompt, model, conversationHistory = [], next) {
-  let message;
-
-  const messages = [
-            {
-                role: "system",
-                content: "Use search_web tool for recent events, weather, or unknown information.",
-            },
-            ...conversationHistory,
-            { role: "user", content: prompt },
-        ];
-
+export async function LLM(
+  prompt,
+  model,
+  conversationHistory = [],
+  next,
+  isSearch = false,
+) {
   try {
-    let response = await axios.post(
-      GROQ_URL,
+    const messages = [
       {
-        model: model,
-        messages: messages,
-        tools: tools,
-        tool_choice: {
-          type: "function",
-          function: { name: "search_web" },
-        },
+        role: "system",
+        content: isSearch
+          ? `Your name is Axon. You are a helpful AI assistant.
+
+          TOOL USAGE RULES:
+          - Use search_web tool for: current info, weather, news, recent events, real-time data
+          - When using tools, ONLY make the tool call - no extra text
+          - Never use <function> XML tags
+          - Provide final answer only AFTER receiving tool results
+
+          Be accurate, concise, and helpful.`
+          : `Your name is Axon. You are a helpful AI assistant.
+
+          Provide accurate, concise, and helpful responses based on your knowledge.
+          If asked about real-time data (weather, news, current events), inform the user you don't have access to live information.`,
       },
-      { headers },
-    );
+      ...conversationHistory,
+      { role: "user", content: prompt },
+    ];
 
-    message = response.data.choices[0].message;
+    const useTools = TOOL_CALLING_MODELS.includes(model) && isSearch;
 
-    // Check if LLM wants to use a tool else return message.content directly
-    if (message.tool_calls && message.tool_calls.length > 0) {
-      const toolCall = message.tool_calls[0];
-      const args = JSON.parse(toolCall.function.arguments);
+    // First call
+    let chatCompletion = await groq.chat.completions.create({
+      model: model,
+      messages: messages,
+      ...(useTools && {
+        tools: tools,
+        tool_choice: "auto",
+      }),
+      temperature: 1,
+      max_tokens: 2048,
+      top_p: 1,
+    });
 
-      const searchResults = await search_web(args.query);
+    const responseMessage = chatCompletion.choices[0].message;
 
-      // Second call: Send results back to LLM
-      response = await axios.post(
-        GROQ_URL,
-        {
-          model: model,
-          messages: [
-            { role: "user", content: prompt },
-            message,
-            {
-              role: "tool",
-              tool_call_id: toolCall.id,
-              content: JSON.stringify(searchResults),
-            },
-          ],
-        },
-        { headers },
+    if (
+      useTools &&
+      responseMessage.tool_calls &&
+      responseMessage.tool_calls.length > 0
+    ) {
+      const toolCall = responseMessage.tool_calls[0];
+      const functionArgs = JSON.parse(toolCall.function.arguments);
+
+      console.log(
+        `🔍 Tool called: ${toolCall.function.name} with query: "${functionArgs.query}"`,
       );
-      message = response.data;
+
+      const searchResults = await search_web(functionArgs.query);
+
+      chatCompletion = await groq.chat.completions.create({
+        model: model,
+        messages: [
+          ...messages,
+          responseMessage,
+          {
+            role: "tool",
+            tool_call_id: toolCall.id,
+            name: toolCall.function.name,
+            content: JSON.stringify(searchResults),
+          },
+        ],
+        temperature: 1,
+        max_tokens: 8192,
+        top_p: 1,
+      });
     }
+
+    return {
+      choices: [
+        {
+          message: {
+            content: chatCompletion.choices[0].message.content,
+          },
+        },
+      ],
+      model: chatCompletion.model,
+      usage: chatCompletion.usage,
+    };
   } catch (error) {
-    console.log("Error:", error.response?.data || error.message);
-    return next(new customError("error on llm side", 503));
+    console.error("LLM Error:", error);
+    return next(
+      new customError(error.message || "Error communicating with LLM", 400),
+    );
   }
-  return message;
 }

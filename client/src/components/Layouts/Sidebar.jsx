@@ -23,7 +23,7 @@ function Sidebar() {
             {
                 isNewTopicOpen && <TopicPopUp setIsNewTopicOpen={setIsNewTopicOpen} />
             }
-            <div onClick={()=>navigate('/')} className='text-3xl font-adlam mt-2 ml-5 flex'>Axon</div>
+            <div onClick={()=>navigate('/')} className='text-3xl font-adlam mt-2 ml-5 flex cursor-pointer'>Axon</div>
             <div className=' mt-16 ml-5'>
                 <button onClick={() => setIsNewTopicOpen(true)} className="bg-gray-300 hover:bg-zinc-400 text-gray-800 font-semibold py-2 px-4 rounded-full inline-flex items-center">
                     <Plus />
@@ -31,7 +31,7 @@ function Sidebar() {
                 </button>
                 <ul className='flex flex-col gap-6 ml-2 mt-7'>
                     {
-                        navs.map((item) => <li onClick={()=>navigate(item.link)} className='flex gap-2 items-center cursor-pointer' key={item.label}> <item.icon size={20} className='text-muted' /> {item.label} </li>)
+                        navs.map((item) => <li onClick={()=>navigate(item.link)} className='flex gap-2 items-center cursor-pointer hover:text-zinc-600 w-fit pl-2 pr-4' key={item.label}> <item.icon size={20} className='text-muted' /> {item.label} </li>)
                     }
 
                 </ul>
