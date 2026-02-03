@@ -98,13 +98,13 @@ function Home() {
 
   return (
     <>
-      <div className='flex gap-2 self-end m-4 mb-0 pt-2 absolute'>
+      <div className='md:flex gap-2 self-end m-4 mb-0 pt-2  hidden' >
         {pathname.startsWith('/chat/') && <div>
           <button onClick={handleExport} type="button" className='p-2 border border-zinc-400 rounded-full items-center text-zinc-700 bg-primary flex  gap-1 justify-center'>
             <Download strokeWidth={2.3} size={18} />
           </button>
         </div>}
-        <div className={`flex bg-primary ${isCapsuleHovered ? "rounded-sm" : "rounded-full"} px-1 h-min justify-between items-center border border-zinc-300 gap-1`}>
+        <div className={`flex bg-primary ${isCapsuleHovered ? "rounded-sm" : "rounded-full"} px-1 h-min justify-between items-center border border-zinc-300 gap-1 hidden md:flex`}>
           {
             isCapsuleHovered ? <div className=' flex flex-col items-center px-6 py-2  justify-center' onClick={() => setIsCapsuleHovered(false)}>
 
@@ -130,7 +130,7 @@ function Home() {
 
       </div>
 
-      <div className='w-3/4 flex flex-col mb-3 max-h-full  h-full'>
+      <div className='md:w-3/4 w-full flex flex-col mb-3 max-h-full  h-full'>
         <Outlet context={{
           chats,
           setChats,
@@ -139,7 +139,7 @@ function Home() {
           setIsLoading,
           sendMessage
         }} />
-        <form onSubmit={(e) => handleSend(e, prompt)} className='bg-primary flex  rounded-sm bottom-2 mb-2'>
+        <form onSubmit={(e) => handleSend(e, prompt)} className='bg-primary flex border border-zinc-300  rounded-sm bottom-2 mb-2'>
           <div className='w-full'>
 
             <div className='flex'>

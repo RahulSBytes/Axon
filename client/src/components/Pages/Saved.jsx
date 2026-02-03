@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronUp, Clipboard, Dot, Ghost, Search, SquareArrowOutUpRight, Star, Trash2 } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, Ghost, Search, SquareArrowOutUpRight, Star, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
@@ -54,8 +54,8 @@ function Saved() {
 
 
   return (
-    <div className='flex h-full w-full flex-col px-14 scrollbar-thin'>
-      <div className='pb-4 pt-6 pl-0 pr-8 flex justify-between items-center'>
+    <div className='flex h-full w-full flex-col scrollbar-thin border border-green-600 px-6'>
+      <div className=' flex justify-between items-center'>
         <h3 className='text-2xl font-medium'>Saved Messages</h3>
         <Search onClick={searchHandler} className='text-zinc-700 cursor-pointer' />
       </div>
@@ -73,13 +73,13 @@ function Saved() {
           return (
             <div key={messageId} className="border-b border-zinc-300">
               {/* Header Strip */}
-              <div onClick={() => toggleExpand(messageId)} className="flex justify-between items-center cursor-pointer p-3 pr-3 hover:bg-zinc-100">
-                <span className="text-zinc-500 text-xs font-semibold">
+              <div onClick={() => toggleExpand(messageId)} className="flex justify-between items-center cursor-pointer sm:gap-6 p-3 pr-3 hover:bg-zinc-100">
+                <span className="text-zinc-500 text-xs font-semibold hidden sm:inline">
                   {formatDateOrTime(createdAt)}
                 </span>
 
                 {/* Preview Text */}
-                <div className="text-zinc-800 flex-1 mx-4 px-3">
+                <div className="text-zinc-800 flex-1 w-9/12">
                   <p className="font-semibold line-clamp-1">
                     {parentQuestion.questionText}
                   </p>
@@ -89,7 +89,7 @@ function Saved() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-3 text-zinc-800">
+                <div className="gap-3 text-zinc-800 hidden sm:flex">
                   <button
                     onClick={(e) => {
                       e.stopPropagation(e)
@@ -119,13 +119,14 @@ function Saved() {
                     )}
                   </button>
                 </div>
+                <EllipsisVertical/>
               </div>
 
               {/* Expandable Content */}
               {isExpanded && <div className={`transition-all duration-300 ease-in-out max-h-full opacity-100`}>
                 <div className="bg-zinc-50 p-4 border-t border-zinc-200">
                   {/* Question */}
-                  <div className="max-w-[70%] bg-zinc-100 rounded-lg p-3 self-end mt-2">
+                  <div className="sm:max-w-[70%] bg-zinc-100 rounded-lg sm:p-3 self-end mt-2">
                     <div className="flex text-xs items-center font-medium text-zinc-500">
                       <span className="text-zinc-800 font-semibold">You</span>
                       <Dot />
@@ -135,7 +136,7 @@ function Saved() {
                   </div>
 
                   {/* Answer */}
-                  <div className="max-w-[85%] rounded-lg p-3 self-start mt-2">
+                  <div className="sm:max-w-[85%] rounded-lg py-3 self-start mt-2">
                     {/* Header */}
                     <div className="flex text-xs items-center font-medium text-zinc-500">
                       <span className="text-zinc-800 flex text-base items-center gap-1 font-semibold">
