@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, Ghost, Search, SquareArrowOutUpRight, Star, Trash2 } from 'lucide-react'
+import { ChartNoAxesGantt, Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, Ghost, MessageSquare, MessagesSquare, Search, SquareArrowOutUpRight, Star, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
@@ -7,12 +7,17 @@ import { formatDateOrTime } from '../../utils/helpers.js'
 import moment from 'moment'
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer.jsx'
 import { useCopy } from '../../hooks/useCopy.js'
+import { useLoadingState } from '../../hooks/useLoadingState.js'
 
 
 
 function Saved() {
   const [savedMessages, setSavedMessages] = useState([])
   const [expandedId, setExpandedId] = useState(null);
+  const [isButtonsOpen, setIsButtonsOpen] = useState('')
+  const { isLoading, withLoading } = useLoadingState()
+
+
   const navigate = useNavigate()
   const { copied, copyToClipboard } = useCopy()
 
@@ -30,6 +35,10 @@ function Saved() {
     }
   }
 
+  function openButtonsOption(e, messageId) {
+    e.stopPropagation();
+    setIsButtonsOpen(messageId);
+  }
 
   useEffect(() => {
     fetchmessages();
@@ -53,8 +62,14 @@ function Saved() {
   }
 
 
+  const openParentChat = (e, chatid) => {
+    e.stopPropagation(e)
+    navigate(`/chat/${chatid}`)
+  }
+
+
   return (
-    <div className='flex h-full w-full flex-col scrollbar-thin border border-green-600 px-6'>
+    <div className='flex h-full w-full flex-col scrollbar-thin px-6'>
       <div className=' flex justify-between items-center'>
         <h3 className='text-2xl font-medium'>Saved Messages</h3>
         <Search onClick={searchHandler} className='text-zinc-700 cursor-pointer' />
@@ -70,57 +85,75 @@ function Saved() {
         }) => {
           const isExpanded = expandedId === messageId;
 
+
           return (
-            <div key={messageId} className="border-b border-zinc-300">
+            <div key={messageId} className="border-b border-zinc-300 h-20">
               {/* Header Strip */}
-              <div onClick={() => toggleExpand(messageId)} className="flex justify-between items-center cursor-pointer sm:gap-6 p-3 pr-3 hover:bg-zinc-100">
-                <span className="text-zinc-500 text-xs font-semibold hidden sm:inline">
-                  {formatDateOrTime(createdAt)}
-                </span>
+              <div onClick={() => toggleExpand(messageId)} className="flex justify-between items-center cursor-pointer sm:gap-6 h-full hover:bg-zinc-100">
+                {
+                  isButtonsOpen != messageId ?
+                    <>
+                      <span className="text-zinc-500 text-xs font-semibold hidden sm:inline">
+                        {formatDateOrTime(createdAt)}
+                      </span>
 
-                {/* Preview Text */}
-                <div className="text-zinc-800 flex-1 w-9/12">
-                  <p className="font-semibold line-clamp-1">
-                    {parentQuestion.questionText}
-                  </p>
-                  <p className="line-clamp-1 font-medium text-zinc-600">
-                    {messageText}
-                  </p>
-                </div>
+                      {/* Preview Text */}
+                      <div className="text-zinc-800 flex-1 w-9/12">
+                        <p className="font-semibold line-clamp-1">
+                          {parentQuestion.questionText}
+                        </p>
+                        <p className="line-clamp-1 font-medium text-zinc-600">
+                          {messageText}
+                        </p>
+                      </div>
 
-                {/* Action Buttons */}
-                <div className="gap-3 text-zinc-800 hidden sm:flex">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation(e)
-                      navigate(`/chat/${conversationId}`)
-                    }}
-                    type="button"
-                    className="hover:bg-zinc-200 p-2 rounded-full transition-colors"
-                    title="Open in chat"
-                  >
-                    <SquareArrowOutUpRight size={21} />
-                  </button>
+                      {/* Action Buttons */}
+                      <div className="gap-3 text-zinc-800 hidden sm:flex">
+                        <button
+                          onClick={(e) => openParentChat(e, conversationId)}
+                          type="button"
+                          className="hover:bg-zinc-200 p-2 rounded-full transition-colors"
+                          title="Open in chat"
+                        >
+                          <SquareArrowOutUpRight size={21} />
+                        </button>
 
-                  <button
-                    onClick={(e) => handleUnsave(e, messageId)}
-                    type="button"
-                    className="hover:bg-zinc-200 hover:text-red-500 p-2 rounded-full transition-colors"
-                    title="Remove from saved"
-                  >
-                    <Trash2 size={21} />
-                  </button>
+                        <button
+                          onClick={(e) => handleUnsave(e, messageId)}
+                          type="button"
+                          className="hover:bg-zinc-200 hover:text-red-500 p-2 rounded-full transition-colors"
+                          title="Remove from saved"
+                        >
+                          <Trash2 size={21} />
+                        </button>
 
-                  <button className="hover:bg-zinc-200 p-2 rounded-full transition-all">
-                    {isExpanded ? (
-                      <ChevronUp size={24} />
-                    ) : (
-                      <ChevronDown size={24} />
-                    )}
-                  </button>
-                </div>
-                <EllipsisVertical/>
+                        <button className="hover:bg-zinc-200 p-2 rounded-full transition-all">
+                          {isExpanded ? (
+                            <ChevronUp size={24} />
+                          ) : (
+                            <ChevronDown size={24} />
+                          )}
+                        </button>
+                      </div>
+                      <EllipsisVertical onClick={(e) => openButtonsOption(e, messageId)} />
+                    </> : <div className="flex items-center justify-between  rounded-lg h-full w-full">
+                      <div className="flex items-center flex-1 justify-around">
+                        <button onClick={withLoading(messageId, (e) => openParentChat(e, conversationId))} className="bg-zinc-200 justify-center flex items-center gap-1 px-3 py-1.5 text-sm text-zinc-700  rounded-md transition-colors">
+                          <MessagesSquare size={16} className={`${isLoading(messageId) ? "animate-bounce" : ''}`} />
+                          Open Parent Chat
+                        </button>
+                        <button onClick={withLoading(messageId + "hi", (e) => handleUnsave(e, messageId))} className="flex items-center gap-1 px-3 py-1.5 text-sm text-zinc-700  justify-center bg-zinc-200   rounded-md transition-colors">
+                          <Trash2 className={`${isLoading(messageId + "hi") ? 'animate-bounce' : ''}`} size={16} />
+                          Delete
+                        </button>
+                      </div>
+                      <button onClick={(e) => { e.stopPropagation(); setIsButtonsOpen('') }} className="p-1.5 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 rounded-md transition-colors">
+                        <X size={20} />
+                      </button>
+                    </div>
+                }
               </div>
+
 
               {/* Expandable Content */}
               {isExpanded && <div className={`transition-all duration-300 ease-in-out max-h-full opacity-100`}>
