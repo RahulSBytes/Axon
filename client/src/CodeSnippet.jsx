@@ -20,7 +20,7 @@ function CodeSnippet() {
         try {
           await import(`prismjs/components/prism-${lang}`);
         } catch (e) {
-          console.log('Language not loaded:', lang);
+          console.log('Language not loaded', lang);
         }
       }
 

@@ -15,6 +15,7 @@ import { useTypingEffect } from '../../hooks/useTypingEffect.js';
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer';
 import axios from 'axios';
 import { useCopy } from '../../hooks/useCopy.js';
+import toast from 'react-hot-toast';
 
 function Message({ message, setChats, chatId, onTyping }) {
   const { _id, role, text, createdAt, isSaved, metadata = {}, isNew = null } = message;
@@ -108,7 +109,7 @@ function Message({ message, setChats, chatId, onTyping }) {
         ));
       }
     } catch (error) {
-      console.log("error saving message", error);
+      toast.error("error saving message", error);
     }
   };
 

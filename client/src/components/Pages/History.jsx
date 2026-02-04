@@ -25,7 +25,7 @@ function History() {
         if (data.success) {
             setConversation(data.chats)
         } else {
-            console.log("error fetching conversation")
+            toast.error("Error fetching conversation")
         }
     }
 

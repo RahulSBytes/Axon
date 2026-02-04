@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import toast from 'react-hot-toast';
 
 export function useCopy() {
     const [copied, setCopied] = useState(false);
@@ -9,7 +10,7 @@ export function useCopy() {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         } catch (error) {
-            console.error('Failed to copy:', error);
+            toast.error('Failed to copy:');
         }
     }, []);
 

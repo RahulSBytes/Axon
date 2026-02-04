@@ -2,6 +2,7 @@ import { useOutletContext, useParams, useLocation, useNavigate } from 'react-rou
 import { useCallback, useEffect, useRef } from 'react'
 import axios from 'axios'
 import Message from '../minicomponents/Message.jsx';
+import toast from 'react-hot-toast';
 
 function Chat() {
 
@@ -32,7 +33,7 @@ function Chat() {
                 setChats(data.chat.messages)
             }
         } catch (error) {
-            console.error(error)
+            toast.error("Error fetching chat")
         } finally {
             setIsLoading(false)
         }

@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export const AuthContext = createContext(null);
 
@@ -28,7 +29,7 @@ export function AuthProvider({ children }) {
         setUser(null);
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      toast.error('Auth check failed');
       setUser(null);
     } finally {
       setLoading(false);
@@ -102,7 +103,7 @@ export function AuthProvider({ children }) {
       setUser(null);
       return { success: true };
     } catch (error) {
-      console.error('Logout failed:', error);
+      toast.error('Logout failed');
       return { success: false, message: 'Logout failed' };
     } finally {
       setLoading(false);

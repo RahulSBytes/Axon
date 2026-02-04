@@ -1,4 +1,5 @@
 import html2pdf from "html2pdf.js";
+import toast from "react-hot-toast";
 
 export const exportPDF = (options = {}) => {
   const { title = "Conversation", userName = "User", userEmail = "" } = options;
@@ -176,7 +177,7 @@ export const exportPDF = (options = {}) => {
       }
     })
     .catch((error) => {
-      console.error("PDF generation error:", error);
+      toast.error("PDF generation failed");
       if (document.body.contains(hiddenContainer)) {
         document.body.removeChild(hiddenContainer);
       }
