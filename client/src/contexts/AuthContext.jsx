@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
         setUser(null);
       }
     } catch (error) {
-      toast.error('Auth check failed');
+      console.log('Auth check failed');
       setUser(null);
     } finally {
       setLoading(false);

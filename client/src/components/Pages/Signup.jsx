@@ -1,17 +1,18 @@
-import { Ghost } from "lucide-react";
-import google from '../../assets/google.png'
+import { Eye, EyeClosed, Ghost } from "lucide-react";
+// import google from '../../assets/google.png'
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Signup() {
 
-const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: ''
   });
   const [error, setError] = useState('');
+  const [seePassword, setSeePassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const { register, loginWithGoogle, user } = useAuth(); // ✅ Get loginWithGoogle
@@ -78,8 +79,11 @@ const [formData, setFormData] = useState({
           <input type="email" onChange={handleChange} value={formData.email} required name="email" id="email" className="bg-[#D9D9D9] p-1 outline-none" />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="password"  className="text-xl font-medium">Password</label>
-          <input type="password" onChange={handleChange} value={formData.password} required className="bg-[#D9D9D9] p-1 outline-none" name="password" id="password" />
+          <label htmlFor="password" className="text-xl font-medium">Password</label>
+          <div className="flex  bg-[#D9D9D9] items-center px-2">
+            <input type={seePassword ?"text": "password"} onChange={handleChange} value={formData.password} required className="bg-[#D9D9D9] p-1  outline-none flex-1" name="password" id="password" />
+            {seePassword ? <EyeClosed className="cursor-pointer" size={20} onClick={() => setSeePassword(false)} /> : <Eye className="cursor-pointer" size={20} onClick={() => setSeePassword(true)} />}
+          </div>
         </div>
         <button onClick={handleSubmit} className="w-2/3 self-center rounded-full py-[5px] bg-zinc-800 text-zinc-100 mb-2" type="submit">Submit</button>
         <p className="self-center">Already have an account? <a href="/login" className="text-blue-700">Login</a></p>
@@ -88,7 +92,7 @@ const [formData, setFormData] = useState({
           <div>Or</div>
           <hr className=" w-2/5 bg-zinc-700 h-[2px]" />
         </div>
-        <button onClick={handleGoogleSignup} type="button" className="border border-muted w-fit flex rounded-full py-1 px-3 gap-2 justify-center items-center self-center"> <img src={google} alt="" className="h-5 w-5" /> Continue with Google</button>
+        <button onClick={handleGoogleSignup} type="button" className="border border-muted w-fit flex rounded-full py-1 px-3 gap-2 justify-center items-center self-center"> <img src='./google.png' alt="" className="h-5 w-5" /> Continue with Google</button>
       </form>
     </div>
   </div>
