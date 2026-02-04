@@ -4,7 +4,6 @@ import { useAuth } from '../hooks/useAuth.js';
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
 
-  // Show loading spinner while checking auth
   if (loading) {
     return (
       <div className="h-screen w-screen flex flex-col justify-center items-center">

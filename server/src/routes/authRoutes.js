@@ -1,4 +1,3 @@
-// routes/authRoutes.js
 import express from 'express';
 import passport from 'passport';
 import {
@@ -11,10 +10,10 @@ import { isAuthenticated } from '../middlewares.js';
 
 const router = express.Router();
 
-router.post('/register', register);  //done testing
-router.post('/login', login);  //done testing
-router.post('/logout', logout);  //done testing
-router.get('/me', isAuthenticated, getMe);   //done testing
+router.post('/register', register);
+router.post('/login', login); 
+router.post('/logout', logout); 
+router.get('/me', isAuthenticated, getMe);
 
 
 router.get(

@@ -1,5 +1,3 @@
-// components/MarkdownRenderer.jsx
-import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -13,19 +11,14 @@ export default function MarkdownRenderer({ text }) {
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
-        // ✅ Handle <pre> for code blocks
         pre({ children }) {
           return <>{children}</>;
         },
 
-        // ✅ Fixed code detection
         code({ node, inline, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || '');
           const language = match ? match[1] : '';
           const codeString = String(children).replace(/\n$/, '');
-
-          // ✅ Better inline detection
-          // Check: inline prop, no language class, no newlines, short content
           const hasLanguage = Boolean(match);
           const hasNewlines = codeString.includes('\n');
           const isShortCode = codeString.length < 100;
@@ -33,7 +26,6 @@ export default function MarkdownRenderer({ text }) {
           const isInlineCode = inline === true || 
             (!hasLanguage && !hasNewlines && isShortCode);
 
-          // Inline code
           if (isInlineCode) {
             return (
               <code
@@ -45,20 +37,17 @@ export default function MarkdownRenderer({ text }) {
             );
           }
 
-          // Code block with syntax highlighting
           if (hasLanguage) {
             return (
               <CodeBlock language={language} code={codeString} {...props} />
             );
           }
 
-          // Code block without language (multi-line or long code)
           return (
             <CodeBlock language="text" code={codeString} {...props} />
           );
         },
 
-        // Headings
         h1: ({ children }) => (
           <h1 className="text-2xl font-bold mt-6 mb-4">{children}</h1>
         ),
@@ -69,12 +58,10 @@ export default function MarkdownRenderer({ text }) {
           <h3 className="text-lg font-semibold mt-4 mb-2">{children}</h3>
         ),
 
-        // Paragraph
         p: ({ children }) => (
           <p className="my-3 leading-relaxed">{children}</p>
         ),
 
-        // Lists
         ul: ({ children }) => (
           <ul className="list-disc list-inside my-3 space-y-1 ml-4">
             {children}
@@ -86,7 +73,6 @@ export default function MarkdownRenderer({ text }) {
           </ol>
         ),
 
-        // Links
         a: ({ href, children }) => (
           <a
             href={href}
@@ -98,14 +84,12 @@ export default function MarkdownRenderer({ text }) {
           </a>
         ),
 
-        // Blockquote
         blockquote: ({ children }) => (
           <blockquote className="border-l-4 border-accent pl-4 italic text-zinc-600 my-4">
             {children}
           </blockquote>
         ),
 
-        // Table
         table: ({ children }) => (
           <div className="overflow-x-auto my-4">
             <table className="min-w-full border border-zinc-300 rounded-lg">
@@ -125,13 +109,11 @@ export default function MarkdownRenderer({ text }) {
           <td className="border border-zinc-300 px-4 py-2">{children}</td>
         ),
 
-        // Bold & Italic
         strong: ({ children }) => (
           <strong className="font-semibold">{children}</strong>
         ),
         em: ({ children }) => <em className="italic">{children}</em>,
 
-        // Horizontal Rule
         hr: () => <hr className="my-6 border-zinc-300" />,
       }}
     >
@@ -140,18 +122,8 @@ export default function MarkdownRenderer({ text }) {
   );
 }
 
-// Separate CodeBlock component with copy functionality
 function CodeBlock({ language, code, ...props }) {
     const {copied, copyToClipboard} = useCopy()
-
-  // const handleCopy = async () => {
-  //   await navigator.clipboard.writeText(code);
-  //   setCopied(true);
-  //   setTimeout(() => setCopied(false), 2000);
-  // };
-
-
-
 
   const displayNames = {
     js: 'JavaScript',
@@ -193,7 +165,6 @@ function CodeBlock({ language, code, ...props }) {
 
   return (
     <div className="relative my-4 rounded-lg overflow-hidden border border-zinc-700 max-w-full">
-      {/* Header */}
       <div className="flex items-center justify-between bg-zinc-800 px-4 py-2">
         <span className="text-xs text-zinc-400 font-mono">
           {displayName}

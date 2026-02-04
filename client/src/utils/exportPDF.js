@@ -1,4 +1,3 @@
-// utils/exportPDF.js
 import html2pdf from "html2pdf.js";
 
 export const exportPDF = (options = {}) => {
@@ -11,10 +10,8 @@ export const exportPDF = (options = {}) => {
     return;
   }
 
-  // Clone the element
   const clonedElement = element.cloneNode(true);
 
-  // Create hidden container
   const hiddenContainer = document.createElement("div");
   hiddenContainer.style.cssText = `
     position: fixed;
@@ -26,7 +23,6 @@ export const exportPDF = (options = {}) => {
   `;
   document.body.appendChild(hiddenContainer);
 
-  // Style cloned element
   clonedElement.style.cssText = `
     display: flex;
     flex-direction: column;
@@ -35,7 +31,6 @@ export const exportPDF = (options = {}) => {
     color: black;
   `;
 
-  // Header HTML
   const headerHTML = `
     <div style="
       width: 100%;
@@ -105,26 +100,21 @@ export const exportPDF = (options = {}) => {
     `;
   });
 
-  // ✅ Keep message containers together (these are usually small)
   const messages = clonedElement.querySelectorAll(
     '[class*="message"], [class*="Message"]'
   );
   messages.forEach((msg) => {
-    // Only prevent breaks for short messages
     const height = msg.offsetHeight;
     if (height < 300) {
-      // Only small messages stay together
       msg.style.pageBreakInside = "avoid";
       msg.style.breakInside = "avoid";
     } else {
-      // Allow long messages to split
       msg.style.pageBreakInside = "auto";
       msg.style.breakInside = "auto";
     }
     msg.style.marginBottom = "16px";
   });
 
-  // ✅ Keep headings with their next element
   const headings = clonedElement.querySelectorAll("h1, h2, h3, h4, h5, h6");
   headings.forEach((heading) => {
     heading.style.pageBreakAfter = "avoid";
@@ -132,7 +122,6 @@ export const exportPDF = (options = {}) => {
     heading.style.pageBreakInside = "avoid";
   });
 
-  // ✅ Keep list items together if short
   const listItems = clonedElement.querySelectorAll("li");
   listItems.forEach((li) => {
     if (li.offsetHeight < 100) {
@@ -140,7 +129,6 @@ export const exportPDF = (options = {}) => {
     }
   });
 
-  // Ensure proper text color
   const textElements = clonedElement.querySelectorAll("p, span, div, li");
   textElements.forEach((el) => {
     if (!el.closest("pre") && !el.closest("code")) {
@@ -150,7 +138,6 @@ export const exportPDF = (options = {}) => {
 
   hiddenContainer.appendChild(clonedElement);
 
-  // Generate PDF
   html2pdf()
     .set({
       margin: [12, 12, 12, 12],
@@ -175,10 +162,10 @@ export const exportPDF = (options = {}) => {
         compress: true,
       },
       pagebreak: {
-        mode: ["css", "legacy"], // ✅ Removed 'avoid-all'
+        mode: ["css", "legacy"], 
         before: ".page-break-before",
         after: ".page-break-after",
-        avoid: "h1, h2, h3, h4, h5, h6", // ✅ Only avoid breaking headings
+        avoid: "h1, h2, h3, h4, h5, h6",
       },
     })
     .from(clonedElement)

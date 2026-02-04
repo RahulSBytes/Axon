@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 function MobileLayout() {
   const [isNavOpen, setIsNavOpen] = useState(false)

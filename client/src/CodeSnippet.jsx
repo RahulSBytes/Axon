@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Download, Sun, Moon } from 'lucide-react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
+import { langMap, languages } from './constants/constant.js';
 
 function CodeSnippet() {
   const [theme, setTheme] = useState('dark');
@@ -10,32 +11,11 @@ function CodeSnippet() {
 
   useEffect(() => {
     const loadLanguage = async () => {
-      
-      const langMap = {
-        'javascript': 'javascript',
-        'python': 'python',
-        'jsx': 'jsx',
-        'typescript': 'typescript',
-        'java': 'java',
-        'cpp': 'cpp',
-        'c': 'c',
-        'csharp': 'csharp',
-        'php': 'php',
-        'ruby': 'ruby',
-        'go': 'go',
-        'rust': 'rust',
-        'swift': 'swift',
-        'kotlin': 'kotlin',
-        'sql': 'sql',
-        'html': 'markup',
-        'css': 'css',
-        'json': 'json',
-        'yaml': 'yaml',
-        'bash': 'bash'
-      };
+
+
 
       const lang = langMap[language];
-      
+
       if (lang && !Prism.languages[lang]) {
         try {
           await import(`prismjs/components/prism-${lang}`);
@@ -43,60 +23,54 @@ function CodeSnippet() {
           console.log('Language not loaded:', lang);
         }
       }
-      
+
       Prism.highlightAll();
     };
-    
+
     loadLanguage();
   }, [code, theme, language]);
 
   const downloadAsImage = async () => {
     const codeElement = document.getElementById('code-preview');
     const headerElement = document.getElementById('code-header');
-    
+
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    
+
     const padding = 40;
     const headerHeight = 60;
     const lineHeight = 24;
-    
-    // Get highlighted HTML
+
     const highlightedCode = Prism.highlight(code, Prism.languages[language], language);
     const lines = code.split('\n');
-    
+
     canvas.width = 800;
     canvas.height = headerHeight + (lines.length * lineHeight) + padding * 2;
-    
-    // Background
+
     ctx.fillStyle = theme === 'dark' ? '#1E1E1E' : '#F5F5F5';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Header
+
     ctx.fillStyle = theme === 'dark' ? '#2D2D30' : '#F3F3F3';
     ctx.fillRect(0, 0, canvas.width, headerHeight);
-    
-    // Lock icon
+
     ctx.fillStyle = theme === 'dark' ? '#CCCCCC' : '#424242';
     ctx.fillRect(padding - 5, 22, 12, 16);
     ctx.fillStyle = theme === 'dark' ? '#1E1E1E' : '#FFFFFF';
     ctx.fillRect(padding - 3, 26, 8, 10);
-    
-    // Text
+
     ctx.fillStyle = theme === 'dark' ? '#CCCCCC' : '#424242';
     ctx.font = '14px -apple-system, sans-serif';
     ctx.fillText('Axon', padding + 15, 33);
-    
+
     ctx.font = '12px -apple-system, sans-serif';
     ctx.fillStyle = '#858585';
     ctx.fillText('JavaScript', canvas.width - padding - 60, 33);
-    
-    // Code with colors from Prism
+
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = highlightedCode;
-    
+
     ctx.font = '16px "Fira Code", monospace';
-    
+
     const colorMap = {
       'keyword': theme === 'dark' ? '#C586C0' : '#AF00DB',
       'function': theme === 'dark' ? '#DCDCAA' : '#795E26',
@@ -105,17 +79,17 @@ function CodeSnippet() {
       'operator': theme === 'dark' ? '#D4D4D4' : '#000000',
       'punctuation': theme === 'dark' ? '#D4D4D4' : '#000000',
     };
-    
+
     lines.forEach((line, i) => {
       const y = headerHeight + padding + (i * lineHeight);
       ctx.fillStyle = theme === 'dark' ? '#D4D4D4' : '#000000';
-      
+
       const tokenizedLine = line.match(/\b\w+\b|[^\w\s]|\s+/g) || [line];
       let x = padding;
-      
+
       tokenizedLine.forEach(token => {
         let color = theme === 'dark' ? '#D4D4D4' : '#000000';
-        
+
         if (/^(export|async|function|let|const|await|new|return)$/.test(token)) {
           color = colorMap.keyword;
         } else if (/^".*"|^'.*'/.test(token)) {
@@ -123,14 +97,13 @@ function CodeSnippet() {
         } else if (/^[a-zA-Z_][a-zA-Z0-9_]*\(/.test(line.substring(line.indexOf(token)))) {
           color = colorMap.function;
         }
-        
+
         ctx.fillStyle = color;
         ctx.fillText(token, x, y);
         x += ctx.measureText(token).width;
       });
     });
-    
-    // Download
+
     const link = document.createElement('a');
     link.download = `code-snippet-${theme}.png`;
     link.href = canvas.toDataURL('image/png');
@@ -149,26 +122,11 @@ function CodeSnippet() {
                 onChange={(e) => setLanguage(e.target.value)}
                 className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
               >
-                <option value="javascript">JavaScript</option>
-                <option value="python">Python</option>
-                <option value="jsx">JSX/React</option>
-                <option value="typescript">TypeScript</option>
-                <option value="java">Java</option>
-                <option value="cpp">C++</option>
-                <option value="c">C</option>
-                <option value="csharp">C#</option>
-                <option value="php">PHP</option>
-                <option value="ruby">Ruby</option>
-                <option value="go">Go</option>
-                <option value="rust">Rust</option>
-                <option value="swift">Swift</option>
-                <option value="kotlin">Kotlin</option>
-                <option value="sql">SQL</option>
-                <option value="html">HTML</option>
-                <option value="css">CSS</option>
-                <option value="json">JSON</option>
-                <option value="yaml">YAML</option>
-                <option value="bash">Bash</option>
+                {languages.map((lang) => (
+                  <option key={lang.value} value={lang.value}>
+                    {lang.label}
+                  </option>
+                ))}
               </select>
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -186,14 +144,14 @@ function CodeSnippet() {
               </button>
             </div>
           </div>
-          
+
           <textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}
             className="w-full h-64 p-4 border-2 border-gray-200 rounded-lg font-mono text-sm focus:outline-none focus:border-indigo-500 resize-none mb-6"
             placeholder="Paste your code here..."
           />
-          
+
           <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
             <div id="code-header" className={`${theme === 'dark' ? 'bg-[#2D2D30]' : 'bg-[#F3F3F3]'} px-6 py-4 flex items-center justify-between`}>
               <div className="flex items-center gap-2">
@@ -203,7 +161,7 @@ function CodeSnippet() {
               <span className="text-xs text-gray-500">JavaScript</span>
             </div>
             <div className={`bg-[#D9D9D9] p-6`}>
-            { code && <pre id="code-preview" className={`language-${language} !bg-[#191919]`}>
+              {code && <pre id="code-preview" className={`language-${language} !bg-[#191919]`}>
                 <code className={`language-${language}`}>{code}</code>
               </pre>
               }

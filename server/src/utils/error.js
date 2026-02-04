@@ -13,8 +13,6 @@ export class customError extends Error {
 export function errorHandlerMiddleware(err, req, res, next) {
   const { status = 500, message = "something broke server-side" } = err;
 
-// modify status and message for other errors that may occur
-
   return res.status(status).json({
     success: false,
     message: envMode === 'DEVELOPMENT'? err : message,

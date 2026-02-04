@@ -1,19 +1,13 @@
-// src/routes/index.jsx
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  Navigate,
 } from 'react-router-dom';
 
-// Layouts
 import ResponsiveLayout from '../components/Layouts/Responsive';
-// import AuthLayout from '../components/Layouts/AuthLayout';
 
 import ProtectedRoute from './ProtectedRoute';
-import PublicRoute from './PublicRoute';
 
-// Pages
 import Home from '../components/Pages/Home'
 import Login from '../components/Pages/Login'
 import Signup from '../components/Pages/Signup'

@@ -1,4 +1,3 @@
-// config/llm.js
 import "dotenv/config";
 import { Groq } from "groq-sdk";
 import { customError } from "../utils/error.js";

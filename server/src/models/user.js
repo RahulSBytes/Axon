@@ -34,20 +34,17 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// Hash password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password") || !this.password) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-// Method to compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  if (!this.password) return false; // No password set
+  if (!this.password) return false; 
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// Helper method to add provider
 userSchema.methods.addProvider = function (provider) {
   if (!this.providers.includes(provider)) {
     this.providers.push(provider);

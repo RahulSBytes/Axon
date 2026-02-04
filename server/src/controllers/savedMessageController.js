@@ -1,11 +1,9 @@
-import { LLM } from "../config/llm.js";
 import Conversation from "../models/conversation.js";
 import SavedMessage from "../models/SavedMessage.js";
 import { customError } from "../utils/error.js";
 
 // -------------------------
 
-// controllers/savedMessageController.js
 export const saveMessage = async (req, res, next) => {
   console.log("saveMessage is called");
   try {
@@ -85,71 +83,6 @@ export const getSavedMessages = async (req, res, next) => {
   }
 };
 
-// // Get all saved messages (with filters)
-// export const getSavedMessages = async (req, res) => {
-//   try {
-//     const userId = req.user._id;
-//     const {
-//       tags,
-//       search,
-//       conversationId,
-//       color,
-//       limit = 20,
-//       page = 1,
-//     } = req.query;
-
-//     // Build query
-//     const query = { user: userId };
-
-//     if (tags) {
-//       const tagsArray = tags.split(",").map((t) => t.trim());
-//       query.tags = { $in: tagsArray };
-//     }
-
-//     if (conversationId) {
-//       query.conversationId = conversationId;
-//     }
-
-//     if (color && color !== "default") {
-//       query.color = color;
-//     }
-
-//     if (search) {
-//       query.$or = [
-//         { messageText: { $regex: search, $options: "i" } },
-//         { conversationTitle: { $regex: search, $options: "i" } },
-//         { note: { $regex: search, $options: "i" } },
-//       ];
-//     }
-
-//     // Pagination
-//     const skip = (page - 1) * limit;
-
-//     const [savedMessages, total] = await Promise.all([
-//       SavedMessage.find(query)
-//         .sort({ createdAt: -1 })
-//         .limit(parseInt(limit))
-//         .skip(skip),
-//       SavedMessage.countDocuments(query),
-//     ]);
-
-//     res.status(200).json({
-//       success: true,
-//       data: savedMessages,
-//       pagination: {
-//         total,
-//         page: parseInt(page),
-//         pages: Math.ceil(total / limit),
-//       },
-//     });
-//   } catch (error) {
-//     console.error("Get saved messages error:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
 
 // Unsave a message
 export const unsaveMessage = async (req, res, next) => {
@@ -157,7 +90,6 @@ export const unsaveMessage = async (req, res, next) => {
     const { messageId } = req.params;
     const userId = req.user._id;
 
-    // Find and delete the saved message reference
     const savedMessage = await SavedMessage.findOneAndDelete({
       user: userId,
       messageId,
@@ -166,7 +98,6 @@ export const unsaveMessage = async (req, res, next) => {
     if (!savedMessage)
       return next(new customError("can't find saved message", 400));
 
-    // Update isSaved flag in conversation (for UI)
     const conversation = await Conversation.findById(
       savedMessage.conversationId,
     );
@@ -189,7 +120,7 @@ export const unsaveMessage = async (req, res, next) => {
   }
 };
 
-// Update saved message (tags, note, color)
+
 export const updateSavedMessage = async (req, res) => {
   try {
     const { messageId } = req.params;
@@ -228,22 +159,3 @@ export const updateSavedMessage = async (req, res) => {
     });
   }
 };
-
-// // Get user's tags (for autocomplete)
-// export const getUserTags = async (req, res) => {
-//   try {
-//     const userId = req.user._id;
-
-//     const tags = await SavedMessage.distinct("tags", { user: userId });
-
-//     res.status(200).json({
-//       success: true,
-//       data: tags.sort(),
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };

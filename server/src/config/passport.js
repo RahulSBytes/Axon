@@ -1,8 +1,6 @@
-// src/config/env.js
 import dotenv from 'dotenv';
 dotenv.config();
 
-// config/passport.js
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";

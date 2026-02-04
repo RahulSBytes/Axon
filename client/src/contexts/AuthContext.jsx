@@ -36,7 +36,6 @@ export function AuthProvider({ children }) {
   };
 
 
-  // Login function
   const login = async (email, password) => {
     try {
       setLoading(true);
@@ -64,15 +63,12 @@ export function AuthProvider({ children }) {
 
 
 
-    // Login with Google
   const loginWithGoogle = () => {
     // Redirect to backend Google OAuth route
     window.location.href = `${API_URL}/api/auth/google`;
   };
 
 
-
-  // Register function
   const register = async (fullName, email, password) => {
     try {
       setLoading(true);
@@ -99,7 +95,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Logout function
   const logout = async () => {
     try {
       setLoading(true);

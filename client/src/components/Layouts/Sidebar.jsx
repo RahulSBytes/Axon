@@ -1,4 +1,4 @@
-import { ClockFading, Ghost, House, Info, Plus, Star } from 'lucide-react'
+import { ClockFading,  House, Info, Plus, Star } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth.js'
 import { createNewChat } from '../../utils/helpers.js'

@@ -10,4 +10,52 @@
 ]
 
 
-export { llms  };
+
+const languages = [
+  { value: "javascript", label: "JavaScript" },
+  { value: "python", label: "Python" },
+  { value: "jsx", label: "JSX/React" },
+  { value: "typescript", label: "TypeScript" },
+  { value: "java", label: "Java" },
+  { value: "cpp", label: "C++" },
+  { value: "c", label: "C" },
+  { value: "csharp", label: "C#" },
+  { value: "php", label: "PHP" },
+  { value: "ruby", label: "Ruby" },
+  { value: "go", label: "Go" },
+  { value: "rust", label: "Rust" },
+  { value: "swift", label: "Swift" },
+  { value: "kotlin", label: "Kotlin" },
+  { value: "sql", label: "SQL" },
+  { value: "html", label: "HTML" },
+  { value: "css", label: "CSS" },
+  { value: "json", label: "JSON" },
+  { value: "yaml", label: "YAML" },
+  { value: "bash", label: "Bash" },
+];
+
+
+const langMap = {
+        'javascript': 'javascript',
+        'python': 'python',
+        'jsx': 'jsx',
+        'typescript': 'typescript',
+        'java': 'java',
+        'cpp': 'cpp',
+        'c': 'c',
+        'csharp': 'csharp',
+        'php': 'php',
+        'ruby': 'ruby',
+        'go': 'go',
+        'rust': 'rust',
+        'swift': 'swift',
+        'kotlin': 'kotlin',
+        'sql': 'sql',
+        'html': 'markup',
+        'css': 'css',
+        'json': 'json',
+        'yaml': 'yaml',
+        'bash': 'bash'
+      };
+
+export { llms, languages, langMap  };

@@ -1,5 +1,5 @@
-import { ChevronDown, ChevronUp, Download, Globe, Send } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { ChevronDown, ChevronUp,  Globe, Send } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { llms } from '../../constants/constant.js'
 import { exportPDF } from '../../utils/exportPDF.js';

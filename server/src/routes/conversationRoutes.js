@@ -11,19 +11,21 @@ import { isAuthenticated } from "../middlewares.js";
 
 const router = express.Router();
 
-router.post("/:chatId/message", isAuthenticated, sendMessage);
+router.use(isAuthenticated)
+
+router.post("/:chatId/message", sendMessage);
 router.patch("/:id/toggle-pin", togglePinConversation);
 
 router
   .route("/")
-  .get(getAllChats) // checked
+  .get(getAllChats)
   .post(createChat);
 
 
 router
   .route("/:chatId")
-  .get(getChatById) // checked
-  .delete(deleteChat); // checked
+  .get(getChatById)
+  .delete(deleteChat);
 
 
 export default router;

@@ -3,7 +3,6 @@ import passport from "passport";
 import { customError } from "../utils/error.js";
 
 // ===== REGISTER (Local Strategy) =====
-
 export const register = async (req, res, next) => {
   try {
     const { fullName, email, password } = req.body;

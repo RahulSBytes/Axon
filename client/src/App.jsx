@@ -1,5 +1,4 @@
 import { RouterProvider } from "react-router-dom"
-import ResponsiveLayout from "./components/Layouts/Responsive"
 import { router } from "./routes/index"
 import { AuthProvider } from "./contexts/AuthContext"
 import { Toaster } from "react-hot-toast"

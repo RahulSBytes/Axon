@@ -1,7 +1,7 @@
 import { ChevronRight, ClockFading, House, Info, KeyRound, LogOut, Menu, Star, UserRoundPlus } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Mobnav() {
     const { user, logout } = useAuth();

@@ -10,7 +10,6 @@ export function useTypingEffect(text, speed = 50, chunkSize = 1) {
             return;
         }
 
-        // Already typed - show immediately
         if (typedTextsRef.current.has(text)) {
             setDisplayedText(text);
             return;

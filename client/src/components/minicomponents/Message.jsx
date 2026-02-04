@@ -19,7 +19,6 @@ import { useCopy } from '../../hooks/useCopy.js';
 function Message({ message, setChats, chatId, onTyping }) {
   const { _id, role, text, createdAt, isSaved, metadata = {}, isNew = null } = message;
 
-  // States
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
@@ -48,7 +47,6 @@ function Message({ message, setChats, chatId, onTyping }) {
       );
       setVoices(englishVoices);
 
-      // Set default voice
       if (!selectedVoice && englishVoices.length > 0) {
         const defaultVoice =
           englishVoices.find(
@@ -74,7 +72,6 @@ function Message({ message, setChats, chatId, onTyping }) {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showVoiceMenu]);
 
-  // Strip markdown for cleaner speech
   const stripMarkdown = (text) => {
     return text
       .replace(/```[\s\S]*?```/g, ' code block ')
@@ -149,7 +146,6 @@ function Message({ message, setChats, chatId, onTyping }) {
   };
 
 
-  // USER MESSAGE
   if (role === 'user') {
     return (
       <div className="max-w-[70%] bg-zinc-100 rounded-lg p-3 self-end mt-2">
@@ -164,7 +160,6 @@ function Message({ message, setChats, chatId, onTyping }) {
     );
   }
 
-  // ASSISTANT MESSAGE
   return (
     <div className="max-w-[85%] rounded-lg p-3 self-start mt-2">
       {/* Header */}
@@ -178,13 +173,11 @@ function Message({ message, setChats, chatId, onTyping }) {
           createdAt).fromNow()}
       </div>
 
-      {/* text */}
       <div className="text-zinc-800 mt-1 ">
         <MarkdownRenderer text={textToShow} />
       </div>
 
       <div className="flex items-center gap-3 mt-3">
-        {/* Copy */}
         <button
           onClick={() => copyToClipboard(text)}
           className="text-zinc-400 hover:text-zinc-600 transition-colors"
@@ -213,7 +206,6 @@ function Message({ message, setChats, chatId, onTyping }) {
             )}
           </button>
 
-          {/* Voice Selection Toggle */}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -225,13 +217,11 @@ function Message({ message, setChats, chatId, onTyping }) {
             <ChevronDown size={12} />
           </button>
 
-          {/* Voice Menu Dropdown */}
           {showVoiceMenu && (
             <div
               onClick={(e) => e.stopPropagation()}
               className="absolute bottom-8 left-0 bg-white border border-zinc-200 rounded-lg shadow-lg p-3 min-w-[220px] z-20"
             >
-              {/* Speed Control */}
               <div className="mb-3">
                 <p className="text-xs text-zinc-500 mb-2">Speed</p>
                 <div className="flex gap-1">
@@ -250,7 +240,6 @@ function Message({ message, setChats, chatId, onTyping }) {
                 </div>
               </div>
 
-              {/* Voice Selection */}
               <div>
                 <p className="text-xs text-zinc-500 mb-2">Voice</p>
                 <div className="max-h-[150px] overflow-y-auto scrollbar-thin">

@@ -1,4 +1,3 @@
-// models/SavedMessage.js - NEW FILE
 import mongoose from 'mongoose';
 
 const savedMessageSchema = new mongoose.Schema(
@@ -41,7 +40,6 @@ const savedMessageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Indexes for fast queries
 savedMessageSchema.index({ user: 1, createdAt: -1 }); 
 savedMessageSchema.index({ user: 1, conversationId: 1 });
 savedMessageSchema.index({ user: 1 });

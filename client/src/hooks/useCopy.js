@@ -1,5 +1,3 @@
-// hooks/useCopy.js
-
 import { useState, useCallback } from 'react';
 
 export function useCopy() {

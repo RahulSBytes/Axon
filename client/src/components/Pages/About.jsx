@@ -1,17 +1,13 @@
 import React from 'react';
 import {
-    MessageSquare,
     History,
     Bookmark,
-    Shield,
     Zap,
     Github,
     Linkedin,
     Mail,
     Heart,
     Brain,
-    Layers,
-    Cpu,
     ArrowRight,
     Search,
     Wrench,
@@ -23,7 +19,6 @@ import {
 import { createNewChat } from '../../utils/helpers.js';
 import { useNavigate } from 'react-router-dom';
 import Mobnav from '../Layouts/Mobnav.jsx';
-
 
 
 
@@ -96,9 +91,8 @@ function About() {
     ];
 
     return (
-        // KEY FIX: Use h-full and overflow-y-auto here
+       
         <div className="h-full overflow-y-auto bg-zinc-50">
-            {/* Inner wrapper - no overflow settings */}
             <div className="min-h-full">
                 <div className='w-full flex justify-between items-center h-24 px-4 md:hidden'>
                     <span className='font-adlam text-2xl cursor-pointer'>About</span>
@@ -106,7 +100,6 @@ function About() {
                         <Mobnav />
                     </div>
                 </div>
-                {/* Hero Section */}
                 <section className="bg-zinc-900 text-white px-6 py-16 md:py-20">
                     <div className="max-w-4xl mx-auto text-center">
                         <div className="flex justify-center mb-6">
@@ -135,7 +128,6 @@ function About() {
                     </div>
                 </section>
 
-                {/* Stats Section */}
                 <section className="bg-white border-b border-zinc-200 px-6 py-10">
                     <div className="max-w-4xl mx-auto">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -154,7 +146,6 @@ function About() {
                     </div>
                 </section>
 
-                {/* Features Section */}
                 <section className="px-6 py-14">
                     <div className="max-w-5xl mx-auto">
                         <h2 className="text-2xl md:text-3xl font-bold text-zinc-800 text-center mb-10">
@@ -175,7 +166,6 @@ function About() {
                     </div>
                 </section>
 
-                {/* How It Works */}
                 <section className="bg-zinc-900 text-white px-6 py-14">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
@@ -205,7 +195,6 @@ function About() {
                     </div>
                 </section>
 
-                {/* Developer Section */}
                 <section className="px-6 py-14">
                     <div className="max-w-xl mx-auto">
                         <h2 className="text-2xl font-bold text-zinc-800 text-center mb-8">
@@ -249,7 +238,6 @@ function About() {
                     </div>
                 </section>
 
-                {/* CTA Section */}
                 <section className="bg-zinc-800 text-white px-6 py-12">
                     <div className="max-w-xl mx-auto text-center">
                         <h2 className="text-xl md:text-2xl font-bold mb-3">Ready to Try Axon?</h2>
@@ -263,7 +251,6 @@ function About() {
                     </div>
                 </section>
 
-                {/* Footer */}
                 <footer className="px-6 py-6 bg-white border-t border-zinc-200">
                     <div className="max-w-4xl mx-auto text-center">
                         <p className="text-zinc-500 text-sm flex items-center justify-center gap-1">

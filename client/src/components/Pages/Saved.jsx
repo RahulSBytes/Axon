@@ -1,4 +1,4 @@
-import { ChartNoAxesGantt, Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, ExternalLink, Ghost, MessageSquare, MessagesSquare, Search, SquareArrowOutUpRight, Star, Trash2, X } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, ExternalLink, Ghost, MessagesSquare, Search, SquareArrowOutUpRight,Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
