@@ -14,13 +14,12 @@ import savedMessageRoutes from './src/routes/savedMessageRoutes.js'
 import cors from 'cors'
 
 const app = express();
-const PORT = 8080;
 
 await connectDB(process.env.MONGODB_URL);
 export const envMode = process.env.NODE_ENV.trim() || "PRODUCTION";
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true,
 }));
 
@@ -70,6 +69,7 @@ app.use('/api/saved', savedMessageRoutes);
 
 app.use(errorHandlerMiddleware);
 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`server is listening on ${PORT}`);
 });

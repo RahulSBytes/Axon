@@ -1,11 +1,10 @@
 import Conversation from "../models/conversation.js";
-import SavedMessage from "../models/SavedMessage.js";
+import SavedMessage from "../models/conversation.js"
 import { customError } from "../utils/error.js";
 
 // -------------------------
 
 export const saveMessage = async (req, res, next) => {
-  console.log("saveMessage is called");
   try {
     const { conversationId, messageId } = req.body;
     const userId = req.user._id;
