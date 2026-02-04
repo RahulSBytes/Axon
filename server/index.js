@@ -10,24 +10,26 @@ import passport from "./src/config/passport.js";
 import MongoStore from "connect-mongo";
 import session from "express-session";
 import { errorHandlerMiddleware } from "./src/utils/error.js";
-import savedMessageRoutes from './src/routes/savedMessageRoutes.js'
-import cors from 'cors'
+import savedMessageRoutes from "./src/routes/savedMessageRoutes.js";
+import cors from "cors";
 
 const app = express();
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 await connectDB(process.env.MONGODB_URL);
-export const envMode = process.env.NODE_ENV.trim() || "PRODUCTION";
+export const envMode =
+  process.env.NODE_ENV?.trim().toLowerCase() || "production";
 
-app.use(cors({
-  origin: process.env.CLIENT_URL,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-
 
 // ===== SESSION CONFIGURATION =====
 const sessionStore = MongoStore.create({
@@ -37,7 +39,6 @@ const sessionStore = MongoStore.create({
     secret: process.env.SESSION_SECRET,
   },
 });
-
 
 // Handle store errors
 sessionStore.on("error", function (error) {
@@ -51,10 +52,10 @@ app.use(
     saveUninitialized: false,
     store: sessionStore,
     cookie: {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: envMode === 'production',
-      sameSite: envMode === 'production' ? 'none' : 'lax',
+      secure: envMode === "production",
+      sameSite: envMode === "production" ? "none" : "lax",
     },
   }),
 );
@@ -65,7 +66,7 @@ app.use(passport.session());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", conversationRoutes);
-app.use('/api/saved', savedMessageRoutes);
+app.use("/api/saved", savedMessageRoutes);
 
 // --------- global error handler ---------
 
