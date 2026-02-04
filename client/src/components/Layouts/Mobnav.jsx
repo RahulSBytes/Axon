@@ -1,13 +1,13 @@
 import { ChevronRight, ClockFading, House, Info, KeyRound, LogOut, Menu, Star, UserRoundPlus } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { Navigate, useNavigate } from 'react-router-dom';
-// import { navs} from "../../constants/constant.js"
 
 function Mobnav() {
     const { user, logout } = useAuth();
     const navigate = useNavigate()
-    const { isNavOpen, setIsNavOpen } = nav;
+      const [isNavOpen, setIsNavOpen] = useState(false)
+    
 
     const navs = [
         { icon: House, method: () => navigate('/'), label: 'Home' },
@@ -16,9 +16,9 @@ function Mobnav() {
         { icon: KeyRound, method: () => navigate('/login'), label: 'Login' },
         { icon: UserRoundPlus, method: () => navigate('/signup'), label: 'Signup' },
         { icon: LogOut, method: () => logout(), label: 'Logout' },
-        { icon: Info, method: () => () => navigate('/about'), label: 'About App' },
+        { icon: Info, method:() => navigate('/about'), label: 'About App' },
     ]
-    
+
 
 
 
@@ -29,12 +29,11 @@ function Mobnav() {
     };
 
     return (
-        <div className='flex flex-col  md:hidden relative'>
-            <nav className=' flex justify-between px-5 py-7 items-center w-full'>
-                <div className='font-adlam text-4xl cursor-pointer'>Axon</div>
+        <div className='flex flex-col  md:hidden w-fit '>
+            <nav className='flex justify-between items-center'>
                 <div onClick={() => setIsNavOpen(true)} className='cursor-pointer pr-2'><Menu size={27} /></div>
             </nav>
-            {isNavOpen && <div className=' flex flex-col  absolute top-0 h-screen items-center w-screen bg-secondary p-3 px-8'>
+            {isNavOpen && <div className=' flex flex-col  absolute z-40 right-0 top-0 h-screen items-center w-screen bg-secondary p-3 px-8'>
                 <div className='flex items-center  w-full'>
                     <h4 className='text-3xl font-bold flex-1 py-5 text-zinc-800'>Profile</h4>
                     <button onClick={() => setIsNavOpen(false)} className='border-2 border-zinc-300 rounded-md h-fit px-2'>esc</button>
@@ -52,16 +51,16 @@ function Mobnav() {
                 <ul className='flex flex-col gap-4 mt-6 w-full '>
                     {
                         navs.map((item) => {
-                            if((!user && item.label =='Logout') || (user && (item.label === "Signup" || item.label === "Login"))) return null;
+                            if ((!user && item.label == 'Logout') || (user && (item.label === "Signup" || item.label === "Login"))) return null;
                             return <li onClick={() => handleButtonClick(item.method)} className='flex cursor-pointer hover:text-zinc-600 p-4 font-semibold text-lg text-zinc-600 w-full justify-between' key={item.label}>
-                            <div className='flex gap-4 items-center'>
-                                <item.icon size={40} className='text-muted p-2 bg-zinc-200 rounded-lg' /> {item.label}
-                            </div>
-                            <ChevronRight size={22} />
-                        </li>
+                                <div className='flex gap-4 items-center'>
+                                    <item.icon size={40} className='text-muted p-2 bg-zinc-200 rounded-lg' /> {item.label}
+                                </div>
+                                <ChevronRight size={22} />
+                            </li>
                         })
                     }
-                    {/* <li className='flex gap-4 items-center cursor-pointer text-lg hover:text-zinc-600 w-full p-4 justify-between' >  <div className='flex gap-4 items-center'><Info size={40} className='text-muted p-2 bg-zinc-200 rounded-lg' /> About App </div> <ChevronRight size={22} /> </li> */}
+
                 </ul>
             </div>
             }

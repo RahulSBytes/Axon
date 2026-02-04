@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { formatDateOrTime } from '../../utils/helpers.js'
 import { useLoadingState } from '../../hooks/useLoadingState.js'
 import toast from 'react-hot-toast'
+import Mobnav from '../Layouts/Mobnav.jsx'
 
 
 
@@ -16,6 +17,7 @@ function History() {
     const { isLoading, withLoading } = useLoadingState()
     const [isSearchOpened, setIsSearchOpened] = useState(false)
     const [isButtonsOpen, setIsButtonsOpen] = useState('')
+    const [isPinnedClicked, setIsPinnedClicked]= useState(false)
 
 
     async function fetchConveration() {
@@ -79,19 +81,36 @@ function History() {
 
     return (
         <div className='flex w-full h-full flex-col md:px-14 px-6 scrollbar-thin'>
-            <div className='pb-4 pt-6 pl-0 pr-8 flex justify-between items-center'>
-                <h3 className='text-2xl font-bold md:font-medium'>History</h3>
-                <div className='flex gap-2 items-center'>
-                    {false && <input type="text" className=' border-2 border-zinc-400 rounded-full px-4 py-1 text-zinc-600 font-medium outline-none' />}
-                    <Search onClick={handleSearch} className='text-zinc-700 cursor-pointer' />
+            <div className='w-full flex justify-between items-center h-24'>
+
+                <span className='font-adlam text-2xl cursor-pointer'>History</span>
+
+                <div className='flex gap-4'>
+                    <div className='flex gap-2 items-center'>
+                        {false && <input type="text" className=' border-2 border-zinc-400 rounded-full px-4 py-1 text-zinc-600 font-medium outline-none' />}
+                        <Search onClick={handleSearch} className='text-zinc-700 cursor-pointer' />
+                    </div>
+                    <Mobnav />
                 </div>
+            </div>
+            <div className='flex gap-4 mb-2'>
+                
+                <button onClick={()=>setIsPinnedClicked(false)} className={`rounded-full gap-1 transition-colors flex items-center text-xs py-1 px-6 font-semibold ${!isPinnedClicked
+                    ? "text-blue-600 bg-blue-100 outline-blue-800"
+                    : "hover:text-zinc-600 hover:bg-zinc-200 bg-zinc-200  text-zinc-500  "
+                    }`}>All</button>
+                <button onClick={()=>setIsPinnedClicked(true)}  className={`rounded-full gap-1 font-semibold transition-colors flex items-center text-xs py-1 px-2 ${isPinnedClicked
+                    ? "text-blue-600 bg-blue-100"
+                    : "hover:text-zinc-600 hover:bg-zinc-200 bg-zinc-200  text-zinc-500  "
+                    }`}>Pinned</button>
             </div>
             {
                 conversation.length > 0 ?
                     <section className='overflow-y-scroll scrollbar-thin flex-1'>
                         {
-                            conversation.map(({ title, created_at, _id, messages, isPinned }) => (
-                                isButtonsOpen !== _id ? <Fragment key={_id}>
+                            conversation.map(({ title, created_at, _id, messages, isPinned }) => {
+                                if(isPinnedClicked && !isPinned) return null;
+                               return isButtonsOpen !== _id ? <Fragment key={_id}>
                                     <div onClick={() => handleClick(_id)} className={` flex justify-between items-center cursor-pointer h-20 pr-5 border-b border-zinc-300 hover:bg-zinc-100`}>
                                         <span className='text-zinc-500  text-xs font-semibold hidden sm:block'>{formatDateOrTime(created_at)}</span>
                                         <div className='text-zinc-800 flex-1 sm:mx-4 px-3'>
@@ -121,7 +140,7 @@ function History() {
                                         </button>
                                     </div>
                                 </Fragment>
-                            ))
+                            })
                         }
                     </section> : <div className='h-full flex justify-center items-center text-zinc-400 font-semibold'>No Chat History, Try Creating New </div>
             }

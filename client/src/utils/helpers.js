@@ -1,4 +1,6 @@
+import axios from "axios";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 export function formatDateOrTime(date) {
   const m = moment(date);
@@ -6,6 +8,21 @@ export function formatDateOrTime(date) {
     ? m.format("hh:mm a")
     : m.format("DD/MM/YYYY");
 }
+
+
+export const createNewChat = async (e, navigate) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.post(
+                `${import.meta.env.VITE_API_URL}/api/chats`,
+                { title: "New Conversation" }
+            )
+            if (data.success) {
+                navigate(`/chat/${data.conversation._id}`)
+            }
+        } catch (error) {
+        }
+    }
 
 
 export function getRandomPrompts(count = 3) {

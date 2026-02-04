@@ -120,10 +120,6 @@ export async function LLM(
       const toolCall = responseMessage.tool_calls[0];
       const functionArgs = JSON.parse(toolCall.function.arguments);
 
-      console.log(
-        `🔍 Tool called: ${toolCall.function.name} with query: "${functionArgs.query}"`,
-      );
-
       const searchResults = await search_web(functionArgs.query);
 
       chatCompletion = await groq.chat.completions.create({
@@ -156,7 +152,6 @@ export async function LLM(
       usage: chatCompletion.usage,
     };
   } catch (error) {
-    console.error("LLM Error:", error);
     return next(
       new customError(error.message || "Error communicating with LLM", 400),
     );

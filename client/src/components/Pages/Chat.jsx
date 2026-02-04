@@ -59,7 +59,7 @@ function Chat() {
 
 
     return (
-        <div id="pdf-printable" className='flex flex-1 overflow-y-scroll scrollbar-thin noScrollbar max-w-full'>
+        <div id="pdf-printable" className='flex flex-1 overflow-y-scroll px-4 md:px-0 scrollbar-thin noScrollbar max-w-full'>
             {chats.length > 0 ? (
                 <div className='w-full flex flex-col py-2'>
                     {chats.map((message, index) => (

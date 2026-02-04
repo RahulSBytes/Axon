@@ -55,8 +55,6 @@ export async function sendMessage(req, res, next) {
     } = req.body;
 
 
-    console.log("MODEL ::", model, toolCalling);
-
 
     if (!chatId) return next(new customError("please provide chatid", 404));
     if (!prompt || !prompt.trim())

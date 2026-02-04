@@ -1,4 +1,4 @@
-import { ChartNoAxesGantt, Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, Ghost, MessageSquare, MessagesSquare, Search, SquareArrowOutUpRight, Star, Trash2, X } from 'lucide-react'
+import { ChartNoAxesGantt, Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, ExternalLink, Ghost, MessageSquare, MessagesSquare, Search, SquareArrowOutUpRight, Star, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
@@ -8,6 +8,8 @@ import moment from 'moment'
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer.jsx'
 import { useCopy } from '../../hooks/useCopy.js'
 import { useLoadingState } from '../../hooks/useLoadingState.js'
+import Mobnav from '../Layouts/Mobnav.jsx'
+import toast from 'react-hot-toast'
 
 
 
@@ -27,11 +29,10 @@ function Saved() {
 
   async function fetchmessages() {
     const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/saved/`)
-    console.log("saved messages ::", data)
     if (data.success) {
       setSavedMessages(data.savedMessages)
     } else {
-      console.log("error fetching saved messages")
+      toast.error("Error fetching saved messages")
     }
   }
 
@@ -52,13 +53,13 @@ function Saved() {
         setSavedMessages(prev => prev.filter((message) => message.messageId !== data.info.messageId));
       }
     } catch (error) {
-      console.log("error unsaving message", error);
+      toast.error("Error unsaving message");
     }
   };
 
 
   function searchHandler() {
-    alert("this feature is being developed !!")
+    toast("This feature is being developed")
   }
 
 
@@ -70,9 +71,15 @@ function Saved() {
 
   return (
     <div className='flex h-full w-full flex-col scrollbar-thin px-6'>
-      <div className=' flex justify-between items-center'>
-        <h3 className='text-2xl font-medium'>Saved Messages</h3>
-        <Search onClick={searchHandler} className='text-zinc-700 cursor-pointer' />
+      <div className='w-full flex justify-between items-center h-24'>
+        <span className='font-adlam text-2xl cursor-pointer'>Saved Messages</span>
+        <div className='flex gap-4'>
+          <div className='flex gap-2 items-center'>
+            {false && <input type="text" className=' border-2 border-zinc-400 rounded-full px-4 py-1 text-zinc-600 font-medium outline-none' />}
+            <Search onClick={searchHandler} className='text-zinc-700 cursor-pointer' />
+          </div>
+          <Mobnav />
+        </div>
       </div>
       {savedMessages.length > 0 ? <section className="overflow-y-scroll flex-1">
         {savedMessages.map(({
@@ -87,9 +94,9 @@ function Saved() {
 
 
           return (
-            <div key={messageId} className="border-b border-zinc-300 h-20">
+            <div key={messageId} className="border-b border-zinc-300  flex flex-col">
               {/* Header Strip */}
-              <div onClick={() => toggleExpand(messageId)} className="flex justify-between items-center cursor-pointer sm:gap-6 h-full hover:bg-zinc-100">
+              <div onClick={() => toggleExpand(messageId)} className="flex min-h-20 justify-between items-center cursor-pointer sm:gap-6 h-full hover:bg-zinc-100">
                 {
                   isButtonsOpen != messageId ?
                     <>
@@ -152,57 +159,81 @@ function Saved() {
                       </button>
                     </div>
                 }
+
               </div>
+               {isExpanded && (
+                  <div className="border-t h-full">
+                    <div className="p-4 md:p-6 space-y-4">
+                      {/* Question */}
+                      <div className="flex justify-end">
+                        <div className="max-w-[85%] md:max-w-[70%] bg-zinc-800 text-white rounded-2xl rounded-tr-sm p-4">
+                          <div className="flex items-center gap-2 text-xs text-zinc-400 mb-2">
+                            <span className="font-semibold text-zinc-200">You</span>
+                            <Dot size={16} />
+                            <span>{moment(createdAt).fromNow()}</span>
+                          </div>
+                          <p className="whitespace-pre-wrap text-sm md:text-base">
+                            {parentQuestion.questionText}
+                          </p>
+                        </div>
+                      </div>
 
+                      {/* Answer */}
+                      <div className="flex justify-start">
+                        <div className="max-w-[90%] md:max-w-[85%]">
+                          {/* Header */}
+                          <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
+                            <div className="flex items-center gap-1.5 font-semibold text-zinc-700">
+                              <div className="p-1 bg-zinc-100 rounded-md">
+                                <Ghost size={14} />
+                              </div>
+                              Axon
+                            </div>
+                            <Dot size={16} />
+                            <span>{moment(createdAt).fromNow()}</span>
+                          </div>
 
-              {/* Expandable Content */}
-              {isExpanded && <div className={`transition-all duration-300 ease-in-out max-h-full opacity-100`}>
-                <div className="bg-zinc-50 p-4 border-t border-zinc-200">
-                  {/* Question */}
-                  <div className="sm:max-w-[70%] bg-zinc-100 rounded-lg sm:p-3 self-end mt-2">
-                    <div className="flex text-xs items-center font-medium text-zinc-500">
-                      <span className="text-zinc-800 font-semibold">You</span>
-                      <Dot />
-                      {moment(createdAt).fromNow()}
+                          {/* Message Content */}
+                          <div className="bg-zinc-100 rounded-2xl rounded-tl-sm p-4">
+                            <div className="text-zinc-800 text-sm md:text-base prose prose-sm max-w-none">
+                              <MarkdownRenderer text={messageText} />
+                            </div>
+                          </div>
+
+                          {/* Actions */}
+                          <div className="flex items-center gap-2 mt-3 ml-2">
+                            <button
+                              onClick={() => copyToClipboard(messageText)}
+                              className="flex items-center gap-1.5 px-2 py-1 text-xs text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
+                              title="Copy message"
+                            >
+                              {copied ? (
+                                <>
+                                  <Check size={14} className="text-green-500" />
+                                  <span className="text-green-500">Copied!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Clipboard size={14} />
+                                  <span>Copy</span>
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              onClick={(e) => openParentChat(e, conversationId)}
+                              className="flex items-center gap-1.5 px-2 py-1 text-xs text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
+                            >
+                              <ExternalLink size={14} />
+                              <span>View in Chat</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-zinc-800 mt-1 whitespace-pre-wrap">{parentQuestion.questionText}</div>
                   </div>
+                )}
 
-                  {/* Answer */}
-                  <div className="sm:max-w-[85%] rounded-lg py-3 self-start mt-2">
-                    {/* Header */}
-                    <div className="flex text-xs items-center font-medium text-zinc-500">
-                      <span className="text-zinc-800 flex text-base items-center gap-1 font-semibold">
-                        <Ghost size={16} />
-                        Axon
-                      </span>
-                      <Dot />
-                      {moment(createdAt).fromNow()}
-                    </div>
-
-                    {/* text */}
-                    <div className="text-zinc-800 mt-1 ">
-                      <MarkdownRenderer text={messageText} />
-                    </div>
-
-                    <div className="flex items-center gap-3 mt-3">
-                      {/* Copy */}
-                      <button
-                        onClick={() => copyToClipboard(messageText)}
-                        className="text-zinc-400 hover:text-zinc-600 transition-colors"
-                        title="Copy message"
-                      >
-                        {copied ? (
-                          <Check size={16} className="text-green-500" />
-                        ) : (
-                          <Clipboard size={16} />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                </div>
-              </div>}
             </div>
           );
         })}

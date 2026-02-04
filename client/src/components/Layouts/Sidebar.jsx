@@ -1,8 +1,7 @@
-import { ClockFading, Ghost, House, Plus, Star } from 'lucide-react'
-import { useState } from 'react'
-import TopicPopUp from '../minicomponents/TopicPopUp'
-import { useNavigate } from 'react-router-dom'
+import { ClockFading, Ghost, House, Info, Plus, Star } from 'lucide-react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth.js'
+import { createNewChat } from '../../utils/helpers.js'
 
 function Sidebar() {
     const { user, logout } = useAuth()
@@ -11,27 +10,23 @@ function Sidebar() {
         { icon: House, link: '/', label: 'Home' },
         { icon: ClockFading, link: '/history', label: 'History' },
         { icon: Star, link: '/saved', label: 'Saved' },
+        { icon: Info, link: '/about', label: 'About App' },
     ]
 
     const navigate = useNavigate()
-
-    const [isNewTopicOpen, setIsNewTopicOpen] = useState(false)
-
+ 
 
     return (
         <nav className=' w-1/6 min-w-40 relative'>
-            {
-                isNewTopicOpen && <TopicPopUp setIsNewTopicOpen={setIsNewTopicOpen} />
-            }
-            <div onClick={()=>navigate('/')} className='text-3xl font-adlam mt-2 ml-5 flex cursor-pointer'>Axon</div>
+            <div onClick={() => navigate('/')} className='text-3xl font-adlam mt-2 ml-5 flex cursor-pointer'>Axon</div>
             <div className=' mt-16 ml-5'>
-                <button onClick={() => setIsNewTopicOpen(true)} className="bg-gray-300 hover:bg-zinc-400 text-gray-800 font-semibold py-2 px-4 rounded-full inline-flex items-center">
-                    <Plus />
+                <ul className='flex flex-col gap-6 mx-2 mt-7 mr-3'>
+                <button onClick={(e) => createNewChat(e, navigate)} className="flex gap-2 cursor-pointer w-full py-2 px-2 border border-green-700 rounded-full bg-zinc-800 text-white justify-center items-center">
+                    <Plus size={25}   />
                     <span>New Chat</span>
                 </button>
-                <ul className='flex flex-col gap-6 ml-2 mt-7'>
                     {
-                        navs.map((item) => <li onClick={()=>navigate(item.link)} className='flex gap-2 items-center cursor-pointer hover:text-zinc-600 w-fit pl-2 pr-4' key={item.label}> <item.icon size={20} className='text-muted' /> {item.label} </li>)
+                        navs.map((item) => <NavLink to={item.link} className={({ isActive }) =>`flex gap-2 items-center cursor-pointer w-full py-1 px-2 rounded-full ${isActive? " bg-zinc-200 ":'hover:bg-zinc-200'}`} key={item.label}> <item.icon size={34} className='text-muted p-2 bg-zinc-200 rounded-lg' /> {item.label} </NavLink>)
                     }
 
                 </ul>

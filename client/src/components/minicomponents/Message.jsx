@@ -28,24 +28,18 @@ function Message({ message, setChats, chatId, onTyping }) {
     const {copied, copyToClipboard} = useCopy()
   
 
-  // ===========
-
   const shouldAnimate = role === 'assistant' && isNew === true;
   const displayedText = useTypingEffect(shouldAnimate ? text : null);
   const textToShow = shouldAnimate ? displayedText : text;
 
 
-  // Call onTyping whenever displayedText changes during animation
   useEffect(() => {
     if (shouldAnimate && displayedText && onTyping) {
       onTyping();
     }
   }, [displayedText, shouldAnimate, onTyping]);
 
-  // ===============
 
-
-  // Load voices on mount
   useEffect(() => {
     const loadVoices = () => {
       const availableVoices = window.speechSynthesis.getVoices();
