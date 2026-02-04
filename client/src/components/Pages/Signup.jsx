@@ -1,5 +1,4 @@
 import { Eye, EyeClosed, Ghost } from "lucide-react";
-// import google from '../../assets/google.png'
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -15,7 +14,7 @@ export default function Signup() {
   const [seePassword, setSeePassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { register, loginWithGoogle, user } = useAuth(); // ✅ Get loginWithGoogle
+  const { register, loginWithGoogle, user } = useAuth(); 
   const navigate = useNavigate();
 
   if (user) {
@@ -55,7 +54,6 @@ export default function Signup() {
     setIsLoading(false);
   };
 
-  // ✅ Handle Google signup
   const handleGoogleSignup = () => {
     loginWithGoogle(); // Same endpoint for login and signup
   };

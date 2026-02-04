@@ -14,12 +14,13 @@ import savedMessageRoutes from './src/routes/savedMessageRoutes.js'
 import cors from 'cors'
 
 const app = express();
+app.set('trust proxy', 1);
 
 await connectDB(process.env.MONGODB_URL);
 export const envMode = process.env.NODE_ENV.trim() || "PRODUCTION";
 
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: process.env.CLIENT_URL,
   credentials: true,
 }));
 
@@ -36,6 +37,7 @@ const sessionStore = MongoStore.create({
     secret: process.env.SESSION_SECRET,
   },
 });
+
 
 // Handle store errors
 sessionStore.on("error", function (error) {
