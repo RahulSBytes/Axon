@@ -10,7 +10,6 @@ import {
 import ResponsiveLayout from '../components/Layouts/Responsive';
 // import AuthLayout from '../components/Layouts/AuthLayout';
 
-// Guards
 import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
 
@@ -23,6 +22,7 @@ import History from '../components/Pages/History'
 import NotFound from '../components/Pages/NotFound'
 import Tagline from '../components/minicomponents/Tagline';
 import Chat from '../components/Pages/Chat';
+import About from '../components/Pages/About';
 
 
 export const router = createBrowserRouter(
@@ -35,6 +35,7 @@ export const router = createBrowserRouter(
         </Route>
         <Route path='/saved' element={<Saved />} />
         <Route path='/history' element={<History />} />
+        <Route path='/about' element={<About />} />
       </Route>
 
       <Route path='/login' element={<Login />} />

@@ -59,8 +59,6 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log("entered the google strategy");
-
       try {
         const email = profile.emails[0].value;
         const googleId = profile.id;

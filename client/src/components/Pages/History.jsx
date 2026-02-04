@@ -1,5 +1,5 @@
 import { EllipsisVertical, Pin, PinIcon, Search, Trash2, X } from 'lucide-react'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -91,8 +91,8 @@ function History() {
                     <section className='overflow-y-scroll scrollbar-thin flex-1'>
                         {
                             conversation.map(({ title, created_at, _id, messages, isPinned }) => (
-                                isButtonsOpen !== _id ? <>
-                                    <div onClick={() => handleClick(_id)} key={_id} className={` flex justify-between items-center cursor-pointer h-20 pr-5 border-b border-zinc-300 hover:bg-zinc-100`}>
+                                isButtonsOpen !== _id ? <Fragment key={_id}>
+                                    <div onClick={() => handleClick(_id)} className={` flex justify-between items-center cursor-pointer h-20 pr-5 border-b border-zinc-300 hover:bg-zinc-100`}>
                                         <span className='text-zinc-500  text-xs font-semibold hidden sm:block'>{formatDateOrTime(created_at)}</span>
                                         <div className='text-zinc-800 flex-1 sm:mx-4 px-3'>
                                             <p className='font-semibold line-clamp-1'>{title}</p>
@@ -104,7 +104,7 @@ function History() {
                                         </div>
                                         <EllipsisVertical size={20} onClick={(e) => openButtonsOption(e, _id)} className='block sm:hidden cursor-pointer' />
                                     </div>
-                                </> : <>
+                                </Fragment> : <Fragment key={_id}>
                                     <div className="flex items-center justify-between rounded-lg h-20 pr-5 border-b border-zinc-300 w-full">
                                         <div className="flex items-center flex-1 justify-around">
                                             <button onClick={withLoading(_id, (e) => handlePin(e, _id, !isPinned))} className="bg-zinc-200 justify-center flex items-center gap-1 px-3 py-1.5 text-sm text-zinc-700 w-1/3 rounded-md transition-colors">
@@ -120,7 +120,7 @@ function History() {
                                             <X size={20} />
                                         </button>
                                     </div>
-                                </>
+                                </Fragment>
                             ))
                         }
                     </section> : <div className='h-full flex justify-center items-center text-zinc-400 font-semibold'>No Chat History, Try Creating New </div>
