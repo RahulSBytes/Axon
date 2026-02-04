@@ -72,21 +72,21 @@ export default function Signup() {
       <form action="" method="post" className=" flex flex-col gap-6 h-screen w-4/6 justify-center">
         <div className=" flex flex-col">
           <label htmlFor="fullName" className="text-xl font-medium">Fullname</label>
-          <input type="text" onChange={handleChange} value={formData.fullName} required name="fullName" id="fullName" className="bg-[#D9D9D9] p-1 outline-none" />
+          <input type="text" onChange={handleChange} value={formData.fullName} required name="fullName" id="fullName" className="bg-[#D9D9D9] text-zinc-800 p-1 outline-none" />
         </div>
         <div className=" flex flex-col">
           <label htmlFor="email" className="text-xl font-medium">Email</label>
-          <input type="email" onChange={handleChange} value={formData.email} required name="email" id="email" className="bg-[#D9D9D9] p-1 outline-none" />
+          <input type="email" onChange={handleChange} value={formData.email} required name="email" id="email" className="bg-[#D9D9D9] text-zinc-800 p-1 outline-none" />
         </div>
         <div className="flex flex-col">
           <label htmlFor="password" className="text-xl font-medium">Password</label>
           <div className="flex  bg-[#D9D9D9] items-center px-2">
-            <input type={seePassword ?"text": "password"} onChange={handleChange} value={formData.password} required className="bg-[#D9D9D9] p-1  outline-none flex-1" name="password" id="password" />
+            <input type={seePassword ?"text": "password"} onChange={handleChange} value={formData.password} required className="bg-[#D9D9D9] text-zinc-800 p-1  outline-none flex-1" name="password" id="password" />
             {seePassword ? <EyeClosed className="cursor-pointer" size={20} onClick={() => setSeePassword(false)} /> : <Eye className="cursor-pointer" size={20} onClick={() => setSeePassword(true)} />}
           </div>
         </div>
         <button onClick={handleSubmit} className="w-2/3 self-center rounded-full py-[5px] bg-zinc-800 text-zinc-100 mb-2" type="submit">Submit</button>
-        <p className="self-center">Already have an account? <a href="/login" className="text-blue-700">Login</a></p>
+        <p className="self-center text-zinc-700">Already have an account? <a href="/login" className="text-blue-700">Login</a></p>
         <div className="flex items-center justify-between">
           <hr className=" w-2/5 bg-zinc-700 h-[2px]" />
           <div>Or</div>
