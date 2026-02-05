@@ -1,5 +1,5 @@
 import Conversation from "../models/conversation.js";
-import SavedMessage from "../models/conversation.js"
+import SavedMessage from "../models/savedMessage.js"
 import { customError } from "../utils/error.js";
 
 // -------------------------
@@ -58,7 +58,6 @@ export const saveMessage = async (req, res, next) => {
       info: { messageId: savedMessage.messageId, isSaved: true },
     });
   } catch (error) {
-    console.error("Save message error:", error);
     next(new customError("error saving message", 400));
   }
 };
@@ -77,7 +76,6 @@ export const getSavedMessages = async (req, res, next) => {
      savedMessages,
     });
   } catch (error) {
-    console.error("Get saved messages error:", error);
     next(new customError("error getting saved messages", 400));
   }
 };
@@ -114,47 +112,6 @@ export const unsaveMessage = async (req, res, next) => {
       info: { messageId: savedMessage.messageId, isSaved: false },
     });
   } catch (error) {
-    console.error("Unsave message error:", error);
     return next(new customError("error removing message", 400));
-  }
-};
-
-
-export const updateSavedMessage = async (req, res) => {
-  try {
-    const { messageId } = req.params;
-    const userId = req.user._id;
-    const { tags, note, color } = req.body;
-
-    const savedMessage = await SavedMessage.findOne({
-      user: userId,
-      messageId,
-    });
-
-    if (!savedMessage) {
-      return res.status(404).json({
-        success: false,
-        message: "Saved message not found",
-      });
-    }
-
-    // Update fields
-    if (tags !== undefined) savedMessage.tags = tags;
-    if (note !== undefined) savedMessage.note = note;
-    if (color !== undefined) savedMessage.color = color;
-
-    await savedMessage.save();
-
-    res.status(200).json({
-      success: true,
-      message: "Saved message updated",
-      data: savedMessage,
-    });
-  } catch (error) {
-    console.error("Update saved message error:", error);
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
   }
 };
