@@ -65,7 +65,6 @@ export function AuthProvider({ children }) {
 
 
   const loginWithGoogle = () => {
-    // Redirect to backend Google OAuth route
     window.location.href = `${API_URL}/api/auth/google`;
   };
 
