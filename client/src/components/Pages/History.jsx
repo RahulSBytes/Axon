@@ -7,6 +7,8 @@ import { formatDateOrTime } from '../../utils/helpers.js'
 import { useLoadingState } from '../../hooks/useLoadingState.js'
 import toast from 'react-hot-toast'
 import Mobnav from '../Layouts/Mobnav.jsx'
+import MiniLoader from '../minicomponents/MiniLoader.jsx'
+
 
 
 
@@ -18,20 +20,27 @@ function History() {
     const [isSearchOpened, setIsSearchOpened] = useState(false)
     const [isButtonsOpen, setIsButtonsOpen] = useState('')
     const [isPinnedClicked, setIsPinnedClicked]= useState(false)
+      const [loading, setIsLoading] = useState(false)
+
+    
 
 
     async function fetchConveration() {
+        setIsLoading(true)
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/chats`)
         if (data.success) {
             setConversation(data.chats)
         } else {
             toast.error("Error fetching conversation")
         }
+        setIsLoading(false)
     }
 
     useEffect(() => {
         fetchConveration();
     }, [])
+
+    if(loading) return <MiniLoader/>
 
 
     const handleClick = (chatId) => {
@@ -44,9 +53,6 @@ function History() {
     }
 
     async function handleDelete(e, chatId) {
-        setTimeout(() => {
-            console.log("waited")
-        }, 1000000)
         e.stopPropagation()
         try {
             const { data } = await axios.delete(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`)

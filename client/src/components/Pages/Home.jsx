@@ -8,20 +8,19 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Mobnav from '../Layouts/Mobnav.jsx';
 import toast from 'react-hot-toast';
 
+
 function Home() {
   const [isToolCalling, setIsToolCalling] = useState(false);
   const [isCapsuleHovered, setIsCapsuleHovered] = useState(false)
   const [chats, setChats] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [prompt, setPrompt] = useState('')
-  const [selectedModel, setSelectedModel] = useState("llama-3.3-70b-versatile")
+  const [selectedModel, setSelectedModel] = useState("llama-3.1-8b-instant")
 
   const { pathname } = useLocation()
   const { chatid } = useParams()
   const navigate = useNavigate()
   const { user, logout } = useAuth()
-
-
 
   useEffect(() => {
     if (!pathname.startsWith('/chat/')) {
@@ -240,5 +239,6 @@ function Home() {
     </>
   )
 }
+import MiniLoader from '../minicomponents/MiniLoader.jsx';
 
 export default Home

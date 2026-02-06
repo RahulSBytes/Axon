@@ -4,13 +4,13 @@ import { AuthProvider } from "./contexts/AuthContext"
 import { Toaster } from "react-hot-toast"
 
 function App() {
-  
+
   return (
     <>
-      <Toaster/>
-     <AuthProvider>
-       <RouterProvider router={router} />
-     </AuthProvider>
+      <Toaster />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </>
   )
 }

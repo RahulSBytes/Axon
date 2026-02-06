@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, ExternalLink, Ghost, MessagesSquare, Search, SquareArrowOutUpRight,Trash2, X } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, Clipboard, Dot, EllipsisVertical, ExternalLink, Ghost, MessagesSquare, Search, SquareArrowOutUpRight, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
@@ -10,40 +10,54 @@ import { useCopy } from '../../hooks/useCopy.js'
 import { useLoadingState } from '../../hooks/useLoadingState.js'
 import Mobnav from '../Layouts/Mobnav.jsx'
 import toast from 'react-hot-toast'
+import MiniLoader from '../minicomponents/MiniLoader.jsx'
+
 
 
 
 function Saved() {
+
   const [savedMessages, setSavedMessages] = useState([])
   const [expandedId, setExpandedId] = useState(null);
   const [isButtonsOpen, setIsButtonsOpen] = useState('')
   const { isLoading, withLoading } = useLoadingState()
+  const [loading, setIsLoading] = useState(false)
 
 
   const navigate = useNavigate()
   const { copied, copyToClipboard } = useCopy()
 
-  const toggleExpand = (messageId) => {
-    setExpandedId(expandedId === messageId ? null : messageId);
-  };
 
-   async function fetchmessages() {
+  async function fetchmessages() {
+    setIsLoading(true);
     const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/saved`)
     if (data.success) {
       setSavedMessages(data.savedMessages)
     } else {
       toast.error("Error fetching saved messages")
     }
+    setIsLoading(false);
   }
-  
+
+  useEffect(() => {
+    fetchmessages()
+  }, [])
+
+
+  if(loading) return <MiniLoader/>
+
+
+  const toggleExpand = (messageId) => {
+    setExpandedId(expandedId === messageId ? null : messageId);
+  };
+
+
+
   function openButtonsOption(e, messageId) {
     e.stopPropagation();
     setIsButtonsOpen(messageId);
   }
 
-  useEffect(() => {
-    fetchmessages();
-  }, [])
 
   async function handleUnsave(e, messageId) {
     e.stopPropagation(e)
@@ -53,7 +67,6 @@ function Saved() {
         setSavedMessages(prev => prev.filter((message) => message.messageId !== data.info.messageId));
       }
     } catch (error) {
-      console.log(error)
       toast.error("Error unsaving message");
     }
   };
@@ -161,78 +174,77 @@ function Saved() {
                 }
 
               </div>
-               {isExpanded && (
-                  <div className="border-t h-full">
-                    <div className="p-4 md:p-6 space-y-4">
-                      {/* Question */}
-                      <div className="flex justify-end">
-                        <div className="max-w-[85%] md:max-w-[70%] bg-zinc-800 text-white rounded-2xl rounded-tr-sm p-4">
-                          <div className="flex items-center gap-2 text-xs text-zinc-400 mb-2">
-                            <span className="font-semibold text-zinc-200">You</span>
-                            <Dot size={16} />
-                            <span>{moment(createdAt).fromNow()}</span>
-                          </div>
-                          <p className="whitespace-pre-wrap text-sm md:text-base">
-                            {parentQuestion.questionText}
-                          </p>
+              {isExpanded && (
+                <div className="border-t h-full">
+                  <div className="p-4 md:p-6 space-y-4">
+                    <div className="flex justify-end">
+                      <div className="max-w-[85%] md:max-w-[70%] bg-zinc-800 text-white rounded-2xl rounded-tr-sm p-4">
+                        <div className="flex items-center gap-2 text-xs text-zinc-400 mb-2">
+                          <span className="font-semibold text-zinc-200">You</span>
+                          <Dot size={16} />
+                          <span>{moment(createdAt).fromNow()}</span>
                         </div>
+                        <p className="whitespace-pre-wrap text-sm md:text-base">
+                          {parentQuestion.questionText}
+                        </p>
                       </div>
+                    </div>
 
-                      {/* Answer */}
-                      <div className="flex justify-start">
-                        <div className="max-w-[90%] md:max-w-[85%]">
-                          {/* Header */}
-                          <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
-                            <div className="flex items-center gap-1.5 font-semibold text-zinc-700">
-                              <div className="p-1 bg-zinc-100 rounded-md">
-                                <Ghost size={14} />
-                              </div>
-                              Axon
+                    {/* Answer */}
+                    <div className="flex justify-start">
+                      <div className="max-w-[90%] md:max-w-[85%]">
+                        {/* Header */}
+                        <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
+                          <div className="flex items-center gap-1.5 font-semibold text-zinc-700">
+                            <div className="p-1 bg-zinc-100 rounded-md">
+                              <Ghost size={14} />
                             </div>
-                            <Dot size={16} />
-                            <span>{moment(createdAt).fromNow()}</span>
+                            Axon
                           </div>
+                          <Dot size={16} />
+                          <span>{moment(createdAt).fromNow()}</span>
+                        </div>
 
-                          {/* Message Content */}
-                          <div className="bg-zinc-100 rounded-2xl rounded-tl-sm p-4">
-                            <div className="text-zinc-800 text-sm md:text-base prose prose-sm max-w-none">
-                              <MarkdownRenderer text={messageText} />
-                            </div>
+                        {/* Message Content */}
+                        <div className="bg-zinc-100 rounded-2xl rounded-tl-sm p-4">
+                          <div className="text-zinc-800 text-sm md:text-base prose prose-sm max-w-none">
+                            <MarkdownRenderer text={messageText} />
                           </div>
+                        </div>
 
-                          {/* Actions */}
-                          <div className="flex items-center gap-2 mt-3 ml-2">
-                            <button
-                              onClick={() => copyToClipboard(messageText)}
-                              className="flex items-center gap-1.5 px-2 py-1 text-xs text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
-                              title="Copy message"
-                            >
-                              {copied ? (
-                                <>
-                                  <Check size={14} className="text-green-500" />
-                                  <span className="text-green-500">Copied!</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Clipboard size={14} />
-                                  <span>Copy</span>
-                                </>
-                              )}
-                            </button>
+                        {/* Actions */}
+                        <div className="flex items-center gap-2 mt-3 ml-2">
+                          <button
+                            onClick={() => copyToClipboard(messageText)}
+                            className="flex items-center gap-1.5 px-2 py-1 text-xs text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
+                            title="Copy message"
+                          >
+                            {copied ? (
+                              <>
+                                <Check size={14} className="text-green-500" />
+                                <span className="text-green-500">Copied!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Clipboard size={14} />
+                                <span>Copy</span>
+                              </>
+                            )}
+                          </button>
 
-                            <button
-                              onClick={(e) => openParentChat(e, conversationId)}
-                              className="flex items-center gap-1.5 px-2 py-1 text-xs text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
-                            >
-                              <ExternalLink size={14} />
-                              <span>View in Chat</span>
-                            </button>
-                          </div>
+                          <button
+                            onClick={(e) => openParentChat(e, conversationId)}
+                            className="flex items-center gap-1.5 px-2 py-1 text-xs text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
+                          >
+                            <ExternalLink size={14} />
+                            <span>View in Chat</span>
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
+              )}
 
             </div>
           );

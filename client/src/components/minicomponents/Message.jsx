@@ -109,8 +109,7 @@ function Message({ message, setChats, chatId, onTyping }) {
         ));
       }
     } catch (error) {
-      console.log(error)
-      toast.error("error saving message", error);
+      toast.error("Error saving message");
     }
   };
 

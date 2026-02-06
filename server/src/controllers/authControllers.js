@@ -54,7 +54,6 @@ export const register = async (req, res, next) => {
 
     //and then Login user after registration
     req.login(user, (err) => {
-      if (err) console.log("errrror :: ", err);
       if (err) return next(new customError("Failed registering try other method", 404));
 
       res.status(201).json({

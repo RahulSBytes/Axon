@@ -17,8 +17,7 @@ export async function getAllChats(req, res) {
       chats: chats,
     });
   } catch (error) {
-    console.log("error getting all chats ::", error);
-    next(error);
+    return next(new customError("Error getting all chats"));
   }
 }
 
@@ -40,8 +39,7 @@ export async function createChat(req, res, next) {
       conversation,
     });
   } catch (error) {
-    console.log("error getting chat ::", error);
-    next(error);
+    return next(new customError("error creating converation", 404));
   }
 }
 
@@ -53,8 +51,6 @@ export async function sendMessage(req, res, next) {
       model = "llama-3.1-8b-instant",
       toolCalling = false,
     } = req.body;
-
-
 
     if (!chatId) return next(new customError("please provide chatid", 404));
     if (!prompt || !prompt.trim())
@@ -113,7 +109,7 @@ export async function sendMessage(req, res, next) {
       },
     });
   } catch (error) {
-   return next(new customError("error sending message"));
+    return next(new customError("error sending message"));
   }
 }
 
@@ -158,7 +154,6 @@ export async function deleteChat(req, res, next) {
   }
 }
 
-
 export const togglePinConversation = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -185,11 +180,3 @@ export const togglePinConversation = async (req, res, next) => {
     next(new customError("error pinning the conversation", 404));
   }
 };
-
-export async function getAllStaredConversations(req, res, next) {
-  try {
-  } catch (error) {
-    console.log("error getting starred converation ::", error);
-    next(error);
-  }
-}

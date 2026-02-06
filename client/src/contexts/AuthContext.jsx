@@ -2,11 +2,12 @@ import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+axios.defaults.withCredentials = true;
+
 export const AuthContext = createContext(null);
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const API_URL = import.meta.env.VITE_API_URL;
 
-axios.defaults.withCredentials = true; 
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -29,7 +30,6 @@ export function AuthProvider({ children }) {
         setUser(null);
       }
     } catch (error) {
-      console.log('Auth check failed');
       setUser(null);
     } finally {
       setLoading(false);

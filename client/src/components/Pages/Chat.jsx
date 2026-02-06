@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import axios from 'axios'
 import Message from '../minicomponents/Message.jsx';
 import toast from 'react-hot-toast';
+import MiniLoader from '../minicomponents/MiniLoader.jsx';
 
 function Chat() {
 
@@ -75,7 +76,7 @@ function Chat() {
                 </div>
             ) : (
                 <div className='text-zinc-400 p-4 flex justify-center items-center w-full'>
-                    {isLoading ? 'Loading...' : 'No conversation yet'}
+                    {isLoading ? "" : 'No conversation yet'}
                 </div>
             )}
         </div>

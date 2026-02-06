@@ -3,17 +3,10 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 
 import ResponsiveLayout from '../components/Layouts/Responsive';
 import ProtectedRoute from './ProtectedRoute';
+import MiniLoader from '../components/minicomponents/MiniLoader';
 
-const PageLoader = () => (
-  <div className="flex items-center justify-center h-full">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-      <p className="text-zinc-400">Loading...</p>
-    </div>
-  </div>
-);
+const PageLoader = () => <MiniLoader />
 
-// Helper to wrap lazy components with Suspense
 const LazyRoute = ({ component: Component }) => (
   <Suspense fallback={<PageLoader />}>
     <Component />

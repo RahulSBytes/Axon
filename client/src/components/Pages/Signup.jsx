@@ -2,6 +2,7 @@ import { Eye, EyeClosed, Ghost } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Signup() {
 
@@ -10,11 +11,10 @@ export default function Signup() {
     email: '',
     password: ''
   });
-  const [error, setError] = useState('');
   const [seePassword, setSeePassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { register, loginWithGoogle, user } = useAuth(); 
+  const { register, loginWithGoogle, user } = useAuth();
   const navigate = useNavigate();
 
   if (user) {
@@ -30,28 +30,24 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
-    setIsLoading(true);
-
-    const result = await register(
-      formData.fullName,
-      formData.email,
-      formData.password
-    );
-
-    if (result.success) {
-      navigate('/');
-    } else {
-      setError(result.message);
+    try {
+      setIsLoading(true);
+      const result = await register(formData.fullName, formData.email, formData.password);
+      if (result.success) navigate('/');
+    } catch (error) {
+      toast.error("Something went wrong !!")
+    } finally {
+      setIsLoading(false);
     }
 
-    setIsLoading(false);
+
+
   };
 
   const handleGoogleSignup = () => {
@@ -79,11 +75,11 @@ export default function Signup() {
         <div className="flex flex-col">
           <label htmlFor="password" className="text-xl font-medium">Password</label>
           <div className="flex  bg-[#D9D9D9] items-center px-2">
-            <input type={seePassword ?"text": "password"} onChange={handleChange} value={formData.password} required className="bg-[#D9D9D9] text-zinc-800 p-1  outline-none flex-1" name="password" id="password" />
+            <input type={seePassword ? "text" : "password"} onChange={handleChange} value={formData.password} required className="bg-[#D9D9D9] text-zinc-800 p-1  outline-none flex-1" name="password" id="password" />
             {seePassword ? <EyeClosed className="cursor-pointer" size={20} onClick={() => setSeePassword(false)} /> : <Eye className="cursor-pointer" size={20} onClick={() => setSeePassword(true)} />}
           </div>
         </div>
-        <button onClick={handleSubmit} className="w-2/3 self-center rounded-full py-[5px] bg-zinc-800 text-zinc-100 mb-2" type="submit">Submit</button>
+        <button onClick={handleSubmit} disabled={isLoading} className="w-2/3 self-center rounded-full py-[5px] bg-zinc-800 text-zinc-100 mb-2" type="submit">{isLoading? "hold on...": " submit"}</button>
         <p className="self-center text-zinc-700">Already have an account? <a href="/login" className="text-blue-700">Login</a></p>
         <div className="flex items-center justify-between">
           <hr className=" w-2/5 bg-zinc-700 h-[2px]" />
