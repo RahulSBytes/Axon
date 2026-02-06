@@ -1,137 +1,452 @@
-# Axon: Think Faster. Create Smarter.
+<div align="center">
 
-[![Axon Demo](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Axon+AI+Chat+Demo)](https://example.com/demo)  
-*Your AI-powered assistant for instant answers, creative ideas, and intelligent conversations. Built from scratch in just 8 days while learning GenAI — and still evolving!*
+# 🧠 Axon
 
----
+### A Multi-Model AI Agent Powered by Cutting-Edge LLMs
 
-## 🚀 Quick Overview
+**Seamlessly switch between models for coding, creativity, and complex reasoning**
 
-Axon is a modern, full-stack AI chat application that reimagines conversational AI with seamless GenAI integrations. Inspired by my hands-on journey into Large Language Models (LLMs), tool calling, and production-grade app development, Axon combines rapid prototyping with thoughtful features for developers, creators, and everyday users.
+[![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://mongodb.com)
+[![Groq](https://img.shields.io/badge/Groq-Powered-FF6B6B?style=flat-square)](https://groq.com)
 
-- **Built in**: 8 days (and counting) as a learning project in GenAI, full-stack MERN, and LLM integrations.
-- **Status**: Actively in development — deployment imminent!
-- **Why impactful?** Goes beyond basics: Real-time web search augmentation, multi-model support, voice synthesis, and modular code that scales.
+[🚀 Live Demo](https://your-app.vercel.app) • [📖 Documentation](#-documentation) • [🐛 Report Bug](https://github.com/yourusername/axon/issues)
 
-Whether you're brainstorming code, querying the web, or exporting snippets — Axon accelerates your workflow.
-
----
-
-## ✨ Key Features
-
-Axon packs advanced capabilities into a responsive, intuitive interface. Here's what makes it stand out:
-
-- **Intelligent Conversations**:
-  - Persistent chat history with pin/favorite chats and save specific messages.
-  - Multiple LLM model selection (e.g., switch between GPT-like models on-the-fly).
-  - Real-time streaming responses for fluid UX.
-
-- **GenAI Superpowers**:
-  - **Web search tool calling**: Augment responses with live RAG-style web data.
-  - Syntax-highlighted code blocks (via Prism.js & react-syntax-highlighter) with one-click copy.
-  - Generate & export clean code snippets directly from AI outputs.
-
-- **Accessibility & Polish**:
-  - **Read-aloud** feature: Speed control + multiple voice options for immersive listening.
-  - Dark/light theme toggler with local persistence.
-  - Fully responsive: Optimized for desktop, tablet, and mobile.
-
-- **Security & Usability**:
-  - Robust authentication (local + Google OAuth via Passport.js).
-  - Modular, clean architecture for easy extension.
-  - PDF export for full chat sessions (html2pdf.js).
-
-Future roadmap: Voice input, advanced prompting UI, more tool integrations (e.g., image gen), and API endpoints for external use.
+</div>
 
 ---
 
-## 🛠 Tech Stack
+## ✨ What is Axon?
 
-Axon leverages a modern, battle-tested stack for performance and maintainability. Client and server are separated for scalability.
+Axon is a **full-stack AI chat application** that leverages the power of Groq's ultra-fast LLM inference and Tavily's real-time web search to deliver intelligent, context-aware conversations. Built with modern web technologies, Axon offers a seamless chat experience with advanced features like conversation management, message bookmarking, and export capabilities.
 
-| Component | Frontend (Client) | Backend (Server) |
-|-----------|-------------------|------------------|
-| **Framework** | React 19 + React Router DOM 7 | Express 5 |
-| **Styling/UI** | Tailwind CSS + Lucide React icons + Tailwind Scrollbar | - |
-| **State/Data** | Axios 1.13 + Moment 2.30 | Mongoose 8.18 + Connect-Mongo |
-| **Auth/Security** | - | Passport 0.7 (Local + Google OAuth 2.0) + BcryptJS 3.0 + Express Session 1.18 + Cookie Parser 1.4 |
-| **Markdown/Code** | React Markdown 10.1 + Remark GFM 4.0 + React Syntax Highlighter 16.1 + PrismJS 1.30 | - |
-| **Utils/Other** | HTML2PDF.js 0.14 + CORS 2.8.5 | Axios 1.13 + CORS 2.8.6 + Dotenv 17.2 |
+### 🎯 Key Highlights
 
-- **Database**: MongoDB (via Mongoose for schema flexibility).
-- **Deployment Ready**: Structured for easy Vercel/Netlify (client) + Heroku/Render (server) deploys.
-- **Dev Tools**: Modular code promotes testability and rapid iteration.
+- ⚡ **Lightning Fast** - Groq-powered inference for near-instant AI responses
+- 🌐 **Real-Time Web Search** - Tavily integration for live, accurate information
+- 🧠 **Context Memory** - AI remembers your entire conversation history
+- 💾 **Persistent Sessions** - MongoDB-backed session management across devices
+- 📤 **Advanced Exports** - Save chats as PDFs or code snippets as images
+- 🔐 **Secure Authentication** - Google OAuth 2.0 and local email/password auth
+- 📱 **Fully Responsive** - Beautiful UI on desktop, tablet, and mobile
+- 🎨 **Modern Stack** - React 19, Node.js, Express 5, MongoDB
 
 ---
 
-## 📸 Screenshots
+## 🎥 Demo & Screenshots
 
-*(Add your actual images here for visual impact!)*
+<div align="center">
 
-| Dark Mode Chat | Code Snippet Export | Read-Aloud Controls |
-|---------------|---------------------|---------------------|
-| ![Dark Chat](https://via.placeholder.com/300x200/1F2937/FFFFFF?text=Dark+Mode+Chat) | ![Code Export](https://via.placeholder.com/300x200/0F766E/FFFFFF?text=Code+Snippet) | ![Voice](https://via.placeholder.com/300x200/7C3AED/FFFFFF?text=Read-Aloud) |
+### Chat Interface
+*Real-time AI conversations with markdown support and syntax highlighting*
 
-| Web Search Tool | Mobile Responsive | Model Selector |
-|-----------------|-------------------|---------------|
-| ![Web Search](https://via.placeholder.com/300x200/06B6D4/FFFFFF?text=Web+Search) | ![Mobile](https://via.placeholder.com/300x200/059669/FFFFFF?text=Mobile+View) | ![Models](https://via.placeholder.com/300x200/EAB308/000000?text=Model+Switch) |
+### Export Features
+*Download conversations as PDFs or save code snippets as beautiful images*
+
+### Mobile Experience
+*Responsive design that works flawlessly on all devices*
+
+</div>
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Features
+
+| Feature | Description |
+|---------|-------------|
+| **🤖 Groq-Powered LLM** | Ultra-fast AI responses using Llama 3.3 70B model |
+| **🔍 Live Web Search** | Tavily-powered search for real-time, accurate answers |
+| **🛠️ AI Tool Calling** | Intelligent function execution for dynamic responses |
+| **📄 Export as PDF** | Download entire conversations as formatted PDFs |
+| **💻 Code Snippet Export** | Save code blocks as syntax-highlighted images |
+| **🧠 Context Memory** | AI remembers your conversation for relevant responses |
+| **🔖 Save Messages** | Bookmark important responses to build your knowledge base |
+| **📌 Pin Conversations** | Keep important chats at the top for quick access |
+| **📚 Chat History** | All conversations saved, searchable, and accessible |
+| **🔐 Dual Authentication** | Google OAuth and traditional email/password login |
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 19.2** - Latest React with improved performance
+- **React Router 7** - Client-side routing
+- **Tailwind CSS** - Utility-first styling
+- **Vite** - Lightning-fast build tool
+- **Axios** - HTTP client
+- **React Markdown** - Markdown rendering with syntax highlighting
+- **html2pdf.js** - PDF export functionality
+- **Lucide React** - Beautiful icon library
+
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express 5** - Fast, minimalist web framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - Elegant MongoDB ODM
+- **Passport.js** - Authentication middleware
+  - Local Strategy (Email/Password)
+  - Google OAuth 2.0 Strategy
+- **Express Session** - Session management
+- **Connect Mongo** - MongoDB session store
+- **Bcrypt.js** - Password hashing
+
+### AI & APIs
+- **Groq SDK** - LLM inference (Llama 3.3 70B)
+- **Tavily API** - Real-time web search
+
+### DevOps & Deployment
+- **Vercel** - Frontend hosting
+- **Render** - Backend hosting
+- **MongoDB Atlas** - Cloud database
+
+---
+
+## 📁 Project Structure
+
+```
+Axon/
+├── client/                    # React frontend
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Layouts/      # Desktop & Mobile layouts
+│   │   │   ├── Pages/        # Route components
+│   │   │   └── minicomponents/ # Reusable UI components
+│   │   ├── contexts/         # React Context (Auth)
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── routes/           # Route configuration
+│   │   ├── utils/            # Helper functions
+│   │   └── constants/        # App constants
+│   ├── public/               # Static assets
+│   └── README.md             # Client documentation
+│
+├── server/                    # Node.js backend
+│   ├── src/
+│   │   ├── config/           # Configuration files
+│   │   │   ├── llm.js        # Groq SDK setup
+│   │   │   └── passport.js   # Auth strategies
+│   │   ├── controllers/      # Route controllers
+│   │   ├── models/           # MongoDB schemas
+│   │   ├── routes/           # API routes
+│   │   ├── utils/            # Utilities
+│   │   └── middlewares.js    # Custom middleware
+│   └── README.md             # Server documentation
+│
+└── README.md                  # This file
+```
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ & npm/yarn.
-- MongoDB instance (local or Atlas).
-- Google OAuth credentials (for auth).
 
-### Setup (Client: `/axon/client`)
-1. `cd client`
-2. `npm install`
-3. `npm start` (runs on http://localhost:3000)
+- **Node.js** >= 18.x
+- **npm** >= 9.x
+- **MongoDB** instance (Atlas or local)
+- **Groq API Key** - [Get one here](https://console.groq.com)
+- **Tavily API Key** - [Get one here](https://tavily.com)
 
-### Setup (Server: `/axon/server`)
-1. `cd server`
-2. `cp .env.example .env` (add your Mongo URI, Google OAuth keys).
-3. `npm install`
-4. `npm start` (runs on http://localhost:5000)
+### Installation
 
-### Full Run
-- Start server first.
-- Client auto-proxies to server via Axios.
-- Test auth: Visit `/auth/google` or use local login.
+**1. Clone the repository**
+```bash
+git clone https://github.com/yourusername/axon.git
+cd axon
+```
 
-For production: Add env vars for API keys (e.g., OpenAI/Groq for LLMs).
+**2. Install dependencies for both client and server**
+```bash
+# Install server dependencies
+cd server
+npm install
+
+# Install client dependencies
+cd ../client
+npm install
+```
+
+**3. Set up environment variables**
+
+**Server (`.env` in `server/` directory)**
+```env
+NODE_ENV=development
+MONGODB_URL=mongodb://localhost:27017/axon
+SESSION_SECRET=your-super-secret-key-minimum-32-characters
+CLIENT_URL=http://localhost:5173
+
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
+
+GROQ_API_KEY=your-groq-api-key
+TAVILY_API_KEY=your-tavily-api-key
+```
+
+**Client (`.env` in `client/` directory)**
+```env
+VITE_SERVER_URL=http://localhost:5000
+```
+
+**4. Run the application**
+
+Open two terminal windows:
+
+```bash
+# Terminal 1 - Start backend server
+cd server
+npm run dev
+
+# Terminal 2 - Start frontend
+cd client
+npm run dev
+```
+
+**5. Open your browser**
+
+Navigate to `http://localhost:5173` and start chatting! 🎉
+
+---
+
+## 📚 Documentation
+
+Detailed documentation for each part of the application:
+
+- **[Client Documentation](./client/README.md)** - Frontend setup, architecture, and development
+- **[Server Documentation](./server/README.md)** - Backend API, authentication, and deployment
+
+---
+
+## 🌐 Deployment
+
+### Frontend (Vercel)
+
+**1. Connect Repository**
+- Go to [Vercel](https://vercel.com)
+- Import your GitHub repository
+- Select the `client` directory as root
+
+**2. Configure Environment Variables**
+```env
+VITE_SERVER_URL=https://your-backend.onrender.com
+```
+
+**3. Deploy**
+- Vercel automatically deploys on push to main branch
+
+### Backend (Render)
+
+**1. Create Web Service**
+- Go to [Render](https://render.com)
+- Create new Web Service
+- Connect your GitHub repository
+- Set root directory to `server`
+
+**2. Configure Build & Start**
+- Build Command: `npm install`
+- Start Command: `npm start`
+
+**3. Set Environment Variables**
+```env
+NODE_ENV=production
+MONGODB_URL=your-mongodb-atlas-connection-string
+SESSION_SECRET=your-production-secret
+CLIENT_URL=https://your-app.vercel.app
+GOOGLE_CALLBACK_URL=https://your-backend.onrender.com/api/auth/google/callback
+GROQ_API_KEY=your-groq-api-key
+TAVILY_API_KEY=your-tavily-api-key
+```
+
+**4. Deploy**
+- Render automatically deploys on push to main branch
+
+### Google OAuth Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create a new project or select existing
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add authorized redirect URIs:
+   - `http://localhost:5000/api/auth/google/callback` (development)
+   - `https://your-backend.onrender.com/api/auth/google/callback` (production)
+6. Copy Client ID and Client Secret to your `.env` files
+
+---
+
+## 🔐 Security Features
+
+- ✅ **Bcrypt Password Hashing** - Secure password storage
+- ✅ **HTTP-Only Cookies** - Session cookies protected from XSS
+- ✅ **CSRF Protection** - SameSite cookie policy
+- ✅ **Environment Variables** - Sensitive data kept secure
+- ✅ **MongoDB Session Store** - Persistent, scalable sessions
+- ✅ **CORS Configuration** - Controlled cross-origin requests
+- ✅ **Input Validation** - Protected against injection attacks
+
+---
+
+## 🎨 Key Features Implementation
+
+### 1. Authentication System
+- Dual authentication: Google OAuth 2.0 and Local Strategy
+- Secure session management with MongoDB
+- Protected routes and middleware
+- Persistent login across devices
+
+### 2. AI Conversation Engine
+- Groq SDK integration for fast inference
+- Context-aware conversations with full history
+- Tool calling for web search functionality
+- Streaming responses for real-time feel
+
+### 3. Conversation Management
+- Create, read, update, delete conversations
+- Pin important chats to top
+- Search through conversation history
+- Bookmark individual messages
+
+### 4. Export Capabilities
+- Export entire conversations as formatted PDFs
+- Save code snippets as syntax-highlighted images
+- Maintain formatting and styling in exports
+
+### 5. Responsive Design
+- Mobile-first approach
+- Adaptive layouts for all screen sizes
+- Touch-friendly interface
+- Optimized for performance
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Session not persisting after login**
+- Check that `trust proxy` is set to `1` in server
+- Verify cookie settings: `secure: true` and `sameSite: 'none'` in production
+- Ensure `withCredentials: true` in frontend Axios config
+
+**CORS errors**
+- Verify `CLIENT_URL` matches your frontend URL exactly
+- Check `credentials: true` in CORS configuration
+- Ensure no trailing slashes in URLs
+
+**Google OAuth not working**
+- Verify callback URL matches Google Console exactly
+- Check that Google Client ID and Secret are correct
+- Ensure authorized redirect URIs are properly set
+
+**MongoDB connection fails**
+- Check connection string format
+- Verify IP whitelist in MongoDB Atlas
+- Ensure network access is configured
 
 ---
 
 ## 🤝 Contributing
 
-Axon is my passion project for GenAI learning — contributions welcome!  
-1. Fork & clone.
-2. Create a feature branch (`git checkout -b feature/amazing-tool`).
-3. Commit changes (`git commit -m "Add web search tool"`).
-4. Push & open a PR.
+Contributions are welcome! Here's how you can help:
 
-Feedback? Issues? Hit me up — let's build smarter together!
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. **Commit your changes**
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. **Push to the branch**
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. **Open a Pull Request**
 
----
-
-## 📄 License
-
-MIT License — Free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
-
----
-
-## 🙌 Acknowledgments
-
-- Built while accelerating my GenAI skills: Prompt engineering, tool calling, voice APIs.
-- Shoutout to React, Express, and the open-source community for making this possible.
-- **Connect**: Let's chat about AI projects! [LinkedIn](https://https://www.linkedin.com/in/thedevrahul/) | [GitHub](https://github.com/RahulSBytes/Axon)
-
-*Think Faster. Create Smarter. — Axon*  
-*Version 0.1.0 | Last Updated: Jan 2026*
+### Development Guidelines
+- Follow existing code style
+- Write meaningful commit messages
+- Test your changes thoroughly
+- Update documentation as needed
 
 ---
 
-> **Pro Tip**: Star the repo if this sparks ideas! 🌟 What's your next AI build?
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Your Name**
+
+- GitHub: [@yourusername](https://github.com/yourusername)
+- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
+- Portfolio: [yourwebsite.com](https://yourwebsite.com)
+- Email: your.email@example.com
+
+---
+
+## 🙏 Acknowledgments
+
+- [Groq](https://groq.com/) - For blazing-fast LLM inference
+- [Tavily](https://tavily.com/) - For reliable web search API
+- [Anthropic](https://anthropic.com/) - For AI inspiration
+- [Vercel](https://vercel.com/) - For seamless frontend hosting
+- [Render](https://render.com/) - For reliable backend hosting
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - For cloud database
+
+---
+
+## 📊 Project Stats
+
+- **Lines of Code**: ~5,000+
+- **Components**: 20+
+- **API Endpoints**: 15+
+- **Tech Stack**: 15+ technologies
+- **Development Time**: [Your timeline]
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Voice input/output for conversations
+- [ ] Multi-language support
+- [ ] Dark/Light theme toggle
+- [ ] Conversation sharing via public links
+- [ ] Advanced analytics dashboard
+- [ ] Mobile app (React Native)
+- [ ] File upload support for context
+- [ ] Custom AI model selection
+- [ ] Team collaboration features
+- [ ] API rate limiting
+
+---
+
+## 💡 Why Axon?
+
+Axon represents the intersection of **cutting-edge AI**, **modern web development**, and **user-centric design**. Built from the ground up with performance and scalability in mind, Axon showcases:
+
+- Full-stack development expertise
+- Modern JavaScript/React patterns
+- Secure authentication implementation
+- RESTful API design
+- Database modeling and optimization
+- Cloud deployment and DevOps
+- AI/ML integration capabilities
+
+Perfect for demonstrating technical skills to recruiters and potential employers! 🚀
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if you find it helpful!**
+
+**Made with ❤️ and ☕ by [Your Name]**
+
+[⬆ Back to Top](#-axon)
+
+</div>

@@ -27,15 +27,15 @@ function Saved() {
     setExpandedId(expandedId === messageId ? null : messageId);
   };
 
-  async function fetchmessages() {
-    const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/saved/`)
+   async function fetchmessages() {
+    const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/saved`)
     if (data.success) {
       setSavedMessages(data.savedMessages)
     } else {
       toast.error("Error fetching saved messages")
     }
   }
-
+  
   function openButtonsOption(e, messageId) {
     e.stopPropagation();
     setIsButtonsOpen(messageId);
@@ -53,6 +53,7 @@ function Saved() {
         setSavedMessages(prev => prev.filter((message) => message.messageId !== data.info.messageId));
       }
     } catch (error) {
+      console.log(error)
       toast.error("Error unsaving message");
     }
   };
@@ -91,7 +92,6 @@ function Saved() {
           user
         }) => {
           const isExpanded = expandedId === messageId;
-
 
           return (
             <div key={messageId} className="border-b border-zinc-300  flex flex-col">
@@ -142,7 +142,7 @@ function Saved() {
                           )}
                         </button>
                       </div>
-                      <EllipsisVertical onClick={(e) => openButtonsOption(e, messageId)} />
+                      <EllipsisVertical className='sm:hidden' onClick={(e) => openButtonsOption(e, messageId)} />
                     </> : <div className="flex items-center justify-between  rounded-lg h-full w-full">
                       <div className="flex items-center flex-1 justify-around">
                         <button onClick={withLoading(messageId, (e) => openParentChat(e, conversationId))} className="bg-zinc-200 justify-center flex items-center gap-1 px-3 py-1.5 text-sm text-zinc-700  rounded-md transition-colors">

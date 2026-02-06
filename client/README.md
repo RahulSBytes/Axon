@@ -1,88 +1,223 @@
 # Axon Client
 
-[![Axon Client Demo](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Axon+Client+Frontend)](https://example.com/demo)  
-*Frontend for Axon: Your AI-powered assistant for instant answers, creative ideas, and intelligent conversations. Built in React 19 as part of my GenAI learning journey.*
+React-based frontend for Axon - A multi-model AI agent with advanced conversation management.
+
+## 🚀 Tech Stack
+
+- **React 19.2** - Latest React with improved performance
+- **React Router DOM 7** - Client-side routing
+- **Tailwind CSS** - Utility-first styling
+- **Vite** - Lightning-fast build tool
+- **Axios** - HTTP client with credentials support
+
+## 📦 Key Dependencies
+
+```json
+{
+  "react": "^19.2.0",
+  "react-router-dom": "^7.12.0",
+  "axios": "^1.13.2",
+  "react-markdown": "^10.1.0",
+  "react-syntax-highlighter": "^16.1.0",
+  "html2pdf.js": "^0.14.0",
+  "lucide-react": "^0.562.0",
+  "prismjs": "^1.30.0",
+  "moment": "^2.30.1"
+}
+```
+
+## 🏗️ Project Structure
+
+```
+client/
+├── public/              # Static assets
+│   ├── Logo.png
+│   ├── favicon.png
+│   └── google.png
+│
+├── src/
+│   ├── components/
+│   │   ├── Layouts/         # Desktop/Mobile layouts
+│   │   ├── Pages/           # Route components
+│   │   └── minicomponents/  # Reusable UI components
+│   │
+│   ├── contexts/
+│   │   └── AuthContext.jsx  # Global auth state
+│   │
+│   ├── hooks/               # Custom React hooks
+│   │   ├── useAuth.js
+│   │   ├── useCopy.js
+│   │   ├── useLoadingState.js
+│   │   └── useTypingEffect.js
+│   │
+│   ├── routes/              # Route configuration
+│   │   ├── ProtectedRoute.jsx
+│   │   ├── PublicRoute.jsx
+│   │   └── index.jsx
+│   │
+│   ├── utils/               # Helper functions
+│   │   ├── exportPDF.js
+│   │   └── helpers.js
+│   │
+│   ├── constants/
+│   │   └── constant.js      # App constants
+│   │
+│   ├── App.jsx              # Main app component
+│   └── main.jsx             # Entry point
+│
+├── vite.config.js           # Vite configuration
+├── tailwind.config.js       # Tailwind configuration
+└── vercel.json             # Vercel deployment config
+```
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the client directory:
+
+```env
+VITE_SERVER_URL=http://localhost:5000
+```
+
+For production (Vercel):
+```env
+VITE_SERVER_URL=https://your-backend.onrender.com
+```
+
+## 🛠️ Installation & Setup
+
+**1. Install dependencies**
+```bash
+npm install
+```
+
+**2. Run development server**
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+**3. Build for production**
+```bash
+npm run build
+```
+
+**4. Preview production build**
+```bash
+npm run preview
+```
+
+## 🎯 Key Features Implementation
+
+### Authentication
+- Context-based auth state management (`AuthContext.jsx`)
+- Protected and public route wrappers
+- Google OAuth integration
+- Persistent sessions with cookies
+
+### Chat Interface
+- Real-time message streaming
+- Markdown rendering with syntax highlighting
+- Code snippet export as images
+- PDF export of conversations
+- Message bookmarking
+
+### Responsive Design
+- Mobile-first approach
+- Desktop and mobile layouts
+- Adaptive sidebar navigation
+- Touch-friendly UI components
+
+### Custom Hooks
+- `useAuth` - Authentication state management
+- `useCopy` - Clipboard operations
+- `useLoadingState` - Loading indicators
+- `useTypingEffect` - Animated text effects
+
+## 📡 API Integration
+
+All API calls use Axios with credentials enabled:
+
+```javascript
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
+```
+
+## 🎨 Styling
+
+- **Tailwind CSS** for utility-first styling
+- **Custom scrollbar** with tailwind-scrollbar plugin
+- **Lucide React** for icons
+- Responsive breakpoints: `sm`, `md`, `lg`, `xl`
+
+## 📤 Deployment (Vercel)
+
+**Automatic deployment:**
+1. Connect GitHub repository to Vercel
+2. Set environment variable: `VITE_SERVER_URL`
+3. Vercel auto-deploys on push to main branch
+
+**Manual deployment:**
+```bash
+npm run build
+vercel --prod
+```
+
+### Vercel Configuration (`vercel.json`)
+```json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+```
+
+## 🔧 Development Tips
+
+**Hot Module Replacement**
+- Vite enables instant HMR for fast development
+- Changes reflect immediately without full reload
+
+**Code Organization**
+- Components are organized by feature/type
+- Shared logic extracted to custom hooks
+- Constants centralized in `constants/`
+
+**Debugging**
+- React DevTools for component inspection
+- Network tab for API call monitoring
+- Console logs for state tracking
+
+## 📝 Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+```
+
+## 🐛 Common Issues
+
+**Issue: CORS errors**
+- Ensure `withCredentials: true` is set in Axios
+- Verify `VITE_SERVER_URL` matches your backend URL
+
+**Issue: Session not persisting**
+- Check cookie settings in browser DevTools
+- Ensure backend has correct CORS configuration
+
+**Issue: Build fails**
+- Clear node_modules: `rm -rf node_modules package-lock.json`
+- Reinstall: `npm install`
+
+## 📚 Additional Resources
+
+- [React Documentation](https://react.dev)
+- [Vite Documentation](https://vitejs.dev)
+- [Tailwind CSS](https://tailwindcss.com)
+- [React Router](https://reactrouter.com)
 
 ---
 
-## 🚀 Overview
-
-This is the client-side (frontend) of **Axon**, a full-stack AI chat app. It handles the user interface, real-time interactions, and GenAI features like streaming responses and tool calling. Built rapidly in 8 days while learning LLMs, it's designed for responsiveness and modularity.
-
-- **Tagline**: "Think Faster. Create Smarter."
-- **Focus**: Seamless UX with markdown rendering, code highlighting, and voice features.
-- **Status**: In active development — deployment soon!
-
----
-
-## ✨ Key Frontend Features
-
-- **Chat Interface**: Persistent history, pin chats, save messages.
-- **GenAI Integrations**: Multi-model selector, web search tool calling (RAG-style), streaming responses.
-- **Code Handling**: Syntax highlighting (Prism.js), copy buttons, export snippets.
-- **Accessibility**: Read-aloud with speed/voice controls, theme toggler (dark/light).
-- **Responsive Design**: Works flawlessly on mobile and desktop.
-- **Other Polish**: PDF exports (html2pdf.js), smooth routing (React Router).
-
----
-
-## 🛠 Tech Stack
-
-- **Core**: React 19, React DOM 19.
-- **Routing**: React Router DOM 7.12.
-- **Styling**: Tailwind CSS, Lucide React icons, Tailwind Scrollbar.
-- **Markdown/Code**: React Markdown 10.1, Remark GFM 4.0, React Syntax Highlighter 16.1, PrismJS 1.30.
-- **API/Utils**: Axios 1.13, CORS 2.8, Moment 2.30, HTML2PDF.js 0.14.
-- **Dev Setup**: Modular components for easy extension and testing.
-
----
-
-## 📸 Screenshots
-
-*(Replace with actual images!)*
-
-| Chat UI (Dark) | Code Block | Read-Aloud |
-|---------------|------------|------------|
-| ![Dark Chat](https://via.placeholder.com/300x200/1F2937/FFFFFF?text=Dark+Mode+Chat) | ![Code](https://via.placeholder.com/300x200/0F766E/FFFFFF?text=Code+Highlight) | ![Voice](https://via.placeholder.com/300x200/7C3AED/FFFFFF?text=Read-Aloud) |
-
-| Mobile View | Model Selector |
-|-------------|----------------|
-| ![Mobile](https://via.placeholder.com/300x200/059669/FFFFFF?text=Mobile+View) | ![Models](https://via.placeholder.com/300x200/EAB308/000000?text=Model+Switch) |
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+.
-- Running backend (see /axon/server README).
-
-### Installation
-1. `cd /axon/client`
-2. `npm install`
-3. `npm start` (localhost:3000)
-
-### Build for Production
-`npm run build` — Outputs to `/build` for static hosting (e.g., Vercel/Netlify).
-
----
-
-## 🤝 Contributing
-
-Fork, branch, PR! Focus on UX enhancements or new GenAI tools.
-
----
-
-## 📄 License
-
-MIT — See [LICENSE](../LICENSE).
-
----
-
-## 🙌 Acknowledgments
-
-Part of my GenAI deep dive. Connect: [LinkedIn](https://https://www.linkedin.com/in/thedevrahul/) | [GitHub](https://github.com/RahulSBytes/Axon)
-
-*Version 0.1.0 | Jan 2026*
-
----
+**Built with ⚡ Vite + ⚛️ React**

@@ -17,6 +17,8 @@ import NotFound from '../components/Pages/NotFound'
 import Tagline from '../components/minicomponents/Tagline';
 import Chat from '../components/Pages/Chat';
 import About from '../components/Pages/About';
+import Privacy from '../components/Pages/Privacy';
+import Terms from '../components/Pages/Terms';
 
 
 export const router = createBrowserRouter(
@@ -33,6 +35,8 @@ export const router = createBrowserRouter(
       </Route>
 
       <Route path='/login' element={<Login />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
       <Route path='/signup' element={<Signup />} />
 
       {/* 404 */}
