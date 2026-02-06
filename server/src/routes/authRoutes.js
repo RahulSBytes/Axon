@@ -26,14 +26,10 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    failureRedirect: `${process.env.CLIENT_URL}/login?error=google_auth_failed`,
-  }),
-  (req, res) => {
-    res.redirect(`${process.env.CLIENT_URL}/`);
-  }
+    failureRedirect: `${process.env.CLIENT_URL}/login`,
+    successRedirect: `${process.env.CLIENT_URL}/`,
+  })
 );
-
-
 
 
 export default router;
