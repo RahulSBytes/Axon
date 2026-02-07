@@ -32,37 +32,100 @@ Node.js/Express backend for Axon - Handles authentication, AI conversations, and
 ## 🏗️ Project Structure
 
 ```
-server/
-├── index.js                 # Server entry point & configuration
-│
-├── src/
-│   ├── config/
-│   │   ├── llm.js          # Groq SDK & AI configuration
-│   │   └── passport.js     # Passport strategies setup
-│   │
-│   ├── controllers/
-│   │   ├── authControllers.js           # Auth logic
-│   │   ├── conversationControllers.js   # Chat operations
-│   │   └── savedMessageController.js    # Bookmarked messages
-│   │
-│   ├── models/
-│   │   ├── user.js         # User schema
-│   │   ├── conversation.js # Chat schema
-│   │   └── savedMessage.js # Saved message schema
-│   │
-│   ├── routes/
-│   │   ├── authRoutes.js           # /api/auth/*
-│   │   ├── conversationRoutes.js   # /api/conversations/*
-│   │   └── savedMessageRoutes.js   # /api/saved/*
-│   │
-│   ├── utils/
-│   │   ├── db.js           # MongoDB connection
-│   │   ├── error.js        # Error handling
-│   │   └── helpers.js      # Utility functions
-│   │
-│   └── middlewares.js      # Custom middlewares
-│
-└── package.json
+Axon/
+├── README.md
+├── client/
+│   ├── .gitignore
+│   ├── README.md
+│   ├── bundle-analysis.html
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── public/
+│   │   ├── Logo.png
+│   │   ├── Logo2.png
+│   │   ├── favicon.png
+│   │   └── google.png
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── CodeSnippet.jsx
+│   │   ├── components/
+│   │   │   ├── Layouts/
+│   │   │   │   ├── DesktopLayout.jsx
+│   │   │   │   ├── MobileLayout.jsx
+│   │   │   │   ├── Mobnav.jsx
+│   │   │   │   ├── Responsive.jsx
+│   │   │   │   └── Sidebar.jsx
+│   │   │   ├── Pages/
+│   │   │   │   ├── About.jsx
+│   │   │   │   ├── Chat.jsx
+│   │   │   │   ├── History.jsx
+│   │   │   │   ├── Home.jsx
+│   │   │   │   ├── Login.jsx
+│   │   │   │   ├── NotFound.jsx
+│   │   │   │   ├── Privacy.jsx
+│   │   │   │   ├── Saved.jsx
+│   │   │   │   ├── Signup.jsx
+│   │   │   │   └── Terms.jsx
+│   │   │   └── minicomponents/
+│   │   │       ├── MarkdownRenderer.jsx
+│   │   │       ├── Message.jsx
+│   │   │       ├── MiniLoader.jsx
+│   │   │       ├── NewChatButton.jsx
+│   │   │       ├── Prompt.jsx
+│   │   │       └── Tagline.jsx
+│   │   ├── constants/
+│   │   │   └── constant.js
+│   │   ├── contexts/
+│   │   │   └── AuthContext.jsx
+│   │   ├── hooks/
+│   │   │   ├── useAuth.js
+│   │   │   ├── useCopy.js
+│   │   │   ├── useLoadingState.js
+│   │   │   └── useTypingEffect.js
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   │   ├── routes/
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   ├── PublicRoute.jsx
+│   │   │   └── index.jsx
+│   │   └── utils/
+│   │       ├── exportPDF.js
+│   │       └── helpers.js
+│   ├── tailwind.config.js
+│   ├── vercel.json
+│   └── vite.config.js
+├── delete.txt
+├── notes.md
+└── server/
+    ├── .gitignore
+    ├── README.md
+    ├── index.js
+    ├── package-lock.json
+    ├── package.json
+    └── src/
+        ├── config/
+        │   ├── llm.js
+        │   └── passport.js
+        ├── controllers/
+        │   ├── authControllers.js
+        │   ├── conversationControllers.js
+        │   └── savedMessageController.js
+        ├── middlewares.js
+        ├── models/
+        │   ├── conversation.js
+        │   ├── savedMessage.js
+        │   └── user.js
+        ├── routes/
+        │   ├── authRoutes.js
+        │   ├── conversationRoutes.js
+        │   └── savedMessageRoutes.js
+        └── utils/
+            ├── db.js
+            ├── error.js
+            └── helpers.js
 ```
 
 ## ⚙️ Environment Variables
@@ -179,38 +242,103 @@ app.use(session({
 ### User Model
 ```javascript
 {
-  name: String,
-  email: String (unique),
-  password: String (hashed),
-  googleId: String,
-  avatar: String,
-  createdAt: Date
-}
+    fullName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+    password: {
+      type: String,
+      select: false,
+    },
+    avatar: {
+      type: String,
+      default: null,
+    },
+    providers: {
+      type: [String],
+      enum: ["local", "google"],
+      default: ["local"],
+    },
+    googleId: {
+      type: String,
+      default: null,
+    },
+  },
 ```
 
 ### Conversation Model
 ```javascript
 {
-  userId: ObjectId,
-  title: String,
-  messages: [{
-    role: String (user/assistant),
-    content: String,
-    timestamp: Date
-  }],
-  isPinned: Boolean,
-  createdAt: Date
-}
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    title: {
+      type: String,
+      default: "New Conversation",
+    },
+    isPinned: {
+      type: Boolean,
+      default: false,
+    },
+    activeModel: {
+      type: String,
+      default: "llama-3.1-8b-instant",
+    },
+    totalUsage: {
+      prompt_tokens: { type: Number, default: 0 },
+      completion_tokens: { type: Number, default: 0 },
+      total_tokens: { type: Number, default: 0 },
+    },
+    messages: [messageSchema],
+  },
 ```
 
 ### Saved Message Model
 ```javascript
-{
-  userId: ObjectId,
-  conversationId: ObjectId,
-  message: String,
-  createdAt: Date
-}
+ {
+    conversationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Conversation",
+      required: true,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
+    messageId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    messageText: {
+      type: String,
+      required: true,
+    },
+    metadata: {
+      model: String,
+      latency_ms: Number,
+    },
+
+    parentQuestion: {
+      questionText: {
+        type: String,
+        default: null,
+      },
+      questionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: null,
+      },
+    },
+
+  },
 ```
 
 ## 🛡️ Middleware
@@ -313,13 +441,13 @@ npm run dev      # Development with nodemon
 
 ## 🔒 Security Best Practices
 
-✅ Environment variables for sensitive data  
-✅ Bcrypt for password hashing  
-✅ HTTP-only cookies for sessions  
-✅ CSRF protection via SameSite cookies  
-✅ Rate limiting (implement if needed)  
-✅ Input validation and sanitization  
-✅ MongoDB injection protection via Mongoose  
+- Environment variables for sensitive data  
+- Bcrypt for password hashing  
+- HTTP-only cookies for sessions  
+- CSRF protection via SameSite cookies  
+- Rate limiting (implement if needed)  
+- Input validation and sanitization  
+- MongoDB injection protection via Mongoose  
 
 ## 📚 Additional Resources
 
