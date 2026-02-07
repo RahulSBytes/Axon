@@ -1,9 +1,22 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
 import MiniLoader from '../components/minicomponents/MiniLoader.jsx';
+import { useEffect } from 'react';
 
 export default function ProtectedRoute({ children }) {
+  const location = useLocation();
   const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (location.pathname === '/' || location.pathname === '/home') {
+      const timer = setTimeout(() => {
+        import('../components/Pages/Saved.jsx');
+        import('../components/Pages/Chat.jsx');
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname]);
+
 
   if (loading) {
     return (
@@ -12,5 +25,6 @@ export default function ProtectedRoute({ children }) {
       </div>
     );
   }
+
   return user ? children : <Navigate to={'/login'} replace />
 }

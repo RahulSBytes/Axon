@@ -1,11 +1,11 @@
 import axios from "axios";
-import moment from "moment";
+import dayjs from 'dayjs';
 
 export function formatDateOrTime(date) {
-  const m = moment(date);
-  return m.isSame(moment(), "day")
-    ? m.format("hh:mm a")
-    : m.format("DD/MM/YYYY");
+  const d = dayjs(date);
+  return d.isSame(dayjs(), 'day')
+    ? d.format('hh:mm a')
+    : d.format('DD/MM/YYYY');
 }
 
 

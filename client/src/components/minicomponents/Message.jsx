@@ -10,12 +10,12 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 import { useTypingEffect } from '../../hooks/useTypingEffect.js';
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer';
 import axios from 'axios';
 import { useCopy } from '../../hooks/useCopy.js';
 import toast from 'react-hot-toast';
+import { formatDateOrTime } from '../../utils/helpers.js';
 
 function Message({ message, setChats, chatId, onTyping }) {
   const { _id, role, text, createdAt, isSaved, metadata = {}, isNew = null } = message;
@@ -25,8 +25,8 @@ function Message({ message, setChats, chatId, onTyping }) {
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [showVoiceMenu, setShowVoiceMenu] = useState(false);
   const [speechRate, setSpeechRate] = useState(1);
-    const {copied, copyToClipboard} = useCopy()
-  
+  const { copied, copyToClipboard } = useCopy()
+
 
   const shouldAnimate = role === 'assistant' && isNew === true;
   const displayedText = useTypingEffect(shouldAnimate ? text : null);
@@ -153,8 +153,7 @@ function Message({ message, setChats, chatId, onTyping }) {
         <div className="flex text-xs items-center font-medium text-zinc-500">
           <span className="text-zinc-800 font-semibold">You</span>
           <Dot />
-          {moment(
-            createdAt).fromNow()}
+          {formatDateOrTime(createdAt)}
         </div>
         <div className="text-zinc-800 mt-1 whitespace-pre-wrap">{text}</div>
       </div>
@@ -162,7 +161,7 @@ function Message({ message, setChats, chatId, onTyping }) {
   }
 
   return (
-    <div className="max-w-[85%] rounded-lg p-3 self-start mt-2">
+    <div className="max-w-[85%] rounded-lg p-3 self-start mt-2 print:max-w-full print:w-full">
       {/* Header */}
       <div className="flex text-xs items-center font-medium text-zinc-500">
         <span className="text-zinc-800 flex text-base items-center gap-1 font-semibold">
@@ -170,8 +169,7 @@ function Message({ message, setChats, chatId, onTyping }) {
           Axon
         </span>
         <Dot />
-        {moment(
-          createdAt).fromNow()}
+        {formatDateOrTime(createdAt)}
       </div>
 
       <div className="text-zinc-800 mt-1 ">

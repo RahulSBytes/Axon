@@ -14,3 +14,120 @@ body {
   -ms-overflow-style: none;  
   scrollbar-width: none;
 }
+
+
+
+
+
+/* ═══════════════════════════════════════════ */
+/*              PRINT STYLES                   */
+/* ═══════════════════════════════════════════ */
+
+#print-header {
+  display: none;
+}
+
+@media print {
+  
+  /* Enable background colors */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide everything */
+  body.printing-pdf * {
+    visibility: hidden;
+  }
+
+  /* Show printable content */
+  body.printing-pdf #pdf-printable,
+  body.printing-pdf #pdf-printable * {
+    visibility: visible;
+  }
+
+  /* Show header */
+  body.printing-pdf #print-header {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  /* Printable area - FULL WIDTH */
+  body.printing-pdf #pdf-printable {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    max-width: 100% !important;
+    padding: 10px !important;
+    margin: 0 !important;
+    background: white !important;
+  }
+
+  /* ALL children - full width, no scroll */
+  body.printing-pdf #pdf-printable *,
+  body.printing-pdf #pdf-printable div,
+  body.printing-pdf #pdf-printable article,
+  body.printing-pdf #pdf-printable section {
+    max-width: 100% !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* Code blocks - CRITICAL */
+  body.printing-pdf #pdf-printable pre,
+  body.printing-pdf #pdf-printable pre *,
+  body.printing-pdf #pdf-printable code,
+  body.printing-pdf #pdf-printable [class*="syntax"],
+  body.printing-pdf #pdf-printable [class*="highlight"],
+  body.printing-pdf #pdf-printable [class*="prism"],
+  body.printing-pdf #pdf-printable [class*="code"] {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    max-width: 100% !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* Hide buttons */
+  body.printing-pdf button,
+  body.printing-pdf input,
+  body.printing-pdf textarea,
+  body.printing-pdf nav,
+  body.printing-pdf .no-print {
+    display: none !important;
+  }
+
+  /* Text readability */
+  body.printing-pdf #pdf-printable p,
+  body.printing-pdf #pdf-printable li,
+  body.printing-pdf #pdf-printable h1,
+  body.printing-pdf #pdf-printable h2,
+  body.printing-pdf #pdf-printable h3 {
+    color: #1a1a1a !important;
+  }
+
+  /* Keep syntax colors */
+  body.printing-pdf #pdf-printable pre,
+  body.printing-pdf #pdf-printable pre code,
+  body.printing-pdf #pdf-printable pre span {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Page settings */
+  @page {
+    margin: 10mm;
+    size: A4;
+  }
+}

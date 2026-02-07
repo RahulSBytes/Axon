@@ -51,19 +51,19 @@ export default function Signup() {
   };
 
   const handleGoogleSignup = () => {
-    loginWithGoogle(); // Same endpoint for login and signup
+    loginWithGoogle();
   };
 
-  return (<div className="flex h-screen w-full bg-primary pr-10 font-adlam">
-    <div className="w-2/5 h-full flex  gap-8 flex-col items-center justify-center">
+  return (<div className="flex h-screen  flex-col md:flex-row w-full bg-primary md:pr-10 font-adlam">
+    <div className="md:w-2/5 md:h-full h-1/4 w-full flex  gap-8 flex-col items-center md:justify-center justify-end">
       <span className="text-xl ">Signup to</span>
       <div className="flex gap-1">
         <Ghost size={36} />
         <span className="text-4xl font-bold">Axon</span>
       </div>
     </div>
-    <div className="h-full flex flex-1 justify-center items-center gap-4">
-      <form action="" method="post" className=" flex flex-col gap-6 h-screen w-4/6 justify-center">
+    <div className=" flex flex-1 justify-center items-center gap-4">
+      <form action="" method="post" className=" flex flex-col gap-6 md:h-screen w-4/6 justify-center">
         <div className=" flex flex-col">
           <label htmlFor="fullName" className="text-xl font-medium">Fullname</label>
           <input type="text" onChange={handleChange} value={formData.fullName} required name="fullName" id="fullName" className="bg-[#D9D9D9] text-zinc-800 p-1 outline-none" />

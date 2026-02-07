@@ -10,6 +10,7 @@ import { isAuthenticated } from '../middlewares.js';
 
 const router = express.Router();
 
+
 router.get(
   '/google',
   passport.authenticate('google', {

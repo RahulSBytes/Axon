@@ -1,4 +1,3 @@
-import html2pdf from "html2pdf.js";
 import toast from "react-hot-toast";
 
 export const exportPDF = (options = {}) => {
@@ -7,179 +6,216 @@ export const exportPDF = (options = {}) => {
   const element = document.getElementById("pdf-printable");
 
   if (!element) {
-    alert("Nothing to export!");
+    toast.error("Nothing to export!");
     return;
   }
 
-  const clonedElement = element.cloneNode(true);
+  // Scroll to top
+  element.scrollTop = 0;
+  window.scrollTo(0, 0);
 
-  const hiddenContainer = document.createElement("div");
-  hiddenContainer.style.cssText = `
-    position: fixed;
-    left: -9999px;
-    top: 0;
-    width: ${element.offsetWidth}px;
-    visibility: hidden;
-    pointer-events: none;
+  // Store originals
+  const originalTitle = document.title;
+  const originalStyles = new Map();
+
+  // ═══════════════════════════════════════════════════════════
+  // 🔥 FIX: Force ALL elements inside #pdf-printable to be
+  //         full width and non-scrollable
+  // ═══════════════════════════════════════════════════════════
+
+  const allElements = element.querySelectorAll('*');
+  
+  allElements.forEach((el) => {
+    // Store original styles
+    originalStyles.set(el, {
+      cssText: el.style.cssText,
+      className: el.className
+    });
+
+    // Get computed style to check current values
+    const computed = window.getComputedStyle(el);
+
+    // Fix width constraints
+    if (computed.maxWidth !== 'none' && computed.maxWidth !== '100%') {
+      el.style.maxWidth = '100%';
+    }
+    
+    // Fix overflow (especially for code blocks)
+    if (computed.overflow !== 'visible' || 
+        computed.overflowX !== 'visible' || 
+        computed.overflowY !== 'visible') {
+      el.style.overflow = 'visible';
+      el.style.overflowX = 'visible';
+      el.style.overflowY = 'visible';
+    }
+
+    // Fix height constraints
+    if (computed.maxHeight !== 'none') {
+      el.style.maxHeight = 'none';
+    }
+
+    // Fix fixed heights on scrollable containers
+    if (el.scrollHeight > el.clientHeight) {
+      el.style.height = 'auto';
+    }
+
+    // Remove margin auto (centering)
+    if (computed.marginLeft === 'auto' || computed.marginRight === 'auto') {
+      el.style.marginLeft = '0';
+      el.style.marginRight = '0';
+    }
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  // 🔥 FIX: Specifically target code blocks
+  // ═══════════════════════════════════════════════════════════
+
+  const codeBlocks = element.querySelectorAll('pre, code, [class*="syntax"], [class*="highlight"], [class*="prism"]');
+  
+  codeBlocks.forEach((block) => {
+    originalStyles.set(block, {
+      cssText: block.style.cssText,
+      className: block.className
+    });
+
+    block.style.cssText += `
+      overflow: visible !important;
+      overflow-x: visible !important;
+      overflow-y: visible !important;
+      max-height: none !important;
+      height: auto !important;
+      max-width: 100% !important;
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      word-break: break-word !important;
+    `;
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  // 🔥 FIX: Target the printable element itself
+  // ═══════════════════════════════════════════════════════════
+
+  const originalElementStyle = element.style.cssText;
+  element.style.cssText += `
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
   `;
-  document.body.appendChild(hiddenContainer);
 
-  clonedElement.style.cssText = `
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background: white;
-    color: black;
-  `;
+  // ═══════════════════════════════════════════════════════════
+  // 🔥 FIX: Target all ancestors
+  // ═══════════════════════════════════════════════════════════
 
-  const headerHTML = `
+  const ancestors = [];
+  let parent = element.parentElement;
+  while (parent && parent !== document.body) {
+    ancestors.push({
+      element: parent,
+      originalStyle: parent.style.cssText
+    });
+    parent.style.cssText += `
+      overflow: visible !important;
+      height: auto !important;
+      max-height: none !important;
+    `;
+    parent = parent.parentElement;
+  }
+
+  // Store body/html originals
+  const originalBodyStyle = document.body.style.cssText;
+  const originalHtmlStyle = document.documentElement.style.cssText;
+
+  document.body.style.overflow = 'visible';
+  document.documentElement.style.overflow = 'visible';
+
+  // Set filename
+  const filename = `${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${
+    new Date().toISOString().split("T")[0]
+  }`;
+  document.title = filename;
+
+  // Create header
+  const header = document.createElement("div");
+  header.id = "print-header";
+  header.innerHTML = `
+    <h1 style="
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 12px 0;
+    ">${title}</h1>
     <div style="
-      width: 100%;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+      padding-bottom: 12px;
       border-bottom: 3px solid #D96E6E;
     ">
-      <h1 style="
-        font-size: 28px;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin: 0 0 12px 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      ">${title}</h1>
-      <div style="
-        font-size: 13px;
-        color: #666666;
-        line-height: 1.6;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      ">
-        <p style="margin: 0 0 4px 0;">
-          <strong>Exported:</strong> ${new Date().toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </p>
-        ${
-          userName
-            ? `<p style="margin: 0;"><strong>By:</strong> ${userName}${
-                userEmail ? ` • ${userEmail}` : ""
-              }</p>`
-            : ""
-        }
-      </div>
+      <p style="margin: 0 0 4px 0;">
+        <strong>Exported:</strong> ${new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </p>
+      ${
+        userName
+          ? `<p style="margin: 0;"><strong>By:</strong> ${userName}${
+              userEmail ? ` • ${userEmail}` : ""
+            }</p>`
+          : ""
+      }
     </div>
   `;
 
-  clonedElement.insertAdjacentHTML("afterbegin", headerHTML);
+  element.insertBefore(header, element.firstChild);
+  document.body.classList.add("printing-pdf");
 
-  
-  const codeBlocks = clonedElement.querySelectorAll("pre");
-  codeBlocks.forEach((block) => {
-    block.style.cssText = `
-      display: block !important;
-      overflow: visible !important;
-      white-space: pre-wrap !important;
-      word-wrap: break-word !important;
-      max-width: 100% !important;
-      font-size: 11px !important;
-      line-height: 1.5 !important;
-      page-break-inside: auto !important;
-      break-inside: auto !important;
-    `;
-  });
+  // Print after styles apply
+  setTimeout(() => {
+    window.print();
+  }, 300);
 
-  const codeElements = clonedElement.querySelectorAll("pre code");
-  codeElements.forEach((code) => {
-    code.style.cssText = `
-      display: block !important;
-      white-space: pre-wrap !important;
-      word-wrap: break-word !important;
-      page-break-inside: auto !important;
-      break-inside: auto !important;
-    `;
-  });
-
-  const messages = clonedElement.querySelectorAll(
-    '[class*="message"], [class*="Message"]'
-  );
-  messages.forEach((msg) => {
-    const height = msg.offsetHeight;
-    if (height < 300) {
-      msg.style.pageBreakInside = "avoid";
-      msg.style.breakInside = "avoid";
-    } else {
-      msg.style.pageBreakInside = "auto";
-      msg.style.breakInside = "auto";
-    }
-    msg.style.marginBottom = "16px";
-  });
-
-  const headings = clonedElement.querySelectorAll("h1, h2, h3, h4, h5, h6");
-  headings.forEach((heading) => {
-    heading.style.pageBreakAfter = "avoid";
-    heading.style.breakAfter = "avoid";
-    heading.style.pageBreakInside = "avoid";
-  });
-
-  const listItems = clonedElement.querySelectorAll("li");
-  listItems.forEach((li) => {
-    if (li.offsetHeight < 100) {
-      li.style.pageBreakInside = "avoid";
-    }
-  });
-
-  const textElements = clonedElement.querySelectorAll("p, span, div, li");
-  textElements.forEach((el) => {
-    if (!el.closest("pre") && !el.closest("code")) {
-      el.style.color = "#1a1a1a";
-    }
-  });
-
-  hiddenContainer.appendChild(clonedElement);
-
-  html2pdf()
-    .set({
-      margin: [12, 12, 12, 12],
-      filename: `${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${
-        new Date().toISOString().split("T")[0]
-      }.pdf`,
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        letterRendering: true,
-        allowTaint: true,
-        scrollY: 0,
-        scrollX: 0,
-        windowWidth: element.offsetWidth,
-        backgroundColor: "#ffffff",
-      },
-      jsPDF: {
-        unit: "mm",
-        format: "a4",
-        orientation: "portrait",
-        compress: true,
-      },
-      pagebreak: {
-        mode: ["css", "legacy"], 
-        before: ".page-break-before",
-        after: ".page-break-after",
-        avoid: "h1, h2, h3, h4, h5, h6",
-      },
-    })
-    .from(clonedElement)
-    .save()
-    .then(() => {
-      if (document.body.contains(hiddenContainer)) {
-        document.body.removeChild(hiddenContainer);
-      }
-    })
-    .catch((error) => {
-      toast.error("PDF generation failed");
-      if (document.body.contains(hiddenContainer)) {
-        document.body.removeChild(hiddenContainer);
+  // Cleanup
+  const cleanup = () => {
+    // Remove print class
+    document.body.classList.remove("printing-pdf");
+    
+    // Restore title
+    document.title = originalTitle;
+    
+    // Restore element styles
+    element.style.cssText = originalElementStyle;
+    
+    // Restore all child elements
+    originalStyles.forEach((original, el) => {
+      if (el && el.style) {
+        el.style.cssText = original.cssText;
       }
     });
+
+    // Restore ancestors
+    ancestors.forEach(({ element: el, originalStyle }) => {
+      el.style.cssText = originalStyle;
+    });
+
+    // Restore body/html
+    document.body.style.cssText = originalBodyStyle;
+    document.documentElement.style.cssText = originalHtmlStyle;
+    
+    // Remove header
+    if (header.parentNode) {
+      header.parentNode.removeChild(header);
+    }
+
+    window.removeEventListener("afterprint", cleanup);
+  };
+
+  window.addEventListener("afterprint", cleanup);
+  setTimeout(cleanup, 15000);
 };

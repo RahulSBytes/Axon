@@ -4,7 +4,6 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { formatDateOrTime } from '../../utils/helpers.js'
-import moment from 'moment'
 import MarkdownRenderer from '../minicomponents/MarkdownRenderer.jsx'
 import { useCopy } from '../../hooks/useCopy.js'
 import { useLoadingState } from '../../hooks/useLoadingState.js'
@@ -26,6 +25,7 @@ function Saved() {
 
   const navigate = useNavigate()
   const { copied, copyToClipboard } = useCopy()
+
 
 
   async function fetchmessages() {
@@ -127,7 +127,6 @@ function Saved() {
                         </p>
                       </div>
 
-                      {/* Action Buttons */}
                       <div className="gap-3 text-zinc-800 hidden sm:flex">
                         <button
                           onClick={(e) => openParentChat(e, conversationId)}
@@ -182,7 +181,7 @@ function Saved() {
                         <div className="flex items-center gap-2 text-xs text-zinc-400 mb-2">
                           <span className="font-semibold text-zinc-200">You</span>
                           <Dot size={16} />
-                          <span>{moment(createdAt).fromNow()}</span>
+                          <span>{formatDateOrTime(createdAt)}</span>
                         </div>
                         <p className="whitespace-pre-wrap text-sm md:text-base">
                           {parentQuestion.questionText}
@@ -202,7 +201,7 @@ function Saved() {
                             Axon
                           </div>
                           <Dot size={16} />
-                          <span>{moment(createdAt).fromNow()}</span>
+                          <span>{formatDateOrTime(createdAt)}</span>
                         </div>
 
                         {/* Message Content */}

@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef } from 'react'
 import axios from 'axios'
 import Message from '../minicomponents/Message.jsx';
 import toast from 'react-hot-toast';
-import MiniLoader from '../minicomponents/MiniLoader.jsx';
 
 function Chat() {
 

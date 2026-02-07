@@ -67,6 +67,15 @@ app.use("/api/auth", authRoutes);
 app.use("/api/chats", conversationRoutes);
 app.use("/api/saved", savedMessageRoutes);
 
+// just to keep backend alive 
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 // --------- global error handler ---------
 
 app.use(errorHandlerMiddleware);

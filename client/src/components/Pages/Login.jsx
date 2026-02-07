@@ -10,22 +10,25 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [seePassword, setSeePassword] = useState(false);
-  const { login, loginWithGoogle} = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true)
     try {
-      setIsLoading(true)
-      e.preventDefault();
       const result = await login(email, password);
+      console.log(result)
       if (result.success) {
         toast.success("Welcome back");
         navigate('/');
-      } 
+      }else{
+        toast.error(result.message || "something went wrong")
+      }
     } catch (error) {
       toast.error("failed to login")
-    } finally{
+    } finally {
       setIsLoading(false)
     }
   };
@@ -57,7 +60,7 @@ export default function Login() {
             {seePassword ? <EyeClosed className="cursor-pointer" size={20} onClick={() => setSeePassword(false)} /> : <Eye className="cursor-pointer" size={20} onClick={() => setSeePassword(true)} />}
           </div>
         </div>
-        <button onClick={handleSubmit} disabled={isLoading} className="w-2/3 self-center rounded-full py-[5px] bg-zinc-800 text-zinc-100 mb-2" type="submit">{isLoading? "hold on...": "submit"}</button>
+        <button type="submit" onClick={handleSubmit} disabled={isLoading} className="w-2/3 self-center rounded-full py-[5px] bg-zinc-800 text-zinc-100 mb-2" >{isLoading ? "hold on..." : "submit"}</button>
         <p className="self-center text-zinc-700">Don't have an account? <a href="/signup" className="text-blue-700">Sign up</a></p>
         <div className="flex items-center justify-between ">
           <hr className=" w-2/5 bg-zinc-700 h-[2px]" />
