@@ -19,10 +19,8 @@ React-based frontend for Axon - A multi-model AI agent with advanced conversatio
   "axios": "^1.13.2",
   "react-markdown": "^10.1.0",
   "react-syntax-highlighter": "^16.1.0",
-  "html2pdf.js": "^0.14.0",
   "lucide-react": "^0.562.0",
-  "prismjs": "^1.30.0",
-  "moment": "^2.30.1"
+  "prismjs": "^1.30.0"
 }
 ```
 
@@ -132,7 +130,6 @@ npm run preview
 - `useAuth` - Authentication state management
 - `useCopy` - Clipboard operations
 - `useLoadingState` - Loading indicators
-- `useTypingEffect` - Animated text effects
 
 ## 📡 API Integration
 
@@ -210,14 +207,5 @@ npm run lint         # Run ESLint
 **Issue: Build fails**
 - Clear node_modules: `rm -rf node_modules package-lock.json`
 - Reinstall: `npm install`
-
-## 📚 Additional Resources
-
-- [React Documentation](https://react.dev)
-- [Vite Documentation](https://vitejs.dev)
-- [Tailwind CSS](https://tailwindcss.com)
-- [React Router](https://reactrouter.com)
-
----
 
 **Built with ⚡ Vite + ⚛️ React**
