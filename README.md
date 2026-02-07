@@ -11,7 +11,7 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://mongodb.com)
 [![Groq](https://img.shields.io/badge/Groq-Powered-FF6B6B?style=flat-square)](https://groq.com)
 
-[🚀 Live Demo](https://your-app.vercel.app) • [📖 Documentation](#-documentation) • [🐛 Report Bug](https://github.com/yourusername/axon/issues)
+[🚀 Live Demo](https://axon-nine-mu.vercel.app) • [📖 Documentation](https://github.com/RahulSBytes/Axon) • [🐛 Report Bug](https://github.com/RahulSBytes/Axon/issues)
 
 </div>
 
@@ -23,14 +23,14 @@ Axon is a **full-stack AI chat application** that leverages the power of Groq's 
 
 ### 🎯 Key Highlights
 
-- ⚡ **Lightning Fast** - Groq-powered inference for near-instant AI responses
-- 🌐 **Real-Time Web Search** - Tavily integration for live, accurate information
-- 🧠 **Context Memory** - AI remembers your entire conversation history
-- 💾 **Persistent Sessions** - MongoDB-backed session management across devices
-- 📤 **Advanced Exports** - Save chats as PDFs or code snippets as images
-- 🔐 **Secure Authentication** - Google OAuth 2.0 and local email/password auth
-- 📱 **Fully Responsive** - Beautiful UI on desktop, tablet, and mobile
-- 🎨 **Modern Stack** - React 19, Node.js, Express 5, MongoDB
+-  **Lightning Fast** - Groq-powered inference for near-instant AI responses
+-  **Real-Time Web Search** - Tavily integration for live, accurate information
+-  **Context Memory** - AI remembers your entire conversation history
+- **Persistent Sessions** - MongoDB-backed session management across devices
+- **Advanced Exports** - Save chats as PDFs or code snippets as images
+- **Secure Authentication** - Google OAuth 2.0 and local email/password auth
+- **Fully Responsive** - Beautiful UI on desktop, tablet, and mobile
+- **Modern Stack** - React 19, Node.js, Express 5, MongoDB
 
 ---
 
@@ -41,11 +41,24 @@ Axon is a **full-stack AI chat application** that leverages the power of Groq's 
 ### Chat Interface
 *Real-time AI conversations with markdown support and syntax highlighting*
 
-### Export Features
-*Download conversations as PDFs or save code snippets as beautiful images*
+![Image](https://drive.google.com/uc?export=view&id=1PpEjtg65OX-dfffccd1U74l_VanlApTJ)
 
-### Mobile Experience
-*Responsive design that works flawlessly on all devices*
+
+### Read aloud feature
+*read aloud feature with voice changing and speed control feature*
+
+![Image](https://drive.google.com/uc?export=view&id=1YaLTuc61Hz7HXxkY4fQWcNrcW87Ly7wd)
+
+### History Page
+*History page preview*
+
+![Image](https://drive.google.com/uc?export=view&id=1FgdHWezzYZF2i921q3nKp3lHE1ZwlwVx)
+
+
+### Multi-model feature
+*Multiple models options*
+
+![Image](https://drive.google.com/uc?export=view&id=1ue7cSnCDjFf7nHPOdY-A_xosPyQ0e1Ll)
 
 </div>
 
@@ -55,16 +68,16 @@ Axon is a **full-stack AI chat application** that leverages the power of Groq's 
 
 | Feature | Description |
 |---------|-------------|
-| **🤖 Groq-Powered LLM** | Ultra-fast AI responses using Llama 3.3 70B model |
-| **🔍 Live Web Search** | Tavily-powered search for real-time, accurate answers |
-| **🛠️ AI Tool Calling** | Intelligent function execution for dynamic responses |
-| **📄 Export as PDF** | Download entire conversations as formatted PDFs |
-| **💻 Code Snippet Export** | Save code blocks as syntax-highlighted images |
-| **🧠 Context Memory** | AI remembers your conversation for relevant responses |
-| **🔖 Save Messages** | Bookmark important responses to build your knowledge base |
-| **📌 Pin Conversations** | Keep important chats at the top for quick access |
-| **📚 Chat History** | All conversations saved, searchable, and accessible |
-| **🔐 Dual Authentication** | Google OAuth and traditional email/password login |
+| **Groq-Powered LLM** | Ultra-fast AI responses using Llama 3.3 70B model |
+| **Live Web Search** | Tavily-powered search for real-time, accurate answers |
+| **AI Tool Calling** | Intelligent function execution for dynamic responses |
+| **Export as PDF** | Download entire conversations as formatted PDFs |
+| **Code Snippet Export** | Save code blocks as syntax-highlighted images |
+| **Context Memory** | AI remembers your conversation for relevant responses |
+| **Save Messages** | Bookmark important responses to build your knowledge base |
+| **Pin Conversations** | Keep important chats at the top for quick access |
+| **Chat History** | All conversations saved, searchable, and accessible |
+| **Dual Authentication** | Google OAuth and traditional email/password login |
 
 ---
 
@@ -77,8 +90,8 @@ Axon is a **full-stack AI chat application** that leverages the power of Groq's 
 - **Vite** - Lightning-fast build tool
 - **Axios** - HTTP client
 - **React Markdown** - Markdown rendering with syntax highlighting
-- **html2pdf.js** - PDF export functionality
 - **Lucide React** - Beautiful icon library
+
 
 ### Backend
 - **Node.js** - JavaScript runtime
@@ -96,7 +109,7 @@ Axon is a **full-stack AI chat application** that leverages the power of Groq's 
 - **Groq SDK** - LLM inference (Llama 3.3 70B)
 - **Tavily API** - Real-time web search
 
-### DevOps & Deployment
+### Deployment
 - **Vercel** - Frontend hosting
 - **Render** - Backend hosting
 - **MongoDB Atlas** - Cloud database
@@ -107,33 +120,99 @@ Axon is a **full-stack AI chat application** that leverages the power of Groq's 
 
 ```
 Axon/
-├── client/                    # React frontend
+├── README.md
+├── client/
+│   ├── .gitignore
+│   ├── README.md
+│   ├── bundle-analysis.html
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── public/
+│   │   ├── Logo.png
+│   │   ├── Logo2.png
+│   │   ├── favicon.png
+│   │   └── google.png
 │   ├── src/
+│   │   ├── App.jsx
+│   │   ├── CodeSnippet.jsx
 │   │   ├── components/
-│   │   │   ├── Layouts/      # Desktop & Mobile layouts
-│   │   │   ├── Pages/        # Route components
-│   │   │   └── minicomponents/ # Reusable UI components
-│   │   ├── contexts/         # React Context (Auth)
-│   │   ├── hooks/            # Custom hooks
-│   │   ├── routes/           # Route configuration
-│   │   ├── utils/            # Helper functions
-│   │   └── constants/        # App constants
-│   ├── public/               # Static assets
-│   └── README.md             # Client documentation
-│
-├── server/                    # Node.js backend
-│   ├── src/
-│   │   ├── config/           # Configuration files
-│   │   │   ├── llm.js        # Groq SDK setup
-│   │   │   └── passport.js   # Auth strategies
-│   │   ├── controllers/      # Route controllers
-│   │   ├── models/           # MongoDB schemas
-│   │   ├── routes/           # API routes
-│   │   ├── utils/            # Utilities
-│   │   └── middlewares.js    # Custom middleware
-│   └── README.md             # Server documentation
-│
-└── README.md                  # This file
+│   │   │   ├── Layouts/
+│   │   │   │   ├── DesktopLayout.jsx
+│   │   │   │   ├── MobileLayout.jsx
+│   │   │   │   ├── Mobnav.jsx
+│   │   │   │   ├── Responsive.jsx
+│   │   │   │   └── Sidebar.jsx
+│   │   │   ├── Pages/
+│   │   │   │   ├── About.jsx
+│   │   │   │   ├── Chat.jsx
+│   │   │   │   ├── History.jsx
+│   │   │   │   ├── Home.jsx
+│   │   │   │   ├── Login.jsx
+│   │   │   │   ├── NotFound.jsx
+│   │   │   │   ├── Privacy.jsx
+│   │   │   │   ├── Saved.jsx
+│   │   │   │   ├── Signup.jsx
+│   │   │   │   └── Terms.jsx
+│   │   │   └── minicomponents/
+│   │   │       ├── MarkdownRenderer.jsx
+│   │   │       ├── Message.jsx
+│   │   │       ├── MiniLoader.jsx
+│   │   │       ├── NewChatButton.jsx
+│   │   │       ├── Prompt.jsx
+│   │   │       └── Tagline.jsx
+│   │   ├── constants/
+│   │   │   └── constant.js
+│   │   ├── contexts/
+│   │   │   └── AuthContext.jsx
+│   │   ├── hooks/
+│   │   │   ├── useAuth.js
+│   │   │   ├── useCopy.js
+│   │   │   ├── useLoadingState.js
+│   │   │   └── useTypingEffect.js
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   │   ├── routes/
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   ├── PublicRoute.jsx
+│   │   │   └── index.jsx
+│   │   └── utils/
+│   │       ├── exportPDF.js
+│   │       └── helpers.js
+│   ├── tailwind.config.js
+│   ├── vercel.json
+│   └── vite.config.js
+├── delete.txt
+├── notes.md
+└── server/
+    ├── .gitignore
+    ├── README.md
+    ├── index.js
+    ├── package-lock.json
+    ├── package.json
+    └── src/
+        ├── config/
+        │   ├── llm.js
+        │   └── passport.js
+        ├── controllers/
+        │   ├── authControllers.js
+        │   ├── conversationControllers.js
+        │   └── savedMessageController.js
+        ├── middlewares.js
+        ├── models/
+        │   ├── conversation.js
+        │   ├── savedMessage.js
+        │   └── user.js
+        ├── routes/
+        │   ├── authRoutes.js
+        │   ├── conversationRoutes.js
+        │   └── savedMessageRoutes.js
+        └── utils/
+            ├── db.js
+            ├── error.js
+            └── helpers.js
 ```
 
 ---
@@ -145,16 +224,17 @@ Axon/
 - **Node.js** >= 18.x
 - **npm** >= 9.x
 - **MongoDB** instance (Atlas or local)
-- **Groq API Key** - [Get one here](https://console.groq.com)
-- **Tavily API Key** - [Get one here](https://tavily.com)
+- **Groq API Key** 
+- **Tavily API Key** 
 
 ### Installation
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/yourusername/axon.git
+git clone https://github.com/RahulSBytes/axon.git
 cd axon
 ```
+
 
 **2. Install dependencies for both client and server**
 ```bash
@@ -276,13 +356,13 @@ TAVILY_API_KEY=your-tavily-api-key
 
 ## 🔐 Security Features
 
-- ✅ **Bcrypt Password Hashing** - Secure password storage
-- ✅ **HTTP-Only Cookies** - Session cookies protected from XSS
-- ✅ **CSRF Protection** - SameSite cookie policy
-- ✅ **Environment Variables** - Sensitive data kept secure
-- ✅ **MongoDB Session Store** - Persistent, scalable sessions
-- ✅ **CORS Configuration** - Controlled cross-origin requests
-- ✅ **Input Validation** - Protected against injection attacks
+- **Bcrypt Password Hashing** - Secure password storage
+- **HTTP-Only Cookies** - Session cookies protected from XSS
+- **CSRF Protection** - SameSite cookie policy
+- **Environment Variables** - Sensitive data kept secure
+- **MongoDB Session Store** - Persistent, scalable sessions
+- **CORS Configuration** - Controlled cross-origin requests
+- **Input Validation** - Protected against injection attacks
 
 ---
 
@@ -382,48 +462,23 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Your Name**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
-- Portfolio: [yourwebsite.com](https://yourwebsite.com)
-- Email: your.email@example.com
+- GitHub: [@RahulSBytes](https://github.com/RahulSBytes)
+- LinkedIn: [Rahul Sharma](www.linkedin.com/in/thedevrahul/)
+- Portfolio: [yourwebsite.com](https://rahulsbytes.github.io/portfolio)
+- Email: rraj25198@gmail.com
 
----
 
-## 🙏 Acknowledgments
-
-- [Groq](https://groq.com/) - For blazing-fast LLM inference
-- [Tavily](https://tavily.com/) - For reliable web search API
-- [Anthropic](https://anthropic.com/) - For AI inspiration
-- [Vercel](https://vercel.com/) - For seamless frontend hosting
-- [Render](https://render.com/) - For reliable backend hosting
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - For cloud database
-
----
 
 ## 📊 Project Stats
 
 - **Lines of Code**: ~5,000+
 - **Components**: 20+
-- **API Endpoints**: 15+
+- **API Endpoints**: 10+
 - **Tech Stack**: 15+ technologies
-- **Development Time**: [Your timeline]
+- **Development Time**: 1 week
 
 ---
 
-## 🗺️ Roadmap
-
-- [ ] Voice input/output for conversations
-- [ ] Multi-language support
-- [ ] Dark/Light theme toggle
-- [ ] Conversation sharing via public links
-- [ ] Advanced analytics dashboard
-- [ ] Mobile app (React Native)
-- [ ] File upload support for context
-- [ ] Custom AI model selection
-- [ ] Team collaboration features
-- [ ] API rate limiting
-
----
 
 ## 💡 Why Axon?
 
@@ -445,7 +500,7 @@ Perfect for demonstrating technical skills to recruiters and potential employers
 
 **⭐ Star this repo if you find it helpful!**
 
-**Made with ❤️ and ☕ by [Your Name]**
+**Made with ❤️ and ☕ by Rahul Sharma**
 
 [⬆ Back to Top](#-axon)
 
